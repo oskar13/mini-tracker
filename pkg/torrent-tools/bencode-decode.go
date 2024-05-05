@@ -27,15 +27,12 @@ func DecodeTorrent(filename string) {
 			subMap := dict[k].(map[string]interface{})
 
 			for n := range subMap {
-				//fmt.Println(newShit[n])
-				//if newShit[n]  {
 				fmt.Println(n, "(map):")
 
 				if n != "pieces" {
 					fmt.Println(subMap[n])
 				}
 
-				//}
 			}
 
 		} else if reflect.TypeOf(dict[k]).Kind() == reflect.String {
