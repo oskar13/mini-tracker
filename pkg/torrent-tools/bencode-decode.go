@@ -39,17 +39,33 @@ func DecodeTorrent(filename string) {
 			}
 
 		} else if reflect.TypeOf(dict[k]).Kind() == reflect.String {
-			fmt.Println(k, ": ", dict[k])
+			fmt.Println(k, "(string): \n", dict[k])
 			//fmt.Println(dict[k])
 		} else if reflect.TypeOf(dict[k]).Kind() == reflect.Slice {
 			fmt.Println(k, "(slice):")
-			subSlice := dict[k].([]interface{})
-			for n := range subSlice {
-				fmt.Println(n)
-			}
+			//Ignore this data for now
+			/*
+				fmt.Println(k, "(slice):")
 
-			fmt.Println(dict[k])
-			fmt.Println("--------------")
+				s := reflect.ValueOf(dict[k])
+
+				for i := 0; i < s.Len(); i++ {
+					fmt.Println(reflect.TypeOf(s.Index(i)).Kind())
+
+					tempVar := s.Index(i).Elem()
+
+					fmt.Println("Ree:", tempVar)
+					//fmt.Println(s.Index(i))
+				}
+				//fmt.Println(dict[k])
+				fmt.Println("--------------")
+			*/
+
+		} else if reflect.TypeOf(dict[k]).Kind() == reflect.Int64 {
+			fmt.Println(k, "(int64):")
+			theInt := dict[k].(int64)
+
+			fmt.Println(theInt)
 
 		} else {
 			fmt.Println("-------------- Type error:", reflect.TypeOf(dict[k]).Kind())
@@ -61,6 +77,6 @@ func DecodeTorrent(filename string) {
 
 	}
 
-	fmt.Printf("string: %v\n", dict["comment"])
+	//fmt.Printf("string: %v\n", dict["comment"])
 
 }
