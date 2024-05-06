@@ -9,7 +9,7 @@ import (
 	"github.com/marksamman/bencode"
 )
 
-func DecodeTorrent(filename string) {
+func DecodeUploadedTorrent(filename string) {
 	file, err := os.Open(filename)
 	if err != nil {
 		log.Fatal(err)

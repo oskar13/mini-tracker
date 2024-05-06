@@ -8,6 +8,6 @@ import (
 
 func main() {
 
-	torrenttools.DecodeTorrent(os.Args[1])
+	torrenttools.DecodeUploadedTorrent(os.Args[1])
 
 }
