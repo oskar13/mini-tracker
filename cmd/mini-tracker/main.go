@@ -10,4 +10,6 @@ func main() {
 
 	torrenttools.DecodeUploadedTorrent(os.Args[1])
 
+	//web.StartWebsite()
+
 }
