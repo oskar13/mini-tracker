@@ -1,0 +1,67 @@
+.overview {
+    font-family: "Roboto", sans-serif;
+}
+
+.overview h2 {
+
+    font-family: "IBM Plex Sans", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    color: #ffa700;
+
+
+}
+
+.overview h3 {
+    font-size: 1.4em;
+    font-family: "IBM Plex Sans", sans-serif;
+}
+
+.read-more {
+    color: #ffa700;
+}
+
+.btn-more {
+    background-color: #865906;
+    margin: 1em 0.5em;
+    border-color: rgb(146, 100, 14);
+}
+
+.btn-more:hover {
+    background-color: #ad7306;
+}
+
+.torrent-stats {
+    font-family: "Roboto Mono", monospace;
+}
+
+.torrent h3 {
+    font-size: 1em;
+    display: inline;
+    letter-spacing: 0.02em;
+}
+
+footer .card-img-top {
+    max-width: 6em;
+    -webkit-filter: drop-shadow( 0px 0px 8px #c9860a98);
+    filter: drop-shadow( 0px 0px 8px #c9860a98);
+}
+
+.btn-primary {
+    background-color: #af7b19;
+    margin: 1em 0.5em;
+    border-color: rgb(146, 100, 14);
+}
+
+.btn-primary:hover {
+    background-color: #ad7306;
+    border: none;
+}
+
+.community h3 {
+    font-size: 1em;
+}
+
+.community h3 strong{
+    color: #ffa700;
+}

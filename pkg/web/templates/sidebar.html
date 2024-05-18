@@ -1,0 +1,68 @@
+{{define "sidebar"}}
+
+<div class="d-flex flex-column flex-shrink-0 p-3 sidebar" style="width: 280px;">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <img class="sidebar-icon"  id="site-icon" src="static/img/icons/planet-dark.svg"  alt="">
+    <h1 id="site-title">Mini Tracker</h1>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+    <li class="nav-item">
+        <a href="/" class="nav-link active" aria-current="page">
+            <img src="static/img/icons/at.svg" class="sidebar-icon" alt="">
+        Overview
+        </a>
+    </li>
+    <li>
+        <a href="/news" class="nav-link text-white">
+            <img src="static/img/icons/envelope.svg" class="sidebar-icon" alt="">
+        News
+        </a>
+    </li>
+    <li>
+        <a href="/new" class="nav-link text-white">
+            <img src="static/img/icons/file-plus.svg" class="sidebar-icon" alt="">
+        Add New
+        </a>
+    </li>
+    <li>
+        <a href="/my-torrents" class="nav-link text-white">
+            <img src="static/img/icons/file-text.svg" class="sidebar-icon" alt="">
+        My Torrents
+        </a>
+    </li>
+    <li>
+        <a href="/my-groups" class="nav-link text-white">
+            <img src="static/img/icons/user-group.svg" class="sidebar-icon" alt="">
+        My Groups
+        </a>
+    </li>
+    <li>
+        <a href="/friends" class="nav-link text-white">
+            <img src="static/img/icons/emoji-meh.svg" class="sidebar-icon" alt="">
+        "Friends"
+        </a>
+    </li>
+    <li>
+        <a href="#" class="nav-link text-white">
+            <img src="static/img/icons/rss.svg" class="sidebar-icon" alt="">
+        Scenes
+        </a>
+    </li>
+    </ul>
+    <hr>
+    <div class="dropdown">
+        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="static/img/mockup/user.png" alt="" width="48" height="48" class="rounded-circle me-2">
+            <strong class="username">Epic_Gamer_69</strong>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Sign out</a></li>
+        </ul>
+    </div>
+</div>
+
+{{ end }}

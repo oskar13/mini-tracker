@@ -1,0 +1,8 @@
+.news article {
+    border: 1px solid rgb(87, 81, 81);
+    font-size: 1.3em;
+}
+
+.news article button {
+    font-size: 1.1em;
+}

@@ -1,0 +1,12 @@
+.torrent-page {
+    font-family: "IBM Plex Sans", sans-serif;
+}
+.torrent-page section {
+    margin-bottom: 3em;
+}
+
+.torrent-page .btn img {
+    max-width: 1.3em;
+    filter: invert(100%);
+}
+

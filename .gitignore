@@ -26,3 +26,5 @@ go.work
 # VScode files
 .vscode
 .VSCodeCounter
+
+launch.sh

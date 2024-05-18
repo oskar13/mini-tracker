@@ -1,0 +1,53 @@
+.sidebar {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+#site-title {
+    font-size: 2em;
+    margin-top: 0.3em;
+    margin-left: .4em;
+    color: #ffa700;
+    text-shadow: 0px 0px 8px #ffa70069;
+}
+
+hr {
+    color: #ffa700;
+}
+
+.sidebar-icon {
+    max-width: 2.3em;
+    filter: invert(100%);
+    margin-right: .2em;
+}
+
+#site-icon {
+    filter: none;
+    max-width: 2.8em;
+}
+
+.sidebar .nav li {
+    -moz-transition: all .1s ease-in;
+    -o-transition: all .1s ease-in;
+    -webkit-transition: all .2s ease-in;
+    transition: all .1s ease-in;
+    border-radius: 0.1em;
+}
+
+.sidebar .nav li:hover {
+    background-color: #ffd7002b;
+    border-radius: 0.3em;
+}
+
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #0d6efd00;
+    border: 1px solid #f0b914c4;
+    box-shadow: 0px 0px 7px #f9ca123d;
+  }
+
+  .sidebar .username{
+    color: #ffa70082
+  }

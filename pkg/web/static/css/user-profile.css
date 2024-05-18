@@ -1,0 +1,24 @@
+.user-card .glow{
+    -webkit-filter: drop-shadow( 0px 0px 8px #c9860a98);
+    filter: drop-shadow( 0px 0px 8px #c9860a98);
+}
+
+.username {
+    color: #ffa600;
+}
+
+.user-card .user-pic {
+    margin-top: -6em;
+    z-index: 999;
+    position: relative;
+}
+
+
+
+section.user-info p {
+    margin-bottom: 0.1em;
+}
+
+.user-card .badge {
+    border-radius: 10em ;
+}

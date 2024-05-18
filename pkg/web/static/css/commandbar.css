@@ -1,0 +1,33 @@
+.commandbar-wrapper {
+    margin: 1em 3em;
+    padding: 1em 3em;
+}
+
+.commandbar{
+    padding: .3em .8em;
+
+    caret-color:rgb(255, 187, 0);
+    transition: width 0.4s linear;
+    text-align: center;
+    border: 1px solid #a0957491;
+    border-radius: 5em; 
+}
+
+.command-input {
+    min-width: 40em;
+    border: 0;
+    background: none;
+    outline: 0;
+    width: 0;
+    text-align: center;
+    line-height: 2em;
+    transition: width 0.4s linear;
+}
+
+.command-input:focus-visible {
+    border: none;
+}
+
+a {
+    color: #ffa700;
+}
