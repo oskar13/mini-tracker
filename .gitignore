@@ -11,6 +11,9 @@
 # Test binary, built with `go test -c`
 *.test
 
+#MySQL workbench backup file
+*.bak
+
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
