@@ -4,11 +4,14 @@ type TorrentWeb struct {
 }
 
 type User struct {
-	UserID   int
-	Username string
-	Password string
-	Email    string
-	Cover    string
-	Joined   string
-	LoggedIn bool
+	UserID        int
+	Username      string
+	Password      string
+	Email         string
+	Cover         string
+	Joined        string
+	LoggedIn      bool
+	Disabled      bool
+	SessionUID    string
+	SessionExpiry string
 }

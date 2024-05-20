@@ -11,7 +11,8 @@ func MainPage(w http.ResponseWriter, r *http.Request) {
 
 	userData := webutils.GetUserData(r, db.DB)
 
-	if webutils.CheckLogin(w, r, userData) != true {
+	if !webutils.CheckLogin(w, r, userData) {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
 
