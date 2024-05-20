@@ -16,4 +16,9 @@ func MainPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	webutils.RenderTemplate(w, []string{"pkg/web/templates/home.html",
+		"pkg/web/templates/sidebar.html", "pkg/web/templates/head.html",
+		"pkg/web/templates/end.html",
+		"pkg/web/templates/commandbar.html"}, userData)
+
 }

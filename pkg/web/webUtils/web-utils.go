@@ -65,11 +65,12 @@ func ValidateSessionData(r *http.Request) (webdata.User, error) {
 		return webdata.User{}, err
 	}
 
-	layout := "2006-01-02 15:04:05.000000"
+	layout := "2006-01-02 15:04:05"
 	expiry, _ := time.Parse(layout, userData.SessionExpiry)
 
 	if time.Now().After(expiry) {
 		log.Println("Session has expired")
+		log.Println("Time: ", userData.SessionExpiry)
 		return webdata.User{}, fmt.Errorf("session expired")
 	}
 

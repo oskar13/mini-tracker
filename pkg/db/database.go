@@ -14,11 +14,12 @@ var DB *sql.DB
 func InitDB() {
 	// Capture connection properties.
 	cfg := mysql.Config{
-		User:   os.Getenv("DBUSER"),
-		Passwd: os.Getenv("DBPASS"),
-		Net:    "tcp",
-		Addr:   "127.0.0.1:3306",
-		DBName: "recordings",
+		User:                 os.Getenv("DBUSER"),
+		Passwd:               os.Getenv("DBPASS"),
+		Net:                  "tcp",
+		Addr:                 "127.0.0.1:3306",
+		DBName:               "minitorrent",
+		AllowNativePasswords: true,
 	}
 	// Get a database handle.
 	var err error
@@ -37,4 +38,10 @@ func InitDB() {
 		log.Fatal(err)
 	}
 
+}
+
+func Close() {
+	if DB != nil {
+		DB.Close()
+	}
 }
