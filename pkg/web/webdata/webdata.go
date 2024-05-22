@@ -3,6 +3,11 @@ package webdata
 type TorrentWeb struct {
 }
 
+type LoginData struct {
+	UserNameOrEmail string
+	Password        string
+}
+
 type User struct {
 	UserID        int
 	Username      string
@@ -14,4 +19,5 @@ type User struct {
 	Disabled      bool
 	SessionUID    string
 	SessionExpiry string
+	Gender        string
 }

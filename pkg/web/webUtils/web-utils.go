@@ -1,7 +1,10 @@
 package webutils
 
 import (
+	"crypto/rand"
 	"database/sql"
+	"encoding/hex"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -92,5 +95,71 @@ func RenderTemplate(w http.ResponseWriter, templates []string, data interface{})
 	if err != nil {
 		log.Printf("Error executing template: %v", err)
 		http.Error(w, "Failed to execute template", http.StatusInternalServerError)
+	}
+}
+
+func LoginUser(w http.ResponseWriter, username string, password string) (error, webdata.User) {
+	var user webdata.User
+	var salt string
+
+	q := "SELECT user_ID, username, profile_pic, disabled, password, salt FROM users WHERE username = ?"
+
+	err := db.DB.QueryRow(q, username).Scan(&user.UserID, &user.Username, &user.Cover, &user.Disabled, &user.Password, &salt)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return errors.New("no account found"), webdata.User{}
+		}
+		return err, webdata.User{}
+	}
+
+	if user.Password == password {
+
+		//set up session
+
+		sessionToken := GenerateSession()
+
+		UpdateSessionInDB(db.DB, sessionToken, user.UserID)
+
+		http.SetCookie(w, &http.Cookie{
+			Name:     "session-token",
+			Value:    sessionToken,
+			MaxAge:   60 * 30,
+			HttpOnly: true,
+			Secure:   true,
+		})
+
+		return nil, user
+	}
+
+	return errors.New("wrong password"), webdata.User{}
+
+}
+
+func GenerateSession() string {
+	b := make([]byte, 32)
+	_, err := rand.Read(b)
+
+	if err != nil {
+		log.Fatalf("Error generating session token: %v", err)
+	}
+	token := hex.EncodeToString(b)
+	return token
+}
+
+// save session in db
+func UpdateSessionInDB(DB *sql.DB, Token string, userID int) {
+	expireTime := time.Now().Add(30 * time.Minute)
+
+	stmt, err := db.DB.Prepare(`UPDATE users SET session_uid = ?, session_expiry = ? WHERE user_ID = ?`)
+
+	if err != nil {
+		log.Printf("error preparing statement: %v", err)
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(Token, expireTime, userID)
+	if err != nil {
+		log.Printf("error storing session in database: %v", err)
+		log.Printf(Token)
 	}
 }
