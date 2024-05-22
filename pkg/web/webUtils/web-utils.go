@@ -118,7 +118,7 @@ func LoginUser(w http.ResponseWriter, username string, password string) (error, 
 
 		sessionToken := GenerateSession()
 
-		UpdateSessionInDB(db.DB, sessionToken, user.UserID)
+		UpdateSessionInDB(db.DB, sessionToken, user.UserID, true)
 
 		http.SetCookie(w, &http.Cookie{
 			Name:     "session-token",
@@ -135,6 +135,21 @@ func LoginUser(w http.ResponseWriter, username string, password string) (error, 
 
 }
 
+func LogOutUser(w http.ResponseWriter, user webdata.User) webdata.User {
+
+	UpdateSessionInDB(db.DB, "null", user.UserID, false)
+
+	http.SetCookie(w, &http.Cookie{
+		Name:     "session-token",
+		Value:    "",
+		HttpOnly: true,
+		Expires:  time.Unix(0, 0),
+	})
+
+	return webdata.User{}
+
+}
+
 func GenerateSession() string {
 	b := make([]byte, 32)
 	_, err := rand.Read(b)
@@ -147,8 +162,11 @@ func GenerateSession() string {
 }
 
 // save session in db
-func UpdateSessionInDB(DB *sql.DB, Token string, userID int) {
-	expireTime := time.Now().Add(30 * time.Minute)
+func UpdateSessionInDB(DB *sql.DB, Token string, userID int, login bool) {
+	expireTime := time.Time{}
+	if login {
+		expireTime = time.Now().Add(30 * time.Minute)
+	}
 
 	stmt, err := db.DB.Prepare(`UPDATE users SET session_uid = ?, session_expiry = ? WHERE user_ID = ?`)
 

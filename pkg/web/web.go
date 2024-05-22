@@ -17,6 +17,7 @@ func StartWebsite() {
 	serverMux := http.NewServeMux()
 	serverMux.HandleFunc("/", handlers.MainPage)
 	serverMux.HandleFunc("/login", handlers.LoginPage)
+	serverMux.HandleFunc("/logout", handlers.LoginPage)
 	serverMux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./pkg/web/static/"))))
 
 	fmt.Println("Starting web interface at: http://localhost:8080")

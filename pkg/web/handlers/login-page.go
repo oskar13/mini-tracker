@@ -9,22 +9,30 @@ import (
 	"github.com/oskar13/mini-tracker/pkg/web/webdata"
 )
 
+// Handle login and logout URL endpoint
 func LoginPage(w http.ResponseWriter, r *http.Request) {
 
 	var pageStruct struct {
-		Error     bool
-		ErrorText string
-		LoggedIn  bool
-		UserData  webdata.User
+		Error         bool
+		ErrorText     string
+		LoggedIn      bool
+		LogoutMessage bool
+		UserData      webdata.User
 	}
 
 	userData := webutils.GetUserData(r, db.DB)
 
 	if userData.LoggedIn {
 
-		//Offer log out
+		if r.URL.Path == "/logout" {
+			//Log user out
+			userData = webutils.LogOutUser(w, userData)
+			pageStruct.LogoutMessage = true
 
-		pageStruct.LoggedIn = true
+		} else {
+			//Offer log out
+			pageStruct.LoggedIn = true
+		}
 
 	} else {
 		if r.Method == "POST" {
