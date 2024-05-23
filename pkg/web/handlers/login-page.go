@@ -48,7 +48,7 @@ func LoginPage(w http.ResponseWriter, r *http.Request) {
 				Password:        r.FormValue("password"),
 			}
 
-			err, resultUserData := webutils.LoginUser(w, loginData.UserNameOrEmail, loginData.Password)
+			err, resultUserData := webutils.LoginUser(w, r, loginData.UserNameOrEmail, loginData.Password)
 
 			if err != nil {
 

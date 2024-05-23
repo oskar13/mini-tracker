@@ -98,7 +98,7 @@ func RenderTemplate(w http.ResponseWriter, templates []string, data interface{})
 	}
 }
 
-func LoginUser(w http.ResponseWriter, username string, password string) (error, webdata.User) {
+func LoginUser(w http.ResponseWriter, r *http.Request, username string, password string) (error, webdata.User) {
 	var user webdata.User
 	var salt string
 
@@ -118,7 +118,7 @@ func LoginUser(w http.ResponseWriter, username string, password string) (error, 
 
 		sessionToken := GenerateSession()
 
-		UpdateSessionInDB(db.DB, sessionToken, user.UserID, true)
+		UpdateSessionInDB(db.DB, sessionToken, user.UserID, true, ReadUserIP(r))
 
 		http.SetCookie(w, &http.Cookie{
 			Name:     "session-token",
@@ -137,7 +137,7 @@ func LoginUser(w http.ResponseWriter, username string, password string) (error, 
 
 func LogOutUser(w http.ResponseWriter, user webdata.User) webdata.User {
 
-	UpdateSessionInDB(db.DB, "null", user.UserID, false)
+	UpdateSessionInDB(db.DB, "null", user.UserID, false, "0")
 
 	http.SetCookie(w, &http.Cookie{
 		Name:     "session-token",
@@ -162,22 +162,32 @@ func GenerateSession() string {
 }
 
 // save session in db
-func UpdateSessionInDB(DB *sql.DB, Token string, userID int, login bool) {
+func UpdateSessionInDB(DB *sql.DB, Token string, userID int, login bool, ipAddr string) {
 	expireTime := time.Time{}
 	if login {
 		expireTime = time.Now().Add(30 * time.Minute)
 	}
 
-	stmt, err := db.DB.Prepare(`UPDATE users SET session_uid = ?, session_expiry = ? WHERE user_ID = ?`)
+	stmt, err := db.DB.Prepare(`UPDATE users SET session_uid = ?, session_expiry = ?, session_ip = ? WHERE user_ID = ?`)
 
 	if err != nil {
 		log.Printf("error preparing statement: %v", err)
 	}
 	defer stmt.Close()
 
-	_, err = stmt.Exec(Token, expireTime, userID)
+	_, err = stmt.Exec(Token, expireTime, ipAddr, userID)
 	if err != nil {
 		log.Printf("error storing session in database: %v", err)
-		log.Printf(Token)
 	}
+}
+
+func ReadUserIP(r *http.Request) string {
+	IPAddress := r.Header.Get("X-Real-Ip")
+	if IPAddress == "" {
+		IPAddress = r.Header.Get("X-Forwarded-For")
+	}
+	if IPAddress == "" {
+		IPAddress = r.RemoteAddr
+	}
+	return IPAddress
 }
