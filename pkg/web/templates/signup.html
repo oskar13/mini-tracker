@@ -38,33 +38,19 @@
 
 
 
-						<h2 class="mb-5">Login</h2>
+						<h2 class="mb-5">Create an account</h2>
 						{{ if ( eq true .Error ) }}
 						<div class="pt-2 text-warning-emphasis bg-warning-subtle border border-warning-subtle rounded-3  mb-3">
 							<p>{{ .ErrorText }}</p>
 						</div>
 						{{ end }}
 
-						{{ if ( eq true .LogoutMessage ) }}
-						<div class="pt-2 text-success-emphasis bg-success-subtle border border-success-subtle rounded-3  mb-3">
-							<p>Successfully logged out.</p>
-						</div>
-						{{ end }}
 
 
-						{{ if ( eq true .LoggedIn ) }}
-						<div class="p-2 text-info-emphasis bg-info-subtle border border-info-subtle rounded-3  mb-3">
-							<span>You are already logged in</span>
 
-	
+						{{ if ( eq true .RefCodeValid ) }}
 
-						</div>
-
-						<a href="/logout"
-						class="btn btn-outline-light btn-lg px-5 mb-5" type="submit">Log Out</a>
-						{{ else }}
-
-						<form action="/login" method="post">
+						<form action="/signup" method="post">
 
 							<div data-mdb-input-init class="form-outline form-white mb-4">
 								<input name="username" class="form-control" type="text" placeholder="Username"
@@ -76,19 +62,35 @@
 								<input name="password" type="password" class="form-control" id="inputPassword2" placeholder="Password">
 							</div>
 
+							<div class=" mb-4">
+								<label for="inputPassword3" class="visually-hidden">Password</label>
+								<input name="password2" type="password" class="form-control" id="inputPassword3" placeholder="Password again">
+							</div>
 
-							<p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">Forgot password?</a></p>
 
 							<button data-mdb-button-init data-mdb-ripple-init
-								class="btn btn-outline-light btn-lg px-5 mb-5" type="submit">Login</button>
+								class="btn btn-outline-light btn-lg px-5 mb-5" type="submit">Create Account</button>
 
 						</form>
 
-						<div>
-							<p class="mb-0">Don't have an account? <a href="#!" class="text-white-50 fw-bold">Sign
-									Up</a>
-							</p>
-						</div>
+						{{ else }}
+
+						<p>Insert your invite code</p>
+
+						<form action="/signup" method="get">
+
+
+							<div data-mdb-input-init class="form-outline form-white mb-4">
+								<input name="ref" class="form-control" type="text" placeholder="Invite code"
+									aria-label="default input example">
+							</div>
+
+
+							<button data-mdb-button-init data-mdb-ripple-init
+								class="btn btn-outline-light btn-lg px-5 mb-5" type="submit">Submit</button>
+
+						</form>
+
 
 						{{ end }}
 

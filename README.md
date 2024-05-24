@@ -5,7 +5,9 @@ This project is not functional yet
 
 A small-mid scale torrent tracker site written in go with support for private tracking.
 
-
+### Features
+- Invite based account system
+- Simple chat system
 
 ### Goals
 - Make it easy to share torrent files between small number of people

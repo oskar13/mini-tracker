@@ -14,6 +14,8 @@ func SignupPage(w http.ResponseWriter, r *http.Request) {
 	var pageStruct struct {
 		Error         bool
 		ErrorText     string
+		RefCodeValid  bool
+		RefCode       string
 		LoggedIn      bool
 		LogoutMessage bool
 		UserData      webdata.User
@@ -28,16 +30,31 @@ func SignupPage(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "POST" {
 			// Handle sighnup form contents
 
-		} else {
+		} else if r.Method == "GET" {
+
+			ref := r.URL.Query().Get("ref")
 
 			//Show Form for signup
-			if r.URL.Path == "/ref/" {
-				//Handle ref code in url
+			if ref == "" {
+				//Show ref code input from and go for page reload
 
 			} else {
-				//Otherwise handle ref code in form
+				//check ref code
+
+				if ref == "testcode" {
+					// correct code show signup form
+					pageStruct.RefCodeValid = true
+					pageStruct.RefCode = "testcode"
+
+				} else {
+					// invalid code show error message
+					pageStruct.Error = true
+					pageStruct.ErrorText = "Invalid invite code"
+				}
 
 			}
+
+		} else {
 
 		}
 	}
