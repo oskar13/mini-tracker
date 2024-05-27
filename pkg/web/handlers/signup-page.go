@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 
 	db "github.com/oskar13/mini-tracker/pkg/db"
@@ -30,6 +31,28 @@ func SignupPage(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "POST" {
 			// Handle sighnup form contents
 
+			r.ParseForm()
+			username := r.Form.Get("username")
+			password := r.Form.Get("password")
+			password2 := r.Form.Get("password2")
+			ref := r.Form.Get("ref")
+
+			if username == "" || password == "" || password2 == "" || ref == "" {
+
+				fmt.Println(r.Form)
+
+				pageStruct.ErrorText = "Data incomplete"
+				pageStruct.Error = true
+
+			} else {
+				err := webutils.CreateUser(username, password, password2, ref)
+
+				if err != nil {
+					pageStruct.Error = true
+					pageStruct.ErrorText = fmt.Sprintf("%v", err)
+				}
+			}
+
 		} else if r.Method == "GET" {
 
 			ref := r.URL.Query().Get("ref")
@@ -41,15 +64,16 @@ func SignupPage(w http.ResponseWriter, r *http.Request) {
 			} else {
 				//check ref code
 
-				if ref == "testcode" {
-					// correct code show signup form
-					pageStruct.RefCodeValid = true
-					pageStruct.RefCode = "testcode"
+				_, err := webutils.CheckRefCode(ref)
 
-				} else {
+				if err != nil {
 					// invalid code show error message
 					pageStruct.Error = true
 					pageStruct.ErrorText = "Invalid invite code"
+				} else {
+					// correct code show signup form
+					pageStruct.RefCodeValid = true
+					pageStruct.RefCode = ref
 				}
 
 			}

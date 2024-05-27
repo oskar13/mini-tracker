@@ -191,3 +191,117 @@ func ReadUserIP(r *http.Request) string {
 	}
 	return IPAddress
 }
+
+func CreateUser(username string, password string, password2 string, ref string) error {
+
+	//
+
+	_, err := CheckRefCode(ref)
+
+	if err != nil {
+		return err
+	}
+
+	if password != password2 {
+		return errors.New("password mismatch")
+	}
+
+	usernameTaken, err := UsernameExists(username)
+
+	if err != nil {
+		return err
+	}
+
+	if usernameTaken {
+		return errors.New("username taken")
+	}
+
+	q := `INSERT INTO users (users.username, users.salt, users.password) VALUES (?,?,?)`
+
+	salt := password
+
+	res, err := db.DB.Exec(q, username, salt, password)
+
+	if err != nil {
+		return err
+	}
+
+	inserteId, err := res.LastInsertId()
+
+	if err != nil {
+		return err
+	}
+
+	err = UseRefCode(int(inserteId), ref)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func UsernameExists(username string) (bool, error) {
+	var user_ID int
+	q := "SELECT users.user_ID FROM users WHERE users.username = ?"
+
+	err := db.DB.QueryRow(q, username).Scan(&user_ID)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return false, nil
+		}
+		return false, err
+	}
+
+	return true, nil
+}
+
+// Returns true if refcode is valid
+func CheckRefCode(ref string) (int, error) {
+	var user_ID int
+	var invited_user *int
+	q := "SELECT invites.inviting_user_ID, invites.invited_user_ID FROM invites WHERE invite_code = ?"
+
+	err := db.DB.QueryRow(q, ref).Scan(&user_ID, &invited_user)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			log.Println("no ref code found in db -", ref)
+			return 0, errors.New("no ref code found")
+		}
+		return 0, err
+	}
+
+	if invited_user != nil {
+		return 0, errors.New("invite code already used")
+	}
+
+	return user_ID, nil
+}
+
+// Ties user ID to ref code marking it used
+func UseRefCode(user_ID int, ref string) error {
+	// UPDATE invites SET invites.invited_user_ID = 1 WHERE invites.invite_code = "asdf";
+	q := `UPDATE invites SET invites.invited_user_ID = ? WHERE invites.invite_code = ?`
+
+	_, err := db.DB.Exec(q, user_ID, ref)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}
+
+// Creates invite code with inviting user ID
+func CreateRefCode(user_ID int, ref string) error {
+
+	q := `INSERT INTO minitorrent.invites (inviting_user_ID, invite_code,  invite_creation_date) VALUES (?,?, CURRENT_TIMESTAMP())`
+	id := 0
+	err := db.DB.QueryRow(q, user_ID, ref).Scan(&id)
+
+	if err != nil {
+		return err
+	}
+	return nil
+}

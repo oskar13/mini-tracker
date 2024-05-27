@@ -52,6 +52,12 @@
 
 						<form action="/signup" method="post">
 
+
+							<div data-mdb-input-init class="form-outline form-white mb-4 d-none">
+								<input name="ref" class="form-control" type="text" placeholder="Invite code"
+									aria-label="default input example" value="{{ .RefCode }}">
+							</div>
+
 							<div data-mdb-input-init class="form-outline form-white mb-4">
 								<input name="username" class="form-control" type="text" placeholder="Username"
 									aria-label="default input example">
