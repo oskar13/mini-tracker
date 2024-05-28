@@ -51,6 +51,12 @@
 						</div>
 						{{ end }}
 
+						{{ if ( eq true .Message ) }}
+						<div class="pt-2 text-success-emphasis bg-success-subtle border border-success-subtle rounded-3  mb-3">
+							<p> {{.MessageText}} </p>
+						</div>
+						{{ end }}
+
 
 						{{ if ( eq true .LoggedIn ) }}
 						<div class="p-2 text-info-emphasis bg-info-subtle border border-info-subtle rounded-3  mb-3">

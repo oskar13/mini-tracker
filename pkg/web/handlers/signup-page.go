@@ -51,6 +51,8 @@ func SignupPage(w http.ResponseWriter, r *http.Request) {
 					pageStruct.Error = true
 					pageStruct.ErrorText = fmt.Sprintf("%v", err)
 				}
+
+				http.Redirect(w, r, "/login?message=csuccess", http.StatusSeeOther)
 			}
 
 		} else if r.Method == "GET" {
@@ -77,8 +79,6 @@ func SignupPage(w http.ResponseWriter, r *http.Request) {
 				}
 
 			}
-
-		} else {
 
 		}
 	}

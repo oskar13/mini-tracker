@@ -15,6 +15,8 @@ func LoginPage(w http.ResponseWriter, r *http.Request) {
 	var pageStruct struct {
 		Error         bool
 		ErrorText     string
+		Message       bool
+		MessageText   string
 		LoggedIn      bool
 		LogoutMessage bool
 		UserData      webdata.User
@@ -65,6 +67,19 @@ func LoginPage(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 
 			return
+		} else if r.Method == "GET" {
+			message := r.URL.Query().Get("message")
+
+			if message != "" {
+
+				if message == "csuccess" {
+					pageStruct.Message = true
+
+					pageStruct.MessageText = "Account creation success. You can now log in."
+				}
+
+			}
+
 		}
 	}
 
