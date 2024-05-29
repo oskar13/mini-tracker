@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 	"text/template"
 	"time"
 
@@ -304,4 +305,62 @@ func CreateRefCode(user_ID int, ref string) error {
 		return err
 	}
 	return nil
+}
+
+func LoadUserProfileData(user_ID int) (webdata.User, error) {
+
+	var user webdata.User
+
+	q := `SELECT users.username, users.profile_pic, users.created, users.disabled, users.tagline, users.bio, users.gender FROM users WHERE user_ID = ?`
+	err := db.DB.QueryRow(q, user_ID).Scan(&user.Username, &user.Cover, &user.Joined, &user.Disabled, &user.Tagline, &user.Bio, &user.Gender)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return webdata.User{}, errors.New("no account found")
+		}
+		return webdata.User{}, err
+	}
+
+	return user, nil
+}
+
+// Load public torrents in user profile view or elsewhere, set flag to true to
+func LoadUserTorrents(user_ID int, access_type []string) []webdata.TorrentWeb {
+
+	var resultTorrents []webdata.TorrentWeb
+
+	if len(access_type) == 0 {
+		return []webdata.TorrentWeb{}
+	}
+
+	// Build the query
+	q := `SELECT torrents.torrent_ID, torrents.created, torrents.name, torrents.upvotes, torrents.downvotes
+	      FROM torrents
+	      WHERE torrents.users_user_ID = ? AND torrents.access_type IN (` + strings.Repeat("?,", len(access_type)-1) + `?)`
+
+	// Prepare the arguments for the query
+	args := make([]interface{}, 0, len(access_type)+1)
+	args = append(args, user_ID)
+	for _, at := range access_type {
+		args = append(args, at)
+	}
+
+	// Execute the query
+	rows, err := db.DB.Query(q, args...)
+	if err != nil {
+		fmt.Println("Error executing query:", err)
+		return []webdata.TorrentWeb{}
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var row webdata.TorrentWeb
+		if err := rows.Scan(&row.TorrentID, &row.Created, &row.Name, &row.UpVotes, &row.DownVotes); err != nil {
+			// do something with error
+			fmt.Println(err)
+		} else {
+			resultTorrents = append(resultTorrents, row)
+		}
+	}
+
+	return resultTorrents
 }

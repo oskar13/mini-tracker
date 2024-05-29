@@ -17,6 +17,8 @@ A small-mid scale torrent tracker site written in go with support for private tr
 - User managed access rules for torrent tracking
 - Deploy tracker via docker
 - Somehow make it easy to use via Discord
+- Keep it simple/minimal/unbloated - avoid using too many dependencies or frameworks
+- Keep the site functional even on browsers with noscript extension installed
 
 ### What are not the goals of this project
 - Promote piracy

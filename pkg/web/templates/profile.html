@@ -1,0 +1,52 @@
+{{define "base"}}
+	{{template "head"}}
+
+
+
+		{{template "sidebar"}}
+		
+		<div class="b-example-divider"></div>
+
+
+
+
+		<div class="container overflow-scroll overview">
+
+
+			{{template "commandbar"}}
+		
+            <img src="{{.DisplayedUser.Cover}}" alt="{{.DisplayedUser.Username}} profile pic">
+            <h1>{{.DisplayedUser.Username}}</h1>
+            <p>{{.DisplayedUser.Tagline}}</p>
+            <p>{{.DisplayedUser.Bio}}</p>
+            {{ if  .SelfEdit}}
+            <p>can edit yourself</p>
+            {{end}}
+
+            <h2>Torrents shared with site users</h2>
+
+            {{if .TorrentList}}
+            <ul>
+                {{range .TorrentList}}
+                <li>{{.Name}}</li>
+                {{end}}
+
+
+ 
+
+                   
+                 
+
+                
+        
+            </ul>
+            {{else}}
+            list empty
+            {{end}}
+			
+		</div>
+		
+		<div class="b-example-divider"></div>
+
+		{{template "end"}}
+{{end}}
