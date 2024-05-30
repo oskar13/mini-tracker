@@ -19,6 +19,10 @@
             <h1>{{.DisplayedUser.Username}}</h1>
             <p>{{.DisplayedUser.Tagline}}</p>
             <p>{{.DisplayedUser.Bio}}</p>
+            <p>Joined {{.DisplayedUser.Joined}}</p>
+            {{ if .DisplayedUser.Gender }}
+            <p>Gender: {{.DisplayedUser.Gender}}</p>
+            {{end}}
             {{ if  .SelfEdit}}
             <p>can edit yourself</p>
             {{end}}

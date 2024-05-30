@@ -31,7 +31,6 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 	pageStruct.UserData = userData
 
 	idString := r.PathValue("id")
-	fmt.Printf("ID: %v", idString)
 
 	if idString != "" {
 		userId, err := strconv.Atoi(idString)
@@ -40,7 +39,9 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 			pageStruct.ErrorText = fmt.Sprint(err)
 		} else {
 			loadedUserData, err2 := webutils.LoadUserProfileData(userId)
+			fmt.Println("LOADED USER DATA", loadedUserData)
 
+			fmt.Println("ERROR", err2)
 			if err2 != nil {
 				pageStruct.Error = true
 				pageStruct.ErrorText = fmt.Sprint(err2)
@@ -57,8 +58,6 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 
 	pageStruct.TorrentList = webutils.LoadUserTorrents(pageStruct.DisplayedUser.UserID, []string{"Public"})
 
-	fmt.Println(pageStruct.TorrentList)
-	fmt.Println(pageStruct.TorrentList)
 	webutils.RenderTemplate(w, []string{"pkg/web/templates/profile.html",
 		"pkg/web/templates/sidebar.html", "pkg/web/templates/head.html",
 		"pkg/web/templates/end.html",

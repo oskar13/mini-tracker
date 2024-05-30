@@ -58,9 +58,9 @@ func ValidateSessionData(r *http.Request) (webdata.User, error) {
 		return webdata.User{}, fmt.Errorf("session uid is empty")
 	}
 
-	q := "SELECT user_ID, username, profile_pic, disabled, session_expiry FROM users WHERE session_uid = ?"
+	q := "SELECT user_ID, username, profile_pic, created, disabled, session_expiry, gender FROM users WHERE session_uid = ?"
 
-	err = db.DB.QueryRow(q, sessionID).Scan(&userData.UserID, &userData.Username, &userData.Cover, &userData.Disabled, &userData.SessionExpiry)
+	err = db.DB.QueryRow(q, sessionID).Scan(&userData.UserID, &userData.Username, &userData.Cover, &userData.Joined, &userData.Disabled, &userData.SessionExpiry, &userData.Gender)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			log.Println("Session uid not found in the database")
@@ -320,6 +320,8 @@ func LoadUserProfileData(user_ID int) (webdata.User, error) {
 		return webdata.User{}, err
 	}
 
+	user.UserID = user_ID
+
 	return user, nil
 }
 
@@ -346,6 +348,8 @@ func LoadUserTorrents(user_ID int, access_type []string) []webdata.TorrentWeb {
 
 	// Execute the query
 	rows, err := db.DB.Query(q, args...)
+
+	fmt.Println(err)
 	if err != nil {
 		fmt.Println("Error executing query:", err)
 		return []webdata.TorrentWeb{}
@@ -356,7 +360,7 @@ func LoadUserTorrents(user_ID int, access_type []string) []webdata.TorrentWeb {
 		var row webdata.TorrentWeb
 		if err := rows.Scan(&row.TorrentID, &row.Created, &row.Name, &row.UpVotes, &row.DownVotes); err != nil {
 			// do something with error
-			fmt.Println(err)
+			fmt.Println("REEEEEEEEEEEEEEe")
 		} else {
 			resultTorrents = append(resultTorrents, row)
 		}

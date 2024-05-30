@@ -35,7 +35,7 @@ type User struct {
 	Disabled      bool
 	SessionUID    string
 	SessionExpiry string
-	Gender        string
-	Tagline       string
-	Bio           string
+	Gender        *string
+	Tagline       *string
+	Bio           *string
 }
