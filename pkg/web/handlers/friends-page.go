@@ -28,6 +28,8 @@ func FriendsPage(w http.ResponseWriter, r *http.Request) {
 
 	pageStruct.UserData = userData
 
+	webutils.GetUserFriends(pageStruct.UserData.UserID)
+
 	webutils.RenderTemplate(w, []string{"pkg/web/templates/friends.html",
 		"pkg/web/templates/sidebar.html", "pkg/web/templates/head.html",
 		"pkg/web/templates/end.html",

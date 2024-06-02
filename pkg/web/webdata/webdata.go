@@ -25,17 +25,19 @@ type LoginData struct {
 }
 
 type User struct {
-	UserID        int
-	Username      string
-	Password      string
-	Email         string
-	Cover         string
-	Joined        string
-	LoggedIn      bool
-	Disabled      bool
-	SessionUID    string
-	SessionExpiry string
-	Gender        *string
-	Tagline       *string
-	Bio           *string
+	UserID           int
+	Username         string
+	Password         string
+	Email            string
+	Cover            string
+	Joined           string
+	LoggedIn         bool
+	Disabled         bool
+	SessionUID       string
+	SessionExpiry    string
+	Gender           *string
+	Tagline          *string
+	Bio              *string
+	InvitationStatus int
+	Blocked          bool
 }

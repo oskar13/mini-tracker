@@ -334,19 +334,16 @@ func LoadUserTorrents(user_ID int, access_type []string) []webdata.TorrentWeb {
 		return []webdata.TorrentWeb{}
 	}
 
-	// Build the query
 	q := `SELECT torrents.torrent_ID, torrents.created, torrents.name, torrents.upvotes, torrents.downvotes
 	      FROM torrents
 	      WHERE torrents.users_user_ID = ? AND torrents.access_type IN (` + strings.Repeat("?,", len(access_type)-1) + `?)`
 
-	// Prepare the arguments for the query
 	args := make([]interface{}, 0, len(access_type)+1)
 	args = append(args, user_ID)
 	for _, at := range access_type {
 		args = append(args, at)
 	}
 
-	// Execute the query
 	rows, err := db.DB.Query(q, args...)
 
 	fmt.Println(err)
@@ -367,4 +364,31 @@ func LoadUserTorrents(user_ID int, access_type []string) []webdata.TorrentWeb {
 	}
 
 	return resultTorrents
+}
+
+func GetUserFriends(userID int) []webdata.User {
+
+	q := "SELECT users.username FROM friends LEFT JOIN users ON friends.friend_ID = users.user_ID WHERE friends.users_user_ID = ?"
+	rows, err := db.DB.Query(q, userID)
+	if err != nil {
+		// handle this error better than this
+		panic(err)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var name string
+		err = rows.Scan(&name)
+		if err != nil {
+			// handle this error
+			panic(err)
+		}
+		fmt.Println("Friend name is ", name)
+	}
+	// get any error encountered during iteration
+	err = rows.Err()
+	if err != nil {
+		panic(err)
+	}
+
+	return []webdata.User{}
 }
