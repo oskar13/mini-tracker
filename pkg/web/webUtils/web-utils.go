@@ -368,7 +368,9 @@ func LoadUserTorrents(user_ID int, access_type []string) []webdata.TorrentWeb {
 
 func GetUserFriends(userID int) []webdata.User {
 
-	q := "SELECT users.username FROM friends LEFT JOIN users ON friends.friend_ID = users.user_ID WHERE friends.users_user_ID = ?"
+	var friends []webdata.User
+
+	q := "SELECT users.user_ID, users.username, profile_pic, created, disabled, tagline, bio, gender FROM friends LEFT JOIN users ON friends.friend_ID = users.user_ID WHERE friends.users_user_ID = ?"
 	rows, err := db.DB.Query(q, userID)
 	if err != nil {
 		// handle this error better than this
@@ -376,13 +378,14 @@ func GetUserFriends(userID int) []webdata.User {
 	}
 	defer rows.Close()
 	for rows.Next() {
-		var name string
-		err = rows.Scan(&name)
+		var user webdata.User
+		err = rows.Scan(&user.UserID, &user.Username, &user.Cover, &user.Joined, &user.Disabled, &user.Tagline, &user.Bio, &user.Gender)
 		if err != nil {
 			// handle this error
 			panic(err)
 		}
-		fmt.Println("Friend name is ", name)
+
+		friends = append(friends, user)
 	}
 	// get any error encountered during iteration
 	err = rows.Err()
@@ -390,5 +393,5 @@ func GetUserFriends(userID int) []webdata.User {
 		panic(err)
 	}
 
-	return []webdata.User{}
+	return friends
 }

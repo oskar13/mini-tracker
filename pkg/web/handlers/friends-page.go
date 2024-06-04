@@ -24,11 +24,12 @@ func FriendsPage(w http.ResponseWriter, r *http.Request) {
 		UserData      webdata.User
 		SelfEdit      bool
 		TorrentList   []webdata.TorrentWeb
+		FriendList    []webdata.User
 	}
 
 	pageStruct.UserData = userData
 
-	webutils.GetUserFriends(pageStruct.UserData.UserID)
+	pageStruct.FriendList = webutils.GetUserFriends(pageStruct.UserData.UserID)
 
 	webutils.RenderTemplate(w, []string{"pkg/web/templates/friends.html",
 		"pkg/web/templates/sidebar.html", "pkg/web/templates/head.html",

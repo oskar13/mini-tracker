@@ -22,25 +22,36 @@
 				<hr>
 
 
+                {{if .FriendList}}
+           
+                    {{range .FriendList}}
+                    <div class="col-md-3">
+                        <div class="user-card card text-center" >
+                            <img src="static/img/users/b5.jpg" class="card-img-top glow" alt="...">
+        
+                            <div class="card-body">
+                                <img src="{{.Cover}}" alt="" width="96" height="96" class="rounded-circle user-pic glow">
+                              <h5 class="card-title username">{{.Username}}</h5>
+        
+                              <p class="card-text">{{.Tagline}}</p>
+                              <section class="text-start userinfo">
+                                <div><strong>Badges:</strong> <span class="badge text-bg-danger">Site Admin</span> <span class="badge text-bg-success">VIP 1</span></div>
+                                <div><strong>Joined:</strong>{{.Joined}}</div>
+                              </section>
+                             
+                              <a href="/profile/{{.UserID}}" class="btn btn-primary">Go somewhere</a>
+                            </div>
+                          </div>
+                    </div>
+                    {{end}}
+            
+                {{else}}
+                list empty
+                {{end}}
+
+
             <div class="row">
-                <div class="col-md-3">
-                    <div class="user-card card text-center" >
-                        <img src="static/img/users/b5.jpg" class="card-img-top glow" alt="...">
-    
-                        <div class="card-body">
-                            <img src="static/img/users/1.jpg" alt="" width="96" height="96" class="rounded-circle user-pic glow">
-                          <h5 class="card-title username">Test User 1</h5>
-    
-                          <p class="card-text">User Tagline</p>
-                          <section class="text-start userinfo">
-                            <div><strong>Badges:</strong> <span class="badge text-bg-danger">Site Admin</span> <span class="badge text-bg-success">VIP 1</span></div>
-                            <div><strong>Joined:</strong>12.02.2023</div>
-                          </section>
-                         
-                          <a href="#" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                      </div>
-                </div>
+   
 
             <div class="col-md-3">
                 <div class="user-card card text-center" >
