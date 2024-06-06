@@ -19,8 +19,10 @@ func MainPage(w http.ResponseWriter, r *http.Request) {
 
 	var pageStruct struct {
 		UserData webdata.User
+		PageName string
 	}
 	pageStruct.UserData = userData
+	pageStruct.PageName = "main"
 
 	webutils.RenderTemplate(w, []string{"pkg/web/templates/home.html",
 		"pkg/web/templates/sidebar.html", "pkg/web/templates/head.html",

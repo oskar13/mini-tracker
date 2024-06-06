@@ -8,49 +8,49 @@
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
     <li class="nav-item">
-        <a href="/" class="nav-link active" aria-current="page">
+        <a href="/" class="nav-link  text-white {{if eq .PageName "main"}} active{{end}}" aria-current="page">
             <img src="static/img/icons/at.svg" class="sidebar-icon" alt="">
         Overview
         </a>
     </li>
     <li>
-        <a href="/news" class="nav-link text-white">
+        <a href="/news" class="nav-link text-white {{if eq .PageName "news"}} active{{end}}">
             <img src="static/img/icons/envelope.svg" class="sidebar-icon" alt="">
         News
         </a>
     </li>
     <li>
-        <a href="/new" class="nav-link text-white">
+        <a href="/new" class="nav-link text-white  {{if eq .PageName "add new"}} active{{end}}">
             <img src="static/img/icons/file-plus.svg" class="sidebar-icon" alt="">
         Add New
         </a>
     </li>
     <li>
-        <a href="/my-torrents" class="nav-link text-white">
+        <a href="/my-torrents" class="nav-link text-white  {{if eq .PageName "my torrents"}} active{{end}}">
             <img src="static/img/icons/file-text.svg" class="sidebar-icon" alt="">
         My Torrents
         </a>
     </li>
     <li>
-        <a href="/my-groups" class="nav-link text-white">
+        <a href="/my-groups" class="nav-link text-white  {{if eq .PageName "my groups"}} active{{end}}">
             <img src="static/img/icons/user-group.svg" class="sidebar-icon" alt="">
         My Groups
         </a>
     </li>
     <li>
-        <a href="/friends" class="nav-link text-white">
+        <a href="/friends" class="nav-link text-white {{if eq .PageName "friends"}} active{{end}}">
             <img src="static/img/icons/emoji-meh.svg" class="sidebar-icon" alt="">
         "Friends"
         </a>
     </li>
     <li>
-        <a href="#" class="nav-link text-white">
+        <a href="/groups" class="nav-link text-white  {{if eq .PageName "groups"}} active{{end}}">
             <img src="static/img/icons/rss.svg" class="sidebar-icon" alt="">
-        Scenes
+        Groups
         </a>
     </li>
     <li>
-        <a href="/dms" class="nav-link text-white">
+        <a href="/dms" class="nav-link text-white {{if eq .PageName "dms"}} active{{end}}">
             <img src="static/img/icons/inbox.svg" class="sidebar-icon" alt="">
         Direct Messages
         </a>

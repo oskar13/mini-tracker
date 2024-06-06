@@ -26,9 +26,11 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 		UserData      webdata.User
 		SelfEdit      bool
 		TorrentList   []webdata.TorrentWeb
+		PageName      string
 	}
 
 	pageStruct.UserData = userData
+	pageStruct.PageName = "profile"
 
 	idString := r.PathValue("id")
 

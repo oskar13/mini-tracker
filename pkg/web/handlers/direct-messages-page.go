@@ -25,9 +25,11 @@ func DirectMessages(w http.ResponseWriter, r *http.Request) {
 		SelfEdit      bool
 		TorrentList   []webdata.TorrentWeb
 		FriendList    []webdata.User
+		PageName      string
 	}
 
 	pageStruct.UserData = userData
+	pageStruct.PageName = "dms"
 
 	pageStruct.FriendList = webutils.GetUserFriends(pageStruct.UserData.UserID)
 

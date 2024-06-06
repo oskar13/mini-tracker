@@ -25,7 +25,10 @@ func FriendsPage(w http.ResponseWriter, r *http.Request) {
 		SelfEdit      bool
 		TorrentList   []webdata.TorrentWeb
 		FriendList    []webdata.User
+		PageName      string
 	}
+
+	pageStruct.PageName = "friends"
 
 	pageStruct.UserData = userData
 
