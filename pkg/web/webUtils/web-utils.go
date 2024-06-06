@@ -308,12 +308,13 @@ func CreateRefCode(user_ID int, ref string) error {
 	return nil
 }
 
+// Load user data for profile page
 func LoadUserProfileData(user_ID int) (webdata.User, error) {
 
 	var user webdata.User
 
-	q := `SELECT users.username, users.profile_pic, users.created, users.disabled, users.tagline, users.bio, users.gender FROM users WHERE user_ID = ?`
-	err := db.DB.QueryRow(q, user_ID).Scan(&user.Username, &user.Cover, &user.Joined, &user.Disabled, &user.Tagline, &user.Bio, &user.Gender)
+	q := `SELECT users.username, users.profile_pic, users.banner_image, users.created, users.disabled, users.tagline, users.bio, users.gender FROM users WHERE user_ID = ?`
+	err := db.DB.QueryRow(q, user_ID).Scan(&user.Username, &user.Cover, &user.Banner, &user.Joined, &user.Disabled, &user.Tagline, &user.Bio, &user.Gender)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return webdata.User{}, errors.New("no account found")
@@ -358,7 +359,6 @@ func LoadUserTorrents(user_ID int, access_type []string) []webdata.TorrentWeb {
 		var row webdata.TorrentWeb
 		if err := rows.Scan(&row.TorrentID, &row.Created, &row.Name, &row.UpVotes, &row.DownVotes); err != nil {
 			// do something with error
-			fmt.Println("REEEEEEEEEEEEEEe")
 		} else {
 			resultTorrents = append(resultTorrents, row)
 		}

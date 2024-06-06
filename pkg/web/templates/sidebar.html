@@ -53,8 +53,8 @@
     <hr>
     <div class="dropdown">
         <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="static/img/mockup/user.png" alt="" width="48" height="48" class="rounded-circle me-2">
-            <strong class="username">Epic_Gamer_69</strong>
+            <img src="{{.UserData.Cover}}" alt="" width="48" height="48" class="rounded-circle me-2">
+            <strong class="username">{{.UserData.Username}}</strong>
         </a>
         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
             <li><a class="dropdown-item" href="/settings">Settings</a></li>

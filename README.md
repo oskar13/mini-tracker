@@ -1,9 +1,15 @@
 # mini-tracker
+A small-mid scale torrent tracker site written in go with support for private tracking.
 
 ## Work In Progress
 This project is not functional yet
 
-A small-mid scale torrent tracker site written in go with support for private tracking.
+## How to run
+To run the code at current state, edit start.sh with your MySQL credentials, make a minitorrent database on your server. 
+
+(Optional) In MySQL workbench forward engineer a schema with insert commands. Log in with user accounts provided in tests/testusers.txt file.
+
+
 
 ### Features
 - Invite based account system
@@ -28,9 +34,9 @@ A small-mid scale torrent tracker site written in go with support for private tr
 With this repository also comes a MySQL Workbench project with ERD diagram with embedded data to test out site functionality.
 
 ## Why
-Sometimes there is a need to move large files (over 20G - HDD backup images, Linux ISOs, etc.) from one computer to another over the internet with a one-time transaction. In this case, it wouldn't make sense to buy storage space with an expensive cloud storage provider, but use a P2P protocol like Bit-torrent. 
+Sometimes there is a need to move large files (over 20G - HDD backup images, neural networks, etc.) from one computer to another over the internet with a one-time transaction. In this case, it wouldn't make sense to buy storage space with an expensive cloud storage provider, but use a P2P protocol like Bit-torrent. 
 
-The problem is that in the current situation, it might be hard to use widely known public trackers to share files between friends. Some domains may be blocked by ISPs or draw unwanted attention when connecting to them. Also, there might be a privacy/legal concerns when sharing a file publicly on a public tracker.
+The problem is that in the current situation, it might be hard to use widely known public trackers to share files between friends or colleagues. Some domains may be blocked by ISPs or draw unwanted attention when connecting to them. Also, there might be a privacy/legal concerns when sharing a file publicly on a public tracker.
 
 The solution is to run your own tracker that is easily deployable when needed. One which features different privacy levels.
 

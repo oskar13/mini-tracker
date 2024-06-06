@@ -3,7 +3,7 @@
 
 
 
-		{{template "sidebar"}}
+		{{template "sidebar" .}}
 		
 		<div class="b-example-divider"></div>
 
@@ -11,42 +11,81 @@
 
 
 		<div class="container overflow-scroll overview">
-
-
 			{{template "commandbar"}}
+
+			<div class="row">
+				<div class="col-md-6">
+
+
+					<div class="user-card card text-center" >
+						{{if .DisplayedUser.Banner}}
+						<img src="{{.DisplayedUser.Banner}}" class="card-img-top glow" alt="...">
+						{{end}}
+				   
+
+                        <div class="card-body">
+                            <img src="{{.DisplayedUser.Cover}}" alt="{{.DisplayedUser.Username}} profile pic" width="96" height="96" class="rounded-circle user-pic glow">
+                          <h5 class="card-title username">{{.DisplayedUser.Username}}</h5>
+    
+                          <p class="card-text">{{.DisplayedUser.Tagline}}</p>
+                          <section class="text-start userinfo">
+                            {{if .DisplayedUser.UserBadges}}
+                            <div>
+                                <strong>Badges:</strong>
+                                {{range  .DisplayedUser.UserBadges}}
+                                 <span class="badge" style="background-color: {{.Color}};">{{.DisplayedUser.BadgeTitle}}</span> 
+                                 {{end}}
+                            </div>
+                            {{end}}
+                            <div><strong>Joined:</strong> {{.DisplayedUser.Joined}}</div>
+
+							{{if .DisplayedUser.Bio}}
+							<h3>Bio:</h3>
+							<p>{{.DisplayedUser.Bio}}</p>
+							{{end}}
+
+							{{ if .DisplayedUser.Gender }}
+							<p>Gender: {{.DisplayedUser.Gender}}</p>
+							{{end}}
+
+							{{ if  .SelfEdit}}
+							<p>can edit yourself</p>
+							{{end}}
+				
+                          </section>
+                         
+                        </div>
+					
+	
+					
+								
+					
+
+					</div>
+				</div>
+				<div class="col-md-3">
+					<h2>Torrents shared with site users</h2>
+					{{if .TorrentList}}
+					<ul>
+						{{range .TorrentList}}
+						<li>{{.Name}}</li>
+						{{end}}
 		
-            <img src="{{.DisplayedUser.Cover}}" alt="{{.DisplayedUser.Username}} profile pic">
-            <h1>{{.DisplayedUser.Username}}</h1>
-            <p>{{.DisplayedUser.Tagline}}</p>
-            <p>{{.DisplayedUser.Bio}}</p>
-            <p>Joined {{.DisplayedUser.Joined}}</p>
-            {{ if .DisplayedUser.Gender }}
-            <p>Gender: {{.DisplayedUser.Gender}}</p>
-            {{end}}
-            {{ if  .SelfEdit}}
-            <p>can edit yourself</p>
-            {{end}}
+		
+		
+		
+		
+		
+		
+		
+		
+					</ul>
+					{{else}}
+					list empty
+					{{end}}
 
-            <h2>Torrents shared with site users</h2>
-
-            {{if .TorrentList}}
-            <ul>
-                {{range .TorrentList}}
-                <li>{{.Name}}</li>
-                {{end}}
-
-
- 
-
-                   
-                 
-
-                
-        
-            </ul>
-            {{else}}
-            list empty
-            {{end}}
+				</div>
+			</div>
 			
 		</div>
 		

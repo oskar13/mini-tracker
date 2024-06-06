@@ -5,6 +5,7 @@ import (
 
 	db "github.com/oskar13/mini-tracker/pkg/db"
 	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
+	"github.com/oskar13/mini-tracker/pkg/web/webdata"
 )
 
 func MainPage(w http.ResponseWriter, r *http.Request) {
@@ -16,9 +17,14 @@ func MainPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var pageStruct struct {
+		UserData webdata.User
+	}
+	pageStruct.UserData = userData
+
 	webutils.RenderTemplate(w, []string{"pkg/web/templates/home.html",
 		"pkg/web/templates/sidebar.html", "pkg/web/templates/head.html",
 		"pkg/web/templates/end.html",
-		"pkg/web/templates/commandbar.html"}, userData)
+		"pkg/web/templates/commandbar.html"}, pageStruct)
 
 }
