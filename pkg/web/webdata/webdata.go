@@ -30,6 +30,7 @@ type User struct {
 	Password         string
 	Email            string
 	Cover            string
+	Banner           *string
 	Joined           string
 	LoggedIn         bool
 	Disabled         bool
@@ -40,4 +41,11 @@ type User struct {
 	Bio              *string
 	InvitationStatus int
 	Blocked          bool
+	UserBadges       *[]Badges
+	UserBadgesBlob   *string
+}
+
+type Badges struct {
+	BadgeTitle string `json:"badgeTitle"`
+	Color      string `json:"color"`
 }

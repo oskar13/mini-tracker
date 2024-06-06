@@ -22,94 +22,46 @@
 				<hr>
 
 
-                {{if .FriendList}}
-           
-                    {{range .FriendList}}
-                    <div class="col-md-3">
-                        <div class="user-card card text-center" >
-                            <img src="static/img/users/b5.jpg" class="card-img-top glow" alt="...">
-        
-                            <div class="card-body">
-                                <img src="{{.Cover}}" alt="" width="96" height="96" class="rounded-circle user-pic glow">
-                              <h5 class="card-title username">{{.Username}}</h5>
-        
-                              <p class="card-text">{{.Tagline}}</p>
-                              <section class="text-start userinfo">
-                                <div><strong>Badges:</strong> <span class="badge text-bg-danger">Site Admin</span> <span class="badge text-bg-success">VIP 1</span></div>
-                                <div><strong>Joined:</strong>{{.Joined}}</div>
-                              </section>
-                             
-                              <a href="/profile/{{.UserID}}" class="btn btn-primary">Go somewhere</a>
-                            </div>
-                          </div>
-                    </div>
-                    {{end}}
-            
-                {{else}}
-                list empty
-                {{end}}
+
 
 
             <div class="row">
+
+                {{if .FriendList}}
+           
+                {{range .FriendList}}
+                <div class="col-md-3">
+                    <div class="user-card card text-center" >
+                        <img src="{{.Banner}}" class="card-img-top glow" alt="...">
+    
+                        <div class="card-body">
+                            <img src="{{.Cover}}" alt="" width="96" height="96" class="rounded-circle user-pic glow">
+                          <h5 class="card-title username">{{.Username}}</h5>
+    
+                          <p class="card-text">{{.Tagline}}</p>
+                          <section class="text-start userinfo">
+                            {{if .UserBadges}}
+                            <div>
+                                <strong>Badges:</strong>
+                                {{range .UserBadges}}
+                                 <span class="badge" style="background-color: {{.Color}};">{{.BadgeTitle}}</span> 
+                                 {{end}}
+                            </div>
+                            {{end}}
+                            <div><strong>Joined:</strong> {{.Joined}}</div>
+                          </section>
+                         
+                          <a href="/profile/{{.UserID}}" class="btn btn-primary">View Profile</a>
+                        </div>
+                      </div>
+                </div>
+                {{end}}
+        
+            {{else}}
+            list empty
+            {{end}}
    
 
-            <div class="col-md-3">
-                <div class="user-card card text-center" >
-                    <img src="static/img/users/b2.jpg" class="card-img-top glow" alt="...">
-
-                    <div class="card-body">
-                        <img src="static/img/users/2.jpg" alt="" width="96" height="96" class="rounded-circle user-pic glow">
-                    <h5 class="card-title username">Engineer Gaming</h5>
-
-                    <p class="card-text">You know the rules and so do I</p>
-                    <section class="text-start userinfo">
-                        <div><strong>Badges: </strong> <span class="badge text-bg-danger">Site Admin</span> <span class="badge text-bg-success">VIP 1</span></div>
-                        <div><strong>Joined: </strong>12.02.2023</div>
-                    </section>
-                    
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="user-card card text-center" >
-                    <img src="static/img/users/b3.jpg" class="card-img-top" alt="...">
-
-                    <div class="card-body">
-                        <img src="static/img/users/3.jpg" alt="" width="96" height="96" class="rounded-circle user-pic">
-                    <h5 class="card-title username">TopMod</h5>
-
-                    <p class="card-text">"This is breaking rule number 9s, a number 9 large, a number 6 with extra dip, a number 7, two number 45s, one with cheese, and a large soda."</p>
-                    <section class="text-start userinfo">
-                        <div><strong>Badges:</strong> <span class="badge text-bg-secondary">Discord Mod</span></div>
-                        <div><strong>Joined: </strong>12.02.2023</div>
-                        <div><strong>Discord: </strong>neet_lyfe</div>
-                    </section>
-                    
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="user-card card text-center" >
-                    <img src="static/img/users/b4.jpg" class="card-img-top" alt="...">
-
-                    <div class="card-body">
-                        <img src="static/img/users/4.jpg" alt="" width="96" height="96" class="rounded-circle user-pic">
-                    <h5 class="card-title username">Vadim</h5>
-
-                    <p class="card-text"></p>
-                    <section class="text-start userinfo">
-                        <div><strong>Badges: </strong> <span class="badge text-bg-warning">Site Veteran</span> <span class="badge text-bg-success">VIP 2</span></div>
-                        <div><strong>Joined: </strong>12.02.2023</div>
-                    </section>
-                    
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
 
 
 

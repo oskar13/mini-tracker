@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"database/sql"
 	"encoding/hex"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -370,7 +371,7 @@ func GetUserFriends(userID int) []webdata.User {
 
 	var friends []webdata.User
 
-	q := "SELECT users.user_ID, users.username, profile_pic, created, disabled, tagline, bio, gender FROM friends LEFT JOIN users ON friends.friend_ID = users.user_ID WHERE friends.users_user_ID = ?"
+	q := "SELECT users.user_ID, users.username, profile_pic, banner_image, created, disabled, tagline, bio, gender, user_badges_blob FROM friends LEFT JOIN users ON friends.friend_ID = users.user_ID WHERE friends.users_user_ID = ?"
 	rows, err := db.DB.Query(q, userID)
 	if err != nil {
 		// handle this error better than this
@@ -379,10 +380,16 @@ func GetUserFriends(userID int) []webdata.User {
 	defer rows.Close()
 	for rows.Next() {
 		var user webdata.User
-		err = rows.Scan(&user.UserID, &user.Username, &user.Cover, &user.Joined, &user.Disabled, &user.Tagline, &user.Bio, &user.Gender)
+		err = rows.Scan(&user.UserID, &user.Username, &user.Cover, &user.Banner, &user.Joined, &user.Disabled, &user.Tagline, &user.Bio, &user.Gender, &user.UserBadgesBlob)
 		if err != nil {
 			// handle this error
 			panic(err)
+		}
+
+		if user.UserBadgesBlob != nil {
+			badges := ParseBadgeBlob(user.UserBadgesBlob)
+
+			user.UserBadges = &badges
 		}
 
 		friends = append(friends, user)
@@ -394,4 +401,17 @@ func GetUserFriends(userID int) []webdata.User {
 	}
 
 	return friends
+}
+
+func ParseBadgeBlob(blob *string) []webdata.Badges {
+	var result []webdata.Badges
+	err := json.Unmarshal([]byte(*blob), &result)
+	if err != nil {
+		fmt.Println("Error parsing badges")
+		return []webdata.Badges{}
+
+	}
+	fmt.Println("JSON parse result")
+	fmt.Println(result)
+	return result
 }
