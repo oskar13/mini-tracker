@@ -49,3 +49,24 @@ type Badges struct {
 	BadgeTitle string `json:"badgeTitle"`
 	Color      string `json:"color"`
 }
+
+type DMThreadListItem struct {
+	ThreadID        int
+	ThreadTitle     string
+	LastMessage     string
+	LastMessageDate string
+}
+
+type DMThread struct {
+	Users    []User
+	Messages []DM
+}
+
+// Sender ID is used temporarily to hold userID till the user pointer gets tied to a correct entry
+type DM struct {
+	MessageID int
+	SenderID  int
+	Sender    *User
+	Content   string
+	Date      string
+}

@@ -22,6 +22,7 @@ func StartWebsite() {
 	serverMux.HandleFunc("/profile/{id}/", handlers.ProfilePage)
 	serverMux.HandleFunc("/profile", handlers.ProfilePage)
 	serverMux.HandleFunc("/friends", handlers.FriendsPage)
+	serverMux.HandleFunc("/dms/{id}/", handlers.DirectMessages)
 	serverMux.HandleFunc("/dms", handlers.DirectMessages)
 
 	serverMux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./pkg/web/static/"))))

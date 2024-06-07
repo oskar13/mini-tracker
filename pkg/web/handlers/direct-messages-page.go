@@ -1,9 +1,12 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
+	"strconv"
 
 	db "github.com/oskar13/mini-tracker/pkg/db"
+	directmessages "github.com/oskar13/mini-tracker/pkg/web/directMessages"
 	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
 	"github.com/oskar13/mini-tracker/pkg/web/webdata"
 )
@@ -18,20 +21,33 @@ func DirectMessages(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var pageStruct struct {
-		Error         bool
-		ErrorText     string
-		DisplayedUser webdata.User
-		UserData      webdata.User
-		SelfEdit      bool
-		TorrentList   []webdata.TorrentWeb
-		FriendList    []webdata.User
-		PageName      string
+		Error     bool
+		ErrorText string
+		UserData  webdata.User
+		PageName  string
+		Thread    webdata.DMThread
+		Threads   []webdata.DMThreadListItem
 	}
 
 	pageStruct.UserData = userData
 	pageStruct.PageName = "dms"
 
-	pageStruct.FriendList = webutils.GetUserFriends(pageStruct.UserData.UserID)
+	threadIdString := r.PathValue("id")
+
+	if threadIdString != "" {
+		threadID, err := strconv.Atoi(threadIdString)
+		if err != nil {
+			pageStruct.Error = true
+			pageStruct.ErrorText = fmt.Sprint(err)
+		} else {
+			// Load thread contents
+			pageStruct.Thread = directmessages.LoadDMThread(threadID)
+		}
+	} else {
+		// Display list of threads
+		pageStruct.Threads = directmessages.LoadDMThreadList(pageStruct.UserData.UserID)
+
+	}
 
 	webutils.RenderTemplate(w, []string{"pkg/web/templates/directmessages.html",
 		"pkg/web/templates/sidebar.html", "pkg/web/templates/head.html",

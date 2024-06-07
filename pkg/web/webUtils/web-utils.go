@@ -308,7 +308,7 @@ func CreateRefCode(user_ID int, ref string) error {
 	return nil
 }
 
-// Load user data for profile page
+// Load user data for profile page or profile cards
 func LoadUserProfileData(user_ID int) (webdata.User, error) {
 
 	var user webdata.User

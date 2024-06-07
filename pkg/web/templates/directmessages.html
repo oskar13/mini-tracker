@@ -13,6 +13,29 @@
         <h2>Direct Messages</h2>
 
 
+        {{if .Thread}}
+            {{range .Thread.Messages}}
+                <div class="row">{{.Sender.Username}}: {{.Content}}</div>
+            {{end}}
+        {{end}}
+
+
+        {{if .Threads}}
+
+            {{range .Threads }}
+                
+                <div class="row">
+                    <a href="/dms/{{.ThreadID}}">
+                        <div class="col-md-12">
+                            <h3>{{.ThreadTitle}}</h3>
+                            <p>{{.LastMessage}} - {{.LastMessageDate}}</p>
+                        </div>
+                    </a>
+                </div>
+            {{end}}
+        {{end}}
+
+
 			
     </div>
 		
