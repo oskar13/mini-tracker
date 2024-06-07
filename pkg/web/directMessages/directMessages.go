@@ -14,7 +14,7 @@ func LoadDMThread(threadID int) webdata.DMThread {
 
 	users := loadDMThreadUsers(threadID)
 
-	q := "SELECT direct_messages.message_ID, direct_messages.sender_ID, direct_messages.content, direct_messages.date FROM direct_messages WHERE direct_messages.dm_thread_ID = ?"
+	q := "SELECT direct_messages.message_ID, direct_messages.sender_ID, direct_messages.content, direct_messages.date, dm_threads.thread_title FROM direct_messages LEFT JOIN dm_threads ON dm_threads.dm_thread_ID = direct_messages.dm_thread_ID WHERE direct_messages.dm_thread_ID = ?"
 	rows, err := db.DB.Query(q, threadID)
 	if err != nil {
 		//Handle error
@@ -24,7 +24,7 @@ func LoadDMThread(threadID int) webdata.DMThread {
 	defer rows.Close()
 	for rows.Next() {
 		var message webdata.DM
-		err = rows.Scan(&message.MessageID, &message.SenderID, &message.Content, &message.Date)
+		err = rows.Scan(&message.MessageID, &message.SenderID, &message.Content, &message.Date, &thread.ThreadTitle)
 		if err != nil {
 			// handle this error
 			panic(err)
@@ -44,6 +44,7 @@ func LoadDMThread(threadID int) webdata.DMThread {
 	}
 
 	thread.Users = users
+	thread.ThreadID = threadID
 	thread.Messages = messages
 
 	return thread

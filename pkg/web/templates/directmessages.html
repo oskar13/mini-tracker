@@ -10,18 +10,42 @@
     <div class="container overflow-scroll overview">
         {{template "commandbar"}}
 		
-        <h2>Direct Messages</h2>
+       
 
 
-        {{if .Thread}}
+    
+        {{if .Thread.ThreadTitle}}
+        <h2>{{.Thread.ThreadTitle}}</h2>
             {{range .Thread.Messages}}
-                <div class="row">{{.Sender.Username}}: {{.Content}}</div>
+                <div class="row mb-3 mt-3">
+                    <div class="col-md-1">
+                        <img src="{{.Sender.Cover}}" alt="" width="96" height="96" class="rounded-circle user-pic glow">
+                        
+                    </div>
+                    <div class="col-md-11">
+                        <p><strong><a href="/profile/{{.Sender.UserID}}">{{.Sender.Username}}</a></strong>: {{.Date}}</p>
+                        <p id="messageID-{{.MessageID}}">{{.Content}}</p>
+                    </div>
+
+                </div>
+                <hr>
             {{end}}
-        {{end}}
+            <div class="row">
+                <div class="col-md-8">
+                    <form action="/dms/{{.Thread.ThreadID}}" method="POST">
+                        
+                            <textarea class="form-control"  id="floatingTextarea"></textarea>
+                            <button class="btn btn-primary">Send</button>
+                         
+                    </form>
+                </div>
+            </div>
+            {{end}}
+   
 
 
         {{if .Threads}}
-
+        <h2>Direct Messages</h2>
             {{range .Threads }}
                 
                 <div class="row">

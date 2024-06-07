@@ -58,8 +58,10 @@ type DMThreadListItem struct {
 }
 
 type DMThread struct {
-	Users    []User
-	Messages []DM
+	ThreadTitle string
+	ThreadID    int
+	Users       []User
+	Messages    []DM
 }
 
 // Sender ID is used temporarily to hold userID till the user pointer gets tied to a correct entry
