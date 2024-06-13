@@ -15,7 +15,8 @@
 
     
         {{if .Thread.ThreadTitle}}
-        <h2>{{.Thread.ThreadTitle}}</h2>
+        <h2 class="mb-4">{{.Thread.ThreadTitle}}</h2>
+        <hr>
             {{range .Thread.Messages}}
                 <div class="row mb-3 mt-3">
                     <div class="col-md-1">
@@ -45,21 +46,24 @@
 
 
         {{if .Threads}}
-        <h2>Direct Messages</h2>
+        <h2 class="mb-4">Direct Messages</h2>
             {{range .Threads }}
-                
+            <hr>
                 <div class="row">
-                    <a href="/dms/{{.ThreadID}}">
+                    <a class="text-decoration-none" href="/dms/{{.ThreadID}}">
                         <div class="col-md-12">
                             <h3>{{.ThreadTitle}}</h3>
-                            <p>{{.LastMessage}} - {{.LastMessageDate}}</p>
+                            <p class="text-secondary-emphasis">{{.LastMessage}} <span class="text-secondary"> Last updated: {{.LastMessageDate}}</span></p>
                         </div>
                     </a>
                 </div>
+               
             {{end}}
+            <hr>
         {{end}}
 
 
+        <a href="/friends" class="btn btn-primary">Start a New Chat</a>
 			
     </div>
 		

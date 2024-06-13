@@ -50,8 +50,18 @@
                             {{end}}
                             <div><strong>Joined:</strong> {{.Joined}}</div>
                           </section>
+                          <div class="row">
+                            <div class="col-md-6">
+                              <a href="/profile/{{.UserID}}" class="btn btn-primary">View Profile</a>
+                            </div>
+                            <div class="col-md-6">
+                              <a href="/profile/{{.UserID}}" class="btn btn-primary">Send Message</a>
+                            </div>
+                            
+                            
+                          </div>
                          
-                          <a href="/profile/{{.UserID}}" class="btn btn-primary">View Profile</a>
+
                         </div>
                       </div>
                 </div>
