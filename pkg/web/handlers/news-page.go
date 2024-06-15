@@ -29,7 +29,7 @@ func NewsPage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	pageStruct.UserData = userData
-	pageStruct.PageName = "profile"
+	pageStruct.PageName = "news"
 
 	idString := r.PathValue("id")
 
