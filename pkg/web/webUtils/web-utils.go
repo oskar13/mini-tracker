@@ -415,11 +415,3 @@ func ParseBadgeBlob(blob *string) []webdata.Badges {
 	fmt.Println(result)
 	return result
 }
-
-func LoadNewsList() string {
-	return ""
-}
-
-func LoadNewsArticle(newsID int) (string, error) {
-	return "", nil
-}

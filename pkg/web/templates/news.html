@@ -17,43 +17,81 @@
 			{{template "commandbar"}}
 		
 
+			{{if .Error}}
+			<div class="warning">
+				<h2>{{.ErrorText}}</h2>
+			</div>
+			{{end}}
+
+
+			{{if .NewsList}}
+			<h2>News & Announcements</h2>
+			<hr>
+			<div class="list-group list-group-flush  scrollarea">
+			{{range .NewsList}}
+
 			
-				<h2>News & Announcements</h2>
-				<hr>
+
+				<a href="/news/{{.NewsID}}" class="list-group-item list-group-item-action py-3">
+					<article >
+						<header class="d-flex w-100 align-items-center justify-content-between">
+							<h3 class="mb-1">{{.Title}}</h3>
+							<small class="text-muted">{{.Date}}</small>
+						</header>
+						<section>
+							<p class="col-10 mb-1  pl-3">{{.Excerpt}}</p>
+							<div class="text-end mb-1 col-10 read-more">Continue Reading...</div>
+						</section>
+
+					</article>
+				</a>
+			
+			
+			{{end}}
+			</div>
+
+			{{end}}
+
+			{{if .NewsArticle.Title}}
+			<article class="p-4 rounded-3">
+				<header >
+					
+					
+					<h2 class="mb-4">{{ .NewsArticle.Title}}</h2>
+					<div class="col-md-4 mb-4">
+						<div class="d-flex w-100 align-items-center justify-content-between ">
+							<span class="news-tags"><span class="badge text-bg-info">Site News</span></span><small class="text-muted">23.04.2024</small>
+						</div>
+					</div>
+				</header>
+				<section>
+					<p>{{.NewsArticle.Content}}</p>
+
+				</section>
+				{{if .NewsArticle.Comments}}
+				<section>
+					<h3>Comments</h3>
+					<hr>
+					{{range .NewsArticle.Comments}}
+						<h4>       
+						<a href="/profile/{{.UserID}}" class="d-flex align-items-center text-white text-decoration-none" >
+							<img src="{{.Cover}}" alt="" width="48" height="48" class="rounded-circle me-2">
+							<strong class="username">{{.Username}}</strong>
+						</a>
+						</h4>
+						<p>{{.Content}}</p>
+						<hr>
+					{{end}}
+				</section>
+				{{end}}
+
+			</article>
+			{{end}}
+			
 
 
-						<article class="p-4 rounded-3">
-							<header >
-								
-								
-								<h3 class="mb-4">I Am Once Again Asking for Your Financial Support</h3>
-								<div class="col-md-4 mb-4">
-									<div class="d-flex w-100 align-items-center justify-content-between ">
-										<span class="news-tags"><span class="badge text-bg-info">Site News</span></span><small class="text-muted">23.04.2024</small>
-									</div>
-								</div>
-							</header>
-							<section>
 
-<p>
-	As we strive to maintain the excellence and sustainability of our private torrent tracker site, we find ourselves in need of your support once more. Our commitment to providing a safe, reliable, and thriving platform for sharing content remains unwavering, but we cannot achieve this without your assistance.
-</p>
-	Your contributions, whether big or small, play a crucial role in covering the costs of server maintenance, bandwidth, and other operational expenses. By supporting us financially, you enable us to continue offering a premium torrenting experience while ensuring the longevity of our community.
 
-	If you value the services and opportunities our site provides, we humbly ask you to consider donating. Every donation, no matter the amount, makes a meaningful difference and helps us sustain and improve our platform for the benefit of all.
-</p>
-	Together, we can keep our community thriving and ensure that it remains a beacon of quality and integrity in the torrenting world. Thank you for your continued support.
-	
-	Warm regards,
-	
-	[Your Site Name] Administration
-</p>
-							</section>
-							<section class="text-center">
-								<button class="btn btn-primary">Read Comments - 0</button>
-							</section>
-
-						</article>
 
 			
 		</div>

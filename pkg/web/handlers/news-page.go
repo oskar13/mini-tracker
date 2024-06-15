@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	db "github.com/oskar13/mini-tracker/pkg/db"
+	"github.com/oskar13/mini-tracker/pkg/web/news"
 	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
 	"github.com/oskar13/mini-tracker/pkg/web/webdata"
 )
@@ -23,8 +24,8 @@ func NewsPage(w http.ResponseWriter, r *http.Request) {
 		Error       bool
 		ErrorText   string
 		UserData    webdata.User
-		NewsArticle string
-		NewsList    string
+		NewsArticle news.NewsArticle
+		NewsList    []news.NewsArticle
 		PageName    string
 	}
 
@@ -39,7 +40,7 @@ func NewsPage(w http.ResponseWriter, r *http.Request) {
 			pageStruct.Error = true
 			pageStruct.ErrorText = fmt.Sprint(err)
 		} else {
-			loadedNewsArticle, err2 := webutils.LoadNewsArticle(articleID)
+			loadedNewsArticle, err2 := news.LoadNewsArticle(articleID)
 
 			if err2 != nil {
 				pageStruct.Error = true
@@ -51,10 +52,16 @@ func NewsPage(w http.ResponseWriter, r *http.Request) {
 		}
 	} else {
 		// Show list of news
+		loadedNewsList, err := news.LoadNewsList()
+
+		if err != nil {
+			pageStruct.Error = true
+			pageStruct.ErrorText = fmt.Sprintf("%v", err)
+		} else {
+			pageStruct.NewsList = loadedNewsList
+		}
 
 	}
-
-	pageStruct.NewsList = webutils.LoadNewsList()
 
 	webutils.RenderTemplate(w, []string{"pkg/web/templates/sidebar.html", "pkg/web/templates/news.html",
 		"pkg/web/templates/head.html",
