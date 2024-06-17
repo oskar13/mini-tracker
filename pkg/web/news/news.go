@@ -28,11 +28,11 @@ func LoadNewsArticle(newsID int) (NewsArticle, error) {
 	return theArticle, nil
 }
 
-func LoadNewsList() ([]NewsArticle, error) {
+func LoadNewsList(limit int) ([]NewsArticle, error) {
 	var newsList []NewsArticle
 
-	q := "SELECT post_ID, title, date, posted_by, excerpt FROM site_news LIMIT 100"
-	rows, err := db.DB.Query(q)
+	q := "SELECT post_ID, title, date, posted_by, excerpt FROM site_news ORDER BY date DESC LIMIT ? "
+	rows, err := db.DB.Query(q, limit)
 	if err != nil {
 		return []NewsArticle{}, nil
 	}

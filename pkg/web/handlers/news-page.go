@@ -52,7 +52,7 @@ func NewsPage(w http.ResponseWriter, r *http.Request) {
 		}
 	} else {
 		// Show list of news
-		loadedNewsList, err := news.LoadNewsList()
+		loadedNewsList, err := news.LoadNewsList(25)
 
 		if err != nil {
 			pageStruct.Error = true
@@ -66,5 +66,6 @@ func NewsPage(w http.ResponseWriter, r *http.Request) {
 	webutils.RenderTemplate(w, []string{"pkg/web/templates/sidebar.html", "pkg/web/templates/news.html",
 		"pkg/web/templates/head.html",
 		"pkg/web/templates/end.html",
-		"pkg/web/templates/commandbar.html"}, pageStruct)
+		"pkg/web/templates/commandbar.html",
+		"pkg/web/templates/newslist-item.html"}, pageStruct)
 }

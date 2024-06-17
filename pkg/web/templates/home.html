@@ -17,25 +17,23 @@
 		
 
 			<div >
+	
+
+
+				{{if .NewsList}}
 				<h2>News & Announcements</h2>
 				<hr>
-
 				<div class="list-group list-group-flush  scrollarea">
-
-					<a href="/news#news-id" class="list-group-item list-group-item-action py-3">
-						<article >
-							<header class="d-flex w-100 align-items-center justify-content-between">
-								<h3 class="mb-1">I Am Once Again Asking for Your Financial Support</h3>
-								<small class="text-muted">23.04.2024</small>
-							</header>
-							<section>
-								<p class="col-10 mb-1  pl-3">As we strive to maintain the excellence and sustainability of our private torrent tracker site, we find ourselves in need of your support once more. Our commitment to providing a safe, reliable, and thriving platform for sharing content remains unwavering, but we cannot achieve this without your assistance.</p>
-								<div class="text-end mb-1 col-10 read-more">Continue Reading...</div>
-							</section>
-
-						</article>
-					</a>
+				{{range .NewsList}}
+	
+					{{template "newslist-item" .}}
+	
+	
+				
+				{{end}}
 				</div>
+	
+				{{end}}
 
 			</div>
 

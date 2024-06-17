@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	db "github.com/oskar13/mini-tracker/pkg/db"
+	"github.com/oskar13/mini-tracker/pkg/web/news"
 	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
 	"github.com/oskar13/mini-tracker/pkg/web/webdata"
 )
@@ -20,13 +21,16 @@ func MainPage(w http.ResponseWriter, r *http.Request) {
 	var pageStruct struct {
 		UserData webdata.User
 		PageName string
+		NewsList []news.NewsArticle
 	}
 	pageStruct.UserData = userData
 	pageStruct.PageName = "main"
+	pageStruct.NewsList, _ = news.LoadNewsList(3)
 
 	webutils.RenderTemplate(w, []string{"pkg/web/templates/home.html",
 		"pkg/web/templates/sidebar.html", "pkg/web/templates/head.html",
 		"pkg/web/templates/end.html",
-		"pkg/web/templates/commandbar.html"}, pageStruct)
+		"pkg/web/templates/commandbar.html",
+		"pkg/web/templates/newslist-item.html"}, pageStruct)
 
 }
