@@ -11,9 +11,11 @@ To run the code at current state, edit start.sh with your MySQL credentials, mak
 
 
 
-### Features
-- Invite based account system
+### Implemented Features
+- Invite based accounts
 - Simple chat system
+- Site news with commenting
+- User profiles
 
 ### Goals
 - Make it easy to share torrent files between small number of people
