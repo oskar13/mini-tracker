@@ -72,3 +72,5 @@ type DM struct {
 	Content   string
 	Date      string
 }
+
+var SiteName string = "Mini Tracker"

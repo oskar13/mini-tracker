@@ -24,13 +24,15 @@ func DirectMessages(w http.ResponseWriter, r *http.Request) {
 		Error     bool
 		ErrorText string
 		UserData  webdata.User
+		SiteName  string
 		PageName  string
 		Thread    webdata.DMThread
 		Threads   []webdata.DMThreadListItem
 	}
 
 	pageStruct.UserData = userData
-	pageStruct.PageName = "dms"
+	pageStruct.SiteName = webdata.SiteName
+	pageStruct.PageName = "Direct Messages"
 
 	threadIdString := r.PathValue("id")
 

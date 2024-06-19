@@ -20,11 +20,13 @@ func MainPage(w http.ResponseWriter, r *http.Request) {
 
 	var pageStruct struct {
 		UserData webdata.User
+		SiteName string
 		PageName string
 		NewsList []news.NewsArticle
 	}
 	pageStruct.UserData = userData
-	pageStruct.PageName = "main"
+	pageStruct.SiteName = webdata.SiteName
+	pageStruct.PageName = "Main"
 	pageStruct.NewsList, _ = news.LoadNewsList(3)
 
 	webutils.RenderTemplate(w, []string{"pkg/web/templates/home.html",

@@ -26,11 +26,13 @@ func NewsPage(w http.ResponseWriter, r *http.Request) {
 		UserData    webdata.User
 		NewsArticle news.NewsArticle
 		NewsList    []news.NewsArticle
+		SiteName    string
 		PageName    string
 	}
 
 	pageStruct.UserData = userData
-	pageStruct.PageName = "news"
+	pageStruct.SiteName = webdata.SiteName
+	pageStruct.PageName = "News"
 
 	idString := r.PathValue("id")
 
