@@ -56,18 +56,28 @@
 
 				</section>
 				{{if .NewsArticle.Comments}}
-				<section>
-					<h3>Comments</h3>
-					<hr>
+				<section class="container">
+					<div class="row">
+						<div class="row justify-content-center">
+							<div class="col-md-11">
+								<h3 >Comments</h3>
+								<hr>
+							</div>
+						</div>
+					</div>
 					{{range .NewsArticle.Comments}}
-						<h4>       
-						<a href="/profile/{{.UserID}}" class="d-flex align-items-center text-white text-decoration-none" >
-							<img src="{{.Cover}}" alt="" width="48" height="48" class="rounded-circle me-2">
-							<strong class="username">{{.Username}}</strong>
-						</a>
-						</h4>
-						<p>{{.Content}}</p>
-						<hr>
+						<div class="row justify-content-center">
+							<div class="col-md-9">
+								<h4>
+								<a href="/profile/{{.UserID}}" class="d-flex align-items-center text-white text-decoration-none" >
+									<img src="{{.Cover}}" alt="" width="48" height="48" class="rounded-circle me-2">
+									<strong class="username">{{.Username}}</strong>
+								</a>
+								</h4>
+								<p>{{.Content}}</p>
+								<hr>
+							</div>
+						</div>
 					{{end}}
 				</section>
 				{{end}}
