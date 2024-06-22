@@ -28,6 +28,7 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 		TorrentList   []webdata.TorrentWeb
 		SiteName      string
 		PageName      string
+		Strikes       []webdata.Strike
 	}
 
 	pageStruct.UserData = userData
@@ -52,6 +53,7 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 
 			} else {
 				pageStruct.DisplayedUser = loadedUserData
+				pageStruct.Strikes = webutils.LoadStrikes(pageStruct.DisplayedUser.UserID)
 			}
 		}
 	} else {
@@ -64,6 +66,7 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 		} else {
 			pageStruct.DisplayedUser = loadedUserData
 			pageStruct.SelfEdit = true
+			pageStruct.Strikes = webutils.LoadStrikes(pageStruct.DisplayedUser.UserID)
 		}
 
 	}

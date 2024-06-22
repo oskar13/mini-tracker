@@ -17,7 +17,7 @@
 				<div class="col-md-4">
 
 
-					<div class="user-card card text-center" >
+					<div class="user-card card text-center mb-4" >
 						{{if .DisplayedUser.Banner}}
 						<img src="{{.DisplayedUser.Banner}}" class="card-img-top glow" alt="...">
 						{{end}}
@@ -55,13 +55,32 @@
                           </section>
                          
                         </div>
-					
-	
-					
-								
-					
+
 
 					</div>
+					{{if .Strikes}}
+					<section>
+
+						
+						<h2>Strikes</h2>
+
+						{{range .Strikes}}
+						<article class="list-group-item list-group-item-action py-3">
+
+								<header class="d-flex w-100 align-items-center justify-content-between">
+									<h3 class="mb-1">{{.Heading}}</h3>
+									<small class="text-muted">{{.Date}}</small>
+								</header>
+								<section>
+									<p class="col-10 mb-1  pl-3">{{.Description}}</p>
+								</section>
+						
+
+						</article>
+						{{end}}
+				</section>
+				{{end}}
+
 				</div>
 				<div class="col-md-8">
 					<h2>Torrents shared with site users</h2>

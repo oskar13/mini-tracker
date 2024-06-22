@@ -415,3 +415,33 @@ func ParseBadgeBlob(blob *string) []webdata.Badges {
 	fmt.Println(result)
 	return result
 }
+
+func LoadStrikes(userID int) []webdata.Strike {
+	var strikes []webdata.Strike
+
+	q := "SELECT strike_ID, user_ID, heading, description, date FROM strikes WHERE user_ID = ?"
+	rows, err := db.DB.Query(q, userID)
+	if err != nil {
+		// handle this error better than this
+		panic(err)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var strike webdata.Strike
+		err = rows.Scan(&strike.StrikeID, &strike.UserID, &strike.Heading, &strike.Description, &strike.Date)
+		if err != nil {
+			// handle this error
+			panic(err)
+		}
+
+		fmt.Println("STRIKE", strike)
+		strikes = append(strikes, strike)
+	}
+	// get any error encountered during iteration
+	err = rows.Err()
+	if err != nil {
+		panic(err)
+	}
+
+	return strikes
+}

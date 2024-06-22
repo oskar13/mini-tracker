@@ -45,6 +45,14 @@ type User struct {
 	UserBadgesBlob   *string
 }
 
+type Strike struct {
+	StrikeID    int
+	UserID      int
+	Heading     string
+	Description string
+	Date        string
+}
+
 type Badges struct {
 	BadgeTitle string `json:"badgeTitle"`
 	Color      string `json:"color"`
