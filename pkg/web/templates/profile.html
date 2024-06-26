@@ -100,8 +100,30 @@
 		
 					</ul>
 					{{else}}
-					list empty
+					<p>No public torrents from this user.</p>
 					{{end}}
+
+					
+					{{if .UserGroups}}
+					<h2>User Groups</h2>
+					<ul>
+						{{range .UserGroups}}
+						<li>{{.GroupVisibility}} - {{.GroupName}} {{if .GroupRole}} - {{.GroupRole}} {{end}}</li>
+						{{end}}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+					</ul>
+
+					{{end}}
+
+
 
 				</div>
 			</div>

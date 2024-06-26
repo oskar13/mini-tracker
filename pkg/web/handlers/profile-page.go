@@ -29,6 +29,7 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 		SiteName      string
 		PageName      string
 		Strikes       []webdata.Strike
+		UserGroups    []webdata.UserGroupListObject
 	}
 
 	pageStruct.UserData = userData
@@ -54,6 +55,7 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 			} else {
 				pageStruct.DisplayedUser = loadedUserData
 				pageStruct.Strikes = webutils.LoadStrikes(pageStruct.DisplayedUser.UserID)
+				pageStruct.UserGroups = webutils.GetUserGroupsList(pageStruct.DisplayedUser.UserID, "Public")
 			}
 		}
 	} else {
@@ -67,6 +69,9 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 			pageStruct.DisplayedUser = loadedUserData
 			pageStruct.SelfEdit = true
 			pageStruct.Strikes = webutils.LoadStrikes(pageStruct.DisplayedUser.UserID)
+			pageStruct.UserGroups = webutils.GetUserGroupsList(pageStruct.DisplayedUser.UserID, "Public")
+			pageStruct.UserGroups = append(pageStruct.UserGroups, webutils.GetUserGroupsList(pageStruct.DisplayedUser.UserID, "Private")...)
+
 		}
 
 	}
