@@ -1,0 +1,27 @@
+{{define "base"}}
+	{{template "head" .}}
+
+
+
+		{{template "sidebar" .}}
+		
+		<div class="b-example-divider"></div>
+
+
+
+
+		<div class="container overflow-scroll overview">
+			{{template "commandbar"}}
+
+			<div class="row">
+                <div class="col-md-12">
+                    <h2>Groups</h2>
+                </div>
+			</div>
+			
+		</div>
+		
+		<div class="b-example-divider"></div>
+
+		{{template "end"}}
+{{end}}
