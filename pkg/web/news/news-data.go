@@ -1,13 +1,14 @@
 package news
 
 type NewsArticle struct {
-	NewsID   int
-	Title    string
-	Content  string
-	Author   string
-	Date     string
-	Excerpt  string
-	Comments []NewsComment
+	NewsID     int
+	Title      string
+	Content    string
+	Author     string
+	Date       string
+	Excerpt    string
+	Comments   []NewsComment
+	Commenting bool
 }
 
 type NewsComment struct {

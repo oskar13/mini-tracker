@@ -10,8 +10,8 @@ func LoadNewsArticle(newsID int) (NewsArticle, error) {
 
 	var theArticle NewsArticle
 
-	q := "SELECT post_ID, title, date, posted_by, content FROM site_news WHERE post_ID = ?"
-	err := db.DB.QueryRow(q, newsID).Scan(&theArticle.NewsID, &theArticle.Title, &theArticle.Date, &theArticle.Author, &theArticle.Content)
+	q := "SELECT post_ID, title, date, posted_by, content, commenting FROM site_news WHERE post_ID = ?"
+	err := db.DB.QueryRow(q, newsID).Scan(&theArticle.NewsID, &theArticle.Title, &theArticle.Date, &theArticle.Author, &theArticle.Content, &theArticle.Commenting)
 	if err != nil {
 
 		return NewsArticle{}, err
