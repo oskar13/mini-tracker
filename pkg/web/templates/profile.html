@@ -69,7 +69,7 @@
 
 								<header class="d-flex w-100 align-items-center justify-content-between">
 									<h3 class="mb-1">{{.Heading}}</h3>
-									<small class="text-muted">{{.Date}}</small>
+									<small class="text-body-secondary">{{.Date}}</small>
 								</header>
 								<section>
 									<p class="col-10 mb-1  pl-3">{{.Description}}</p>
@@ -108,7 +108,22 @@
 					<h2>User Groups</h2>
 					<ul>
 						{{range .UserGroups}}
-						<li>{{.GroupVisibility}} - {{.GroupName}} {{if .GroupRole}} - {{.GroupRole}} {{end}}</li>
+
+						<a href="/groups/{{.GroupID}}" class="list-group-item list-group-item-action py-3">
+							<div >
+								<header class="d-flex w-100 align-items-center justify-content-between">
+									<h3 class="mb-1">{{.GroupName}}</h3>
+									<small class="text-body-secondary">{{.GroupVisibility}}</small>
+									{{if .GroupRole}} 
+									<span>Role <small class="text-body-secondary">{{.GroupRole}}</small></span>
+									{{end}}
+								</header>
+								<section>
+									<p class="col-10 mb-1  pl-3">{{.Excerpt}}</p>
+								</section>
+						
+							</div>
+						</a>
 						{{end}}
 		
 		
