@@ -1,0 +1,27 @@
+{{define "group-list-item"}}
+
+
+
+<a href="/groups/{{.GroupID}}" class="list-group-item list-group-item-action py-3 ">
+    <article class="row" >
+        <div class="col-md-1">
+            {{if  .GroupIcon }}
+                <img src="/{{.GroupIcon}}" alt="{{.GroupName}}">
+            {{end}}
+        </div>
+        <div class="col-md-9">
+            <header class="d-flex w-100 align-items-center justify-content-between">
+                <h3 class="mb-1">{{.GroupName}} <small class="text-body-secondary"><span class="badge text-bg-secondary">{{.GroupJoinType}}</span></small></h3>
+                <small class="text-body-secondary">4 members</small>
+            </header>
+            <section>
+                <p class="col-10 mb-1  pl-3">{{.GroupTagline}}</p>
+    
+            </section>
+        </div>
+
+
+    </article>
+</a>
+
+{{end}}

@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	db "github.com/oskar13/mini-tracker/pkg/db"
+	"github.com/oskar13/mini-tracker/pkg/web/groups"
 	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
 	"github.com/oskar13/mini-tracker/pkg/web/webdata"
 )
@@ -23,14 +24,16 @@ func GroupListPage(w http.ResponseWriter, r *http.Request) {
 		UserData  webdata.User
 		SiteName  string
 		PageName  string
+		Groups    []webdata.GroupListObject
 	}
 
 	pageStruct.SiteName = webdata.SiteName
-	pageStruct.PageName = "My Groups"
+	pageStruct.PageName = "Groups"
+	pageStruct.Groups = groups.ListPublicGroups()
 
 	pageStruct.UserData = userData
 
-	webutils.RenderTemplate(w, []string{"pkg/web/templates/groups/group-list.html",
+	webutils.RenderTemplate(w, []string{"pkg/web/templates/groups/group-list.html", "pkg/web/templates/groups/group-list-item.html",
 		"pkg/web/templates/sidebar.html", "pkg/web/templates/head.html",
 		"pkg/web/templates/end.html",
 		"pkg/web/templates/commandbar.html"}, pageStruct)

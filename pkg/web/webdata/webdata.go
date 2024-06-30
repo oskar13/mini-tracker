@@ -84,10 +84,12 @@ type DM struct {
 var SiteName string = "Mini Tracker"
 
 // Used for displaying groups the user is part of
-type UserGroupListObject struct {
+type GroupListObject struct {
 	GroupName       string
 	GroupID         int
 	GroupIcon       *string
 	GroupRole       *string
 	GroupVisibility string
+	GroupTagline    *string
+	GroupJoinType   string
 }
