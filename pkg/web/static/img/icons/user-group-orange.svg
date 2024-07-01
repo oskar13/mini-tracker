@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   width="800px"
+   height="800px"
+   viewBox="0 0 24 24"
+   fill="none"
+   stroke="#000000"
+   stroke-width="1"
+   stroke-linecap="round"
+   stroke-linejoin="miter"
+   version="1.1"
+   id="svg3"
+   sodipodi:docname="user-group-orange.svg"
+   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs3" />
+  <sodipodi:namedview
+     id="namedview3"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="1.06"
+     inkscape:cx="400"
+     inkscape:cy="400"
+     inkscape:window-width="1920"
+     inkscape:window-height="1052"
+     inkscape:window-x="1920"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg3" />
+  <circle
+     cx="10"
+     cy="6"
+     r="4"
+     id="circle1"
+     style="fill:none;fill-opacity:1;stroke:#ffa700;stroke-opacity:1" />
+  <path
+     d="M18,22a7.89,7.89,0,0,0-8-8,7.89,7.89,0,0,0-8,8Z"
+     id="path1"
+     style="fill:none;fill-opacity:1;stroke:#ffa700;stroke-opacity:1" />
+  <path
+     d="M16.83,3.17a4.13,4.13,0,0,1,.86,1.27,4.08,4.08,0,0,1,0,3.12,4.13,4.13,0,0,1-.86,1.27"
+     id="path2"
+     style="fill:none;fill-opacity:1;stroke:#ffa700;stroke-opacity:1" />
+  <path
+     d="M21.8,19.86A11.12,11.12,0,0,0,18,13.5"
+     id="path3"
+     style="fill:none;fill-opacity:1;stroke:#ffa700;stroke-opacity:1" />
+</svg>
