@@ -24,7 +24,7 @@ func GroupListPage(w http.ResponseWriter, r *http.Request) {
 		UserData  webdata.User
 		SiteName  string
 		PageName  string
-		Groups    []webdata.GroupListObject
+		Groups    []groups.GroupInfo
 	}
 
 	pageStruct.SiteName = webdata.SiteName

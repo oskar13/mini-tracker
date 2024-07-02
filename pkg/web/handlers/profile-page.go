@@ -30,7 +30,7 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 		SiteName      string
 		PageName      string
 		Strikes       []webdata.Strike
-		UserGroups    []webdata.GroupListObject
+		UserGroups    []groups.GroupInfo
 	}
 
 	pageStruct.UserData = userData

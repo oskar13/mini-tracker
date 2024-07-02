@@ -158,21 +158,14 @@
 
 				<div class="list-group list-group-flush  scrollarea border-bottom">
 
-					<a href="#" class="list-group-item list-group-item-action py-3 lh-tight">
-					  <div class="d-flex w-100 align-items-center justify-content-between">
-						<h3><strong class="mb-1">Forum - Help:</strong> Help finding best way to back up my .iso collection<span class="fw-lighter"> - 2 replies</span></h3>
-						
-						<small class="text-body-secondary">1 day ago</small>
-					  </div>
-					  
-					</a>
-
-					<a href="#" class="list-group-item list-group-item-action py-3 lh-tight">
+					  {{range .Community}}
+					  <a href="/group/{{.Group.GroupID}}/post/{{.PostID}}" class="list-group-item list-group-item-action py-3 lh-tight">
 						<div class="d-flex w-100 align-items-center justify-content-between">
-						  <h3><strong class="mb-1">Forum - General Discussion:</strong> Any good recent movies to watch?<span class="fw-lighter"> - 0 replies</span></h3>
-						  <small class="text-body-secondary">4 days ago</small>
+						  <h3><strong class="mb-1">{{.Group.GroupName}}:</strong> {{.Title}}<span class="fw-lighter"> - 0 replies</span></h3>
+						  <small class="text-body-secondary">{{.Date}}</small>
 						</div>
 					  </a>
+					  {{end}}
   
 				</div>
 
