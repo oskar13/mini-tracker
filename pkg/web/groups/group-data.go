@@ -25,11 +25,12 @@ type GroupPostReply struct {
 }
 
 type GroupInfo struct {
-	GroupName       string
-	GroupID         int
-	GroupIcon       *string
-	GroupRole       *string
-	GroupVisibility string
-	GroupTagline    *string
-	GroupJoinType   string
+	GroupName        string
+	GroupID          int
+	GroupIcon        *string
+	GroupRole        *string
+	GroupVisibility  string
+	GroupTagline     *string
+	GroupJoinType    string
+	GroupDescription *string
 }

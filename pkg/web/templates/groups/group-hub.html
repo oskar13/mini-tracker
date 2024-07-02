@@ -13,11 +13,60 @@
 		<div class="container overflow-scroll overview">
 			{{template "commandbar"}}
 
-			<div class="row">
-                <div class="col-md-12">
-                    <h2>Group hub</h2>
+			{{if .Error}}
+
+			<h2>{{.ErrorText}}</h2>
+
+			{{else}}
+
+			<div class="row mb-5">
+                <div class="col-md-10">
+                    <h2>{{.Group.GroupName}}</h2>
+					{{if .Group.GroupTagline}}
+						<span>{{.Group.GroupTagline}}</span>
+					{{end}}
                 </div>
+				<div class="col-md-2">
+					Browsing as: ({{.UserRole}})
+				</div>
 			</div>
+
+			<div class="row mb-5">
+				<div class="col-md-12">
+					<h3>Latest posts</h3>
+				</div>
+				{{if .Posts}}
+				<div class="list-group list-group-flush  scrollarea">
+					{{range .Posts}}
+
+
+						<article class="list-group-item list-group-item-action py-3">
+							<div class="row">
+								<div class="col-md-1 text-center">
+									<img class="img-fluid mb-1"  src="{{.User.Cover }}" alt="{{.User.Username}}">
+									<p><a href="/profiles/{{.User.UserID}}">{{.User.Username}}</a></p>
+								</div>
+								<div class="col-md-9 row">
+									<header >
+										<h4 class="mb-1">{{if .Sticky}}<span class="badge rounded-pill text-bg-info mx-2">📌 Sticky</span>{{end}}<a href="">{{.Title}}</a></h4>
+										<p>Posted: {{.Date}}</p>
+										<small class="text-body-secondary">4 replies</small>
+									</header>
+								</div>
+							</div>
+					
+					
+						</article>
+					{{end}}
+				</div>
+				{{else}}
+				<p>Sorry no posts yet. <a href="#">Start a New Topic</a></p>
+				{{end}}
+			</div>
+
+
+
+			{{end}} {{/* end of error check block */}}
 			
 		</div>
 		

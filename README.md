@@ -1,8 +1,10 @@
 # mini-tracker
 A small-mid scale torrent tracker site written in go with support for private tracking.
 
-## Work In Progress
-This project is not functional yet
+## Current progress
+![50%](https://progress-bar.dev/50)
+
+This project is not functional yet.
 
 ## How to run
 To run the code at current state, edit start.sh with your MySQL credentials, make a minitorrent database on your server. 
@@ -16,6 +18,7 @@ To run the code at current state, edit start.sh with your MySQL credentials, mak
 - Simple chat system
 - Site news with commenting
 - User profiles
+- Community hubs
 
 ### Goals
 - Make it easy to share torrent files between small number of people
