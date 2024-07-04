@@ -44,11 +44,11 @@
 							<div class="row">
 								<div class="col-md-1 text-center">
 									<img class="img-fluid mb-1"  src="{{.User.Cover }}" alt="{{.User.Username}}">
-									<p><a href="/profiles/{{.User.UserID}}">{{.User.Username}}</a></p>
+									<p><a href="/profile/{{.User.UserID}}">{{.User.Username}}</a></p>
 								</div>
 								<div class="col-md-9 row">
 									<header >
-										<h4 class="mb-1">{{if .Sticky}}<span class="badge rounded-pill text-bg-info mx-2">📌 Sticky</span>{{end}}<a href="">{{.Title}}</a></h4>
+										<h4 class="mb-1">{{if .Sticky}}<span class="badge rounded-pill text-bg-info mx-2">📌 Sticky</span>{{end}}<a href="/groups/{{$.Group.GroupID}}/post/{{.PostID}}">{{.Title}}</a></h4>
 										<p>Posted: {{.Date}}</p>
 										<small class="text-body-secondary">4 replies</small>
 									</header>

@@ -1,0 +1,107 @@
+{{define "base"}}
+	{{template "head" .}}
+
+
+
+		{{template "sidebar" .}}
+		
+		<div class="b-example-divider"></div>
+
+
+
+
+		<div class="container overflow-scroll overview">
+			{{template "commandbar"}}
+
+			{{if .Error}}
+
+			<h2>{{.ErrorText}}</h2>
+
+			{{else}}
+
+			<div class="row mb-5">
+                <div class="col-md-10">
+                    <h2>{{.Group.GroupName}}</h2>
+					{{if .Group.GroupTagline}}
+						<span>{{.Group.GroupTagline}}</span>
+					{{end}}
+                </div>
+				<div class="col-md-2">
+					Browsing as: ({{.UserRole}})
+				</div>
+			</div>
+
+
+		
+
+                <article class="mb-5 border-start border-3 px-3 py-4 border-warning bg-light-subtle" >
+                    <header class="row">
+                        <div class="col-md-1 text-center">
+                            <img class="img-fluid mb-1"  src="{{.Post.User.Cover }}" alt="{{.Post.User.Username}}">
+                            <p><a href="/profile/{{.Post.User.UserID}}">{{.Post.User.Username}}</a></p>
+                        </div>
+                        <div class="col-md-11 row">
+                            
+                                <h4 class="mb-1">{{if .Post.Sticky}}<span class="badge rounded-pill text-bg-info mx-2">📌 Sticky</span>{{end}}{{.Post.Title}}</h4>
+                                <p>Posted: {{.Post.Date}}</p>
+
+                           
+                        </div>
+                    
+                    </header>
+                    <section class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-11">
+                            <p>{{.Post.Content}}</p>
+                        </div>
+                        
+                    </section>            
+                </article>
+
+                {{if .Post.Replies}}
+
+                {{range .Post.Replies}}
+                <div class="px-5">
+                    <article class="mb-5 border-start border-3 px-3 py-4 border-warning bg-dark-subtle" >
+                        <header class="row">
+                            <div class="col-md-1 text-center">
+                                <img class="img-fluid mb-1"  src="{{.User.Cover }}" alt="{{.User.Username}}">
+                                <p><a href="/profile/{{.User.UserID}}">{{.User.Username}}</a></p>
+                            </div>
+                            <div class="col-md-11 row">
+                                
+                                    <p>Posted: {{.Date}}</p>
+    
+                               
+                            </div>
+                        
+                        </header>
+                        <section class="row">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-11">
+                                <p>{{.Content}}</p>
+                            </div>
+                            
+                        </section>            
+                    </article>
+                </div>
+
+
+                {{end}}
+
+                {{else}} 
+                <p>No replies yet.</p>
+                {{end}}
+
+			
+
+
+
+			{{end}} {{/* end of error check block */}}
+			
+		</div>
+		
+		<div class="b-example-divider"></div>
+
+		{{template "end"}}
+{{end}}

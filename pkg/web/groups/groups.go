@@ -192,3 +192,59 @@ func LoadGroupPostsList(groupID int) []GroupPost {
 
 	return postList
 }
+
+func LoadGroupPost(groupID int, postID int) GroupPost {
+	var post GroupPost
+	var user webdata.User
+
+	q := "SELECT group_posts.post_ID, group_posts.title, group_posts.content, group_posts.date , group_posts.updated , group_posts.sticky, group_posts.user_ID, group_posts.username, group_posts.profile_pic FROM group_posts WHERE group_posts.group_ID = ? AND group_posts.post_ID = ?"
+
+	err := db.DB.QueryRow(q, groupID, postID).Scan(&post.PostID, &post.Title, &post.Content, &post.Date, &post.Updated, &post.Sticky, &user.UserID, &user.Username, &user.Cover)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return GroupPost{}
+		}
+		fmt.Println(err)
+		return GroupPost{}
+	} else {
+		//load replies
+		post.User = user
+		post.Replies = LoadGroupPostsReplies(postID)
+	}
+
+	return post
+}
+
+func LoadGroupPostsReplies(postID int) []GroupPostReply {
+	var replyList []GroupPostReply
+
+	q := "SELECT group_post_replies.reply_ID, group_post_replies.user_ID, users.username, users.profile_pic, group_post_replies.date, group_post_replies.updated, group_post_replies.content FROM group_post_replies LEFT JOIN users ON group_post_replies.user_ID = users.user_ID WHERE  group_post_replies.post_ID = ?"
+
+	rows, err := db.DB.Query(q, postID)
+	if err != nil {
+		// handle this error better than this
+		panic(err)
+	}
+	defer rows.Close()
+	for rows.Next() {
+
+		var reply GroupPostReply
+		var user webdata.User
+
+		err = rows.Scan(&reply.ReplyID, &user.UserID, &user.Username, &user.Cover, &reply.Date, &reply.Updated, &reply.Content)
+		if err != nil {
+			// handle this error
+			panic(err)
+		}
+		reply.User = user
+
+		replyList = append(replyList, reply)
+	}
+	// get any error encountered during iteration
+	err = rows.Err()
+	if err != nil {
+		panic(err)
+	}
+
+	return replyList
+}
