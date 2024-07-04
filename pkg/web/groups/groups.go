@@ -71,7 +71,7 @@ func ListPublicGroups() []GroupInfo {
 // List last x posts from public groups and user groups
 func GetCommunityUpdates(userID int, count int) []GroupPost {
 	var postList []GroupPost
-	q := "SELECT group_posts.group_name, group_posts.group_ID,  group_posts.post_ID, group_posts.title, group_posts.date FROM group_posts INNER JOIN group_members ON group_members.group_ID = group_posts.group_ID INNER JOIN groups ON groups.group_ID = group_posts.group_ID WHERE group_members.user_ID = ? ORDER BY group_posts.date DESC LIMIT ?"
+	q := "SELECT group_posts.group_name, group_posts.group_ID,  group_posts.post_ID, group_posts.title, group_posts.date, group_posts.reply_count FROM group_posts INNER JOIN group_members ON group_members.group_ID = group_posts.group_ID INNER JOIN groups ON groups.group_ID = group_posts.group_ID WHERE group_members.user_ID = ? ORDER BY group_posts.date DESC LIMIT ?"
 
 	rows, err := db.DB.Query(q, userID, count)
 	if err != nil {
@@ -83,7 +83,7 @@ func GetCommunityUpdates(userID int, count int) []GroupPost {
 		var group GroupInfo
 		var post GroupPost
 
-		err = rows.Scan(&group.GroupName, &group.GroupID, &post.PostID, &post.Title, &post.Date)
+		err = rows.Scan(&group.GroupName, &group.GroupID, &post.PostID, &post.Title, &post.Date, &post.ReplyCount)
 		if err != nil {
 			// handle this error
 			panic(err)
@@ -162,7 +162,7 @@ func LoadGroupInfo(groupID int) GroupInfo {
 func LoadGroupPostsList(groupID int) []GroupPost {
 	var postList []GroupPost
 
-	q := "SELECT  group_posts.post_ID, group_posts.title, group_posts.content, group_posts.date, group_posts.sticky, group_posts.user_ID, group_posts.username, group_posts.profile_pic FROM group_posts WHERE group_posts.group_ID = ? ORDER BY group_posts.sticky DESC ,group_posts.date DESC"
+	q := "SELECT  group_posts.post_ID, group_posts.title, group_posts.content, group_posts.date, group_posts.sticky, group_posts.user_ID, group_posts.username, group_posts.profile_pic, group_posts.reply_count FROM group_posts WHERE group_posts.group_ID = ? ORDER BY group_posts.sticky DESC ,group_posts.date DESC"
 
 	rows, err := db.DB.Query(q, groupID)
 	if err != nil {
@@ -175,7 +175,7 @@ func LoadGroupPostsList(groupID int) []GroupPost {
 		var post GroupPost
 		var user webdata.User
 
-		err = rows.Scan(&post.PostID, &post.Title, &post.Content, &post.Date, &post.Sticky, &user.UserID, &user.Username, &user.Cover)
+		err = rows.Scan(&post.PostID, &post.Title, &post.Content, &post.Date, &post.Sticky, &user.UserID, &user.Username, &user.Cover, &post.ReplyCount)
 		if err != nil {
 			// handle this error
 			panic(err)

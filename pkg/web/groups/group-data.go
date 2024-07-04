@@ -3,16 +3,17 @@ package groups
 import "github.com/oskar13/mini-tracker/pkg/web/webdata"
 
 type GroupPost struct {
-	Group    GroupInfo
-	PostID   int
-	User     webdata.User
-	Title    string
-	Content  string
-	Date     string
-	Updated  string
-	Sticky   bool
-	LastPost *string
-	Replies  []GroupPostReply
+	Group      GroupInfo
+	PostID     int
+	User       webdata.User
+	Title      string
+	Content    string
+	Date       string
+	Updated    string
+	Sticky     bool
+	LastPost   *string
+	Replies    []GroupPostReply
+	ReplyCount int
 }
 
 type GroupPostReply struct {

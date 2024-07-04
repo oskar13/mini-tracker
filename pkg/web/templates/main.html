@@ -159,9 +159,9 @@
 				<div class="list-group list-group-flush  scrollarea border-bottom">
 
 					  {{range .Community}}
-					  <a href="/group/{{.Group.GroupID}}/post/{{.PostID}}" class="list-group-item list-group-item-action py-3 lh-tight">
+					  <a href="/groups/{{.Group.GroupID}}/post/{{.PostID}}" class="list-group-item list-group-item-action py-3 lh-tight">
 						<div class="d-flex w-100 align-items-center justify-content-between">
-						  <h3><strong class="mb-1">{{.Group.GroupName}}:</strong> {{.Title}}<span class="fw-lighter"> - 0 replies</span></h3>
+						  <h3><strong class="mb-1">{{.Group.GroupName}}:</strong> {{.Title}}<span class="fw-lighter"> - {{.ReplyCount}} replies</span></h3>
 						  <small class="text-body-secondary">{{.Date}}</small>
 						</div>
 					  </a>

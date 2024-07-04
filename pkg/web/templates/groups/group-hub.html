@@ -50,7 +50,7 @@
 									<header >
 										<h4 class="mb-1">{{if .Sticky}}<span class="badge rounded-pill text-bg-info mx-2">📌 Sticky</span>{{end}}<a href="/groups/{{$.Group.GroupID}}/post/{{.PostID}}">{{.Title}}</a></h4>
 										<p>Posted: {{.Date}}</p>
-										<small class="text-body-secondary">4 replies</small>
+										<small class="text-body-secondary">{{.ReplyCount}} replies</small>
 									</header>
 								</div>
 							</div>
