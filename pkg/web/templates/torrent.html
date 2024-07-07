@@ -1,8 +1,10 @@
-{{template "head"}}
+{{define "base"}}
+
+{{template "head" .}}
 
 
 
-		{{template "sidebar"}}
+		{{template "sidebar" .}}
 		
 		<div class="b-example-divider"></div>
 
@@ -75,9 +77,64 @@
 
 				</article>
 
+				<h2 class="mb-5">Discussion</h2>
+
+
+				{{if .TheTorrent.Discussion}}
+
+				{{range .TheTorrent.Discussion}}
+				<div class="px-5">
+					<article class="mb-5 border-start border-3 px-3 py-3 border-warning bg-dark-subtle">
+			
+						<div class="row">
+							<div class="col-md-1 text-center border-end border-1">
+								<img class="img-fluid mb-1" src="{{.User.Cover }}" alt="{{.User.Username}}">
+								<p><a href="/profile/{{.User.UserID}}">{{.User.Username}}</a></p>
+							</div>
+				
+							<div class="col-md-11">
+								<header>
+									<p>Posted: {{.Date}}</p>
+								</header>
+								<section>
+										<p>{{.Content}}</p>
+								</section>
+							</div>
+				
+						</div>
+			
+			
+					</article>
+				</div>
+			
+			
+				{{end}}
+			
+				{{else}}
+				<p class="mb-5">No comments yet.</p>
+				{{end}}
+
+				<div class="mb-5 px-5">
+					<h3 class="mb-3">Add comment:</h3>
+					<div class="row">
+						<div class="col-md-1">
+							<img src="{{.UserData.Cover}}" alt="" class="rounded-circle me-2 img-fluid">
+						</div>
+						<div class="col-md-10">
+						
+									<form action="" method="post">
+										<input class="visually-hidden" type="text" id="postID" value="{{ .TheTorrent.TorrentID }}">
+										<textarea class="form-control" placeholder="Type your comment here..." id="floatingTextarea"></textarea>
+										<input class="btn btn-primary" type="submit" value="Submit">
+									</form>
+						</div>
+					</div>
+				</div>
+
 			
 		</div>
 		
 		<div class="b-example-divider"></div>
 
 		{{template "end"}}
+		{{end}}

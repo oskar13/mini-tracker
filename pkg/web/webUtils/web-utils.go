@@ -338,7 +338,7 @@ func LoadUserTorrents(user_ID int, access_type []string) []webdata.TorrentWeb {
 
 	q := `SELECT torrents.torrent_ID, torrents.created, torrents.name, torrents.upvotes, torrents.downvotes
 	      FROM torrents
-	      WHERE torrents.users_user_ID = ? AND torrents.access_type IN (` + strings.Repeat("?,", len(access_type)-1) + `?)`
+	      WHERE torrents.user_ID = ? AND torrents.access_type IN (` + strings.Repeat("?,", len(access_type)-1) + `?)`
 
 	args := make([]interface{}, 0, len(access_type)+1)
 	args = append(args, user_ID)
@@ -357,7 +357,7 @@ func LoadUserTorrents(user_ID int, access_type []string) []webdata.TorrentWeb {
 
 	for rows.Next() {
 		var row webdata.TorrentWeb
-		if err := rows.Scan(&row.TorrentID, &row.Created, &row.Name, &row.UpVotes, &row.DownVotes); err != nil {
+		if err := rows.Scan(&row.TorrentID, &row.Date, &row.Name, &row.UpVotes, &row.DownVotes); err != nil {
 			// do something with error
 		} else {
 			resultTorrents = append(resultTorrents, row)
@@ -371,7 +371,7 @@ func GetUserFriends(userID int) []webdata.User {
 
 	var friends []webdata.User
 
-	q := "SELECT users.user_ID, users.username, profile_pic, banner_image, created, disabled, tagline, bio, gender, user_badges_blob FROM friends LEFT JOIN users ON friends.friend_ID = users.user_ID WHERE friends.users_user_ID = ?"
+	q := "SELECT users.user_ID, users.username, profile_pic, banner_image, created, disabled, tagline, bio, gender, user_badges_blob FROM friends LEFT JOIN users ON friends.friend_ID = users.user_ID WHERE friends.user_ID = ?"
 	rows, err := db.DB.Query(q, userID)
 	if err != nil {
 		// handle this error better than this

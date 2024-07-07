@@ -1,0 +1,60 @@
+package handlers
+
+import (
+	"fmt"
+	"net/http"
+	"strconv"
+
+	db "github.com/oskar13/mini-tracker/pkg/db"
+	torrentweb "github.com/oskar13/mini-tracker/pkg/web/torrent-web"
+	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
+	"github.com/oskar13/mini-tracker/pkg/web/webdata"
+)
+
+func TorrentPage(w http.ResponseWriter, r *http.Request) {
+	userData := webutils.GetUserData(r, db.DB)
+
+	if !webutils.CheckLogin(w, r, userData) {
+		http.Redirect(w, r, "/login", http.StatusForbidden)
+		return
+	}
+
+	var pageStruct struct {
+		Error      bool
+		ErrorText  string
+		UserData   webdata.User
+		SiteName   string
+		PageName   string
+		TheTorrent webdata.TorrentWeb
+	}
+
+	pageStruct.SiteName = webdata.SiteName
+	pageStruct.PageName = "Torrent"
+
+	torrentIdString := r.PathValue("id")
+
+	if torrentIdString != "" {
+		torrentID, err := strconv.Atoi(torrentIdString)
+		if err != nil {
+			pageStruct.Error = true
+			pageStruct.ErrorText = fmt.Sprint(err)
+		} else {
+			// Try torrent info
+			torrentweb.LoadTorrentData(torrentID, userData.UserID)
+
+		}
+	} else {
+		// No ID string found
+
+		pageStruct.Error = true
+		pageStruct.ErrorText = "No torrent specified."
+
+	}
+
+	pageStruct.UserData = userData
+
+	webutils.RenderTemplate(w, []string{"pkg/web/templates/torrent.html",
+		"pkg/web/templates/sidebar.html", "pkg/web/templates/head.html",
+		"pkg/web/templates/end.html",
+		"pkg/web/templates/commandbar.html"}, pageStruct)
+}

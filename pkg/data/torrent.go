@@ -1,15 +1,33 @@
 package data
 
-// Data to hold when user uploads a torrent from site
-type TorrentUpload struct {
-	Announce     string
-	Name         string
-	Comment      string
-	PieceLength  int64
-	Pieces       []byte
-	Private      bool
-	CreatedBy    string
-	CreationDate int64
-	Encoding     string
-	Path         []string
+import "github.com/oskar13/mini-tracker/pkg/web/webdata"
+
+// Data object to hold torrent data when processing templates
+type Torrent struct {
+	Announce    string
+	Name        string
+	Description string //comment added on web page
+	Comment     string //file metadata comment
+	Type        string //category it was posted in
+	PieceLength int64
+	Pieces      []byte
+	Private     bool
+	GroupID     *int
+	GroupName   string
+	User        webdata.User //Uploader
+	Date        int64        //Uploaded
+	InfoHash    string
+	Encoding    string
+	Path        []string
+	Seeders     int
+	Leechers    int
+	FilesCount  int
+	Discussion  []TorrentComment
+}
+
+type TorrentComment struct {
+	CommentID int
+	User      webdata.User
+	Date      string
+	Content   string
 }
