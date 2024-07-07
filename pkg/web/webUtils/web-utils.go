@@ -357,7 +357,7 @@ func LoadUserTorrents(user_ID int, access_type []string) []webdata.TorrentWeb {
 
 	for rows.Next() {
 		var row webdata.TorrentWeb
-		if err := rows.Scan(&row.TorrentID, &row.Date, &row.Name, &row.UpVotes, &row.DownVotes); err != nil {
+		if err := rows.Scan(&row.TorrentID, &row.Created, &row.Name, &row.UpVotes, &row.DownVotes); err != nil {
 			// do something with error
 		} else {
 			resultTorrents = append(resultTorrents, row)

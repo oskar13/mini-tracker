@@ -40,7 +40,11 @@ func TorrentPage(w http.ResponseWriter, r *http.Request) {
 			pageStruct.ErrorText = fmt.Sprint(err)
 		} else {
 			// Try torrent info
-			torrentweb.LoadTorrentData(torrentID, userData.UserID)
+			pageStruct.TheTorrent, err = torrentweb.LoadTorrentData(torrentID, userData.UserID)
+			if err != nil {
+				pageStruct.Error = true
+				pageStruct.ErrorText = fmt.Sprintf("%v", err)
+			}
 
 		}
 	} else {

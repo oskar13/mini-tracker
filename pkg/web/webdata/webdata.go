@@ -13,11 +13,11 @@ type TorrentWeb struct {
 	Private     bool
 	GroupID     *int
 	GroupName   string
-	User        User  //Uploader
-	Date        int64 //Uploaded
+	User        User //Uploader
+	Created     string
 	InfoHash    string
 	Encoding    string
-	Path        []string
+	PathJSON    *string
 	Size        string
 	Seeders     int
 	Leechers    int
