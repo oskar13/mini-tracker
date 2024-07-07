@@ -12,7 +12,7 @@ type TorrentWeb struct {
 	Pieces      []byte
 	Private     bool
 	GroupID     *int
-	GroupName   string
+	GroupName   *string
 	User        User //Uploader
 	Created     string
 	InfoHash    string

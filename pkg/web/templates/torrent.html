@@ -29,8 +29,10 @@
 								<h1>{{.TheTorrent.Name}}  <button class="btn btn-primary">Download</button></h1>
 							</div>
 							<div>
-								<span class="badge text-bg-success">Shared on Scene: Linux Distros</span>
-								<span class="badge text-bg-danger">Reported: Trash</span>
+								<span class="badge text-bg-info text-white">Access: {{.TheTorrent.AccessType}} {{if eq .TheTorrent.AccessType "Public"}}(anyone with account){{end}} {{if eq .TheTorrent.AccessType "WWW"}}(anyone on the internet){{end}}</span>
+								{{if .TheTorrent.GroupName}}
+								<a href="/groups/{{.TheTorrent.GroupID}}"><span class="badge text-bg-success">Shared on Group: {{.TheTorrent.GroupName}}</span></a>
+								{{end}}
 							</div>
 						</header>
 
@@ -39,35 +41,40 @@
 						<h2>File Info:</h2>
 						<div class="row">
 							<div class="col-md-4">
-								<strong>Type:</strong> Software > Linux
+								<strong>Category:</strong> Software > Linux
 							</div>
 							<div class="col-md-4">
 								<strong>Files:</strong> 1
 							</div>
 							<div class="col-md-4">
-								<strong>Size:</strong>   606.62 MiB (12312312 Bytes)
+								<strong>Size:</strong> {{.TheTorrent.Size}}
 							</div>
 							<div class="col-md-4">
-								<strong>Uploaded:</strong> 2024-01-24
+								<strong>Uploaded:</strong> {{.TheTorrent.Created}}
 							</div>
 							<div class="col-md-4">
-								<strong>Seeders:</strong> <span style="color: green;">429</span>
+								<strong>Seeders:</strong> <span style="color: green;">{{.TheTorrent.Seeders}}</span>
 							</div>
 							<div class="col-md-4">
-								<strong>Leechers:</strong> <span style="color: red;">429</span>
+								<strong>Leechers:</strong> <span style="color: red;">{{.TheTorrent.Leechers}}</span>
 							</div>
 							<div class="col-md-4">
-								<strong>Info Hash:</strong> 66833B8B6C74CE5A2E9B0F95E209450284533A52
+								<strong>Info Hash:</strong> {{.TheTorrent.InfoHash}}
 							</div>
 						</div>
 					</section>
 					<section>
 						<h2>Description:</h2>
-						<p>Torrent description added by uploader.</p>
+						{{if .TheTorrent.Description}}
+						<p>{{.TheTorrent.Description}}</p>
+						{{else}}
+						<p><i>none</i></p>
+						{{end}}
 					</section>
 					<section>
 						<h2>File List:</h2>
 						<ul>
+							<li>{{.TheTorrent.PathJSON}}</li>
 							<li>Ubuntu20.39.iso <span class="text-body-secondary"> - 600.89 MiB</span></li>
 						</ul>
 					</section>
