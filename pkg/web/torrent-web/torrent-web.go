@@ -3,6 +3,7 @@ package torrentweb
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 
 	"github.com/oskar13/mini-tracker/pkg/db"
 	"github.com/oskar13/mini-tracker/pkg/tracker"
@@ -29,7 +30,11 @@ func LoadTorrentData(torrentID int, userID int) (webdata.TorrentWeb, error) {
 		torrent.User = user
 	}
 
-	torrent.Discussion = LoadTorrentComments(torrentID)
+	torrent.Discussion, err = LoadTorrentComments(torrentID)
+
+	if err != nil {
+		fmt.Println("Error loading comments : ", err)
+	}
 
 	//Check torrent access based on access_type field that overrides all else
 	if torrent.AccessType == "Public" || torrent.AccessType == "WWW" || torrent.AccessType == "Link Only" {
@@ -54,6 +59,32 @@ func LoadTorrentData(torrentID int, userID int) (webdata.TorrentWeb, error) {
 	return webdata.TorrentWeb{}, errors.New("no access")
 }
 
-func LoadTorrentComments(torrentID int) []webdata.TorrentComment {
-	return []webdata.TorrentComment{}
+func LoadTorrentComments(torrentID int) ([]webdata.TorrentComment, error) {
+
+	var comments []webdata.TorrentComment
+
+	q := `SELECT torrent_comments.comment_ID, torrent_comments.content, torrent_comments.date, users.user_ID, users.username, users.profile_pic FROM torrent_comments LEFT JOIN users ON users.user_ID = torrent_comments.user_ID WHERE torrent_comments.torrent_ID = ?`
+
+	rows, err := db.DB.Query(q, torrentID)
+
+	fmt.Println(err)
+	if err != nil {
+		fmt.Println("Error executing query:", err)
+		return []webdata.TorrentComment{}, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var comment webdata.TorrentComment
+		var user webdata.User
+		err := rows.Scan(&comment.CommentID, &comment.Content, &comment.Date, &user.UserID, &user.Username, &user.Cover)
+		if err != nil {
+			return []webdata.TorrentComment{}, err
+		} else {
+			comment.User = user
+			comments = append(comments, comment)
+		}
+	}
+
+	return comments, nil
 }
