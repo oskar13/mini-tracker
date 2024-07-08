@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"strings"
 
 	"github.com/oskar13/mini-tracker/pkg/db"
 	"github.com/oskar13/mini-tracker/pkg/tracker"
@@ -87,4 +88,45 @@ func LoadTorrentComments(torrentID int) ([]webdata.TorrentComment, error) {
 	}
 
 	return comments, nil
+}
+
+// Load public torrents in user profile view or elsewhere, set flag to true to
+func LoadUserTorrents(user_ID int, access_type []string) []webdata.TorrentWeb {
+
+	var resultTorrents []webdata.TorrentWeb
+
+	if len(access_type) == 0 {
+		return []webdata.TorrentWeb{}
+	}
+
+	q := `SELECT torrents.torrent_ID, torrents.created, torrents.name, torrents.upvotes, torrents.downvotes, torrents.access_type, torrents.size
+	      FROM torrents
+	      WHERE torrents.user_ID = ? AND torrents.access_type IN (` + strings.Repeat("?,", len(access_type)-1) + `?)`
+
+	args := make([]interface{}, 0, len(access_type)+1)
+	args = append(args, user_ID)
+	for _, at := range access_type {
+		args = append(args, at)
+	}
+
+	rows, err := db.DB.Query(q, args...)
+
+	fmt.Println(err)
+	if err != nil {
+		fmt.Println("Error executing query:", err)
+		return []webdata.TorrentWeb{}
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var torrent webdata.TorrentWeb
+		err := rows.Scan(&torrent.TorrentID, &torrent.Created, &torrent.Name, &torrent.UpVotes, &torrent.DownVotes, &torrent.AccessType, &torrent.Size)
+		if err != nil {
+			return []webdata.TorrentWeb{}
+		} else {
+			resultTorrents = append(resultTorrents, torrent)
+		}
+	}
+
+	return resultTorrents
 }

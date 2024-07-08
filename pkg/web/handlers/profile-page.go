@@ -7,6 +7,7 @@ import (
 
 	db "github.com/oskar13/mini-tracker/pkg/db"
 	"github.com/oskar13/mini-tracker/pkg/web/groups"
+	torrentweb "github.com/oskar13/mini-tracker/pkg/web/torrent-web"
 	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
 	"github.com/oskar13/mini-tracker/pkg/web/webdata"
 )
@@ -77,7 +78,7 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	pageStruct.TorrentList = webutils.LoadUserTorrents(pageStruct.DisplayedUser.UserID, []string{"Public"})
+	pageStruct.TorrentList = torrentweb.LoadUserTorrents(pageStruct.DisplayedUser.UserID, []string{"Public"})
 
 	webutils.RenderTemplate(w, []string{"pkg/web/templates/sidebar.html", "pkg/web/templates/profile.html",
 		"pkg/web/templates/head.html",

@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strings"
 	"text/template"
 	"time"
 
@@ -325,46 +324,6 @@ func LoadUserProfileData(user_ID int) (webdata.User, error) {
 	user.UserID = user_ID
 
 	return user, nil
-}
-
-// Load public torrents in user profile view or elsewhere, set flag to true to
-func LoadUserTorrents(user_ID int, access_type []string) []webdata.TorrentWeb {
-
-	var resultTorrents []webdata.TorrentWeb
-
-	if len(access_type) == 0 {
-		return []webdata.TorrentWeb{}
-	}
-
-	q := `SELECT torrents.torrent_ID, torrents.created, torrents.name, torrents.upvotes, torrents.downvotes
-	      FROM torrents
-	      WHERE torrents.user_ID = ? AND torrents.access_type IN (` + strings.Repeat("?,", len(access_type)-1) + `?)`
-
-	args := make([]interface{}, 0, len(access_type)+1)
-	args = append(args, user_ID)
-	for _, at := range access_type {
-		args = append(args, at)
-	}
-
-	rows, err := db.DB.Query(q, args...)
-
-	fmt.Println(err)
-	if err != nil {
-		fmt.Println("Error executing query:", err)
-		return []webdata.TorrentWeb{}
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var row webdata.TorrentWeb
-		if err := rows.Scan(&row.TorrentID, &row.Created, &row.Name, &row.UpVotes, &row.DownVotes); err != nil {
-			// do something with error
-		} else {
-			resultTorrents = append(resultTorrents, row)
-		}
-	}
-
-	return resultTorrents
 }
 
 func GetUserFriends(userID int) []webdata.User {

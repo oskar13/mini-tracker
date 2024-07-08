@@ -6,6 +6,7 @@ import (
 	db "github.com/oskar13/mini-tracker/pkg/db"
 	"github.com/oskar13/mini-tracker/pkg/web/groups"
 	"github.com/oskar13/mini-tracker/pkg/web/news"
+	torrentweb "github.com/oskar13/mini-tracker/pkg/web/torrent-web"
 	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
 	"github.com/oskar13/mini-tracker/pkg/web/webdata"
 )
@@ -20,17 +21,19 @@ func MainPage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var pageStruct struct {
-		UserData  webdata.User
-		SiteName  string
-		PageName  string
-		NewsList  []news.NewsArticle
-		Community []groups.GroupPost
+		UserData   webdata.User
+		SiteName   string
+		PageName   string
+		NewsList   []news.NewsArticle
+		Community  []groups.GroupPost
+		MyTorrents []webdata.TorrentWeb
 	}
 	pageStruct.UserData = userData
 	pageStruct.SiteName = webdata.SiteName
 	pageStruct.PageName = "Main"
 	pageStruct.NewsList, _ = news.LoadNewsList(3)
 	pageStruct.Community = groups.GetCommunityUpdates(userData.UserID, 3)
+	pageStruct.MyTorrents = torrentweb.LoadUserTorrents(userData.UserID, []string{"Public", "WWW", "Private", "Group"})
 
 	webutils.RenderTemplate(w, []string{"pkg/web/templates/main.html",
 		"pkg/web/templates/sidebar.html", "pkg/web/templates/head.html",

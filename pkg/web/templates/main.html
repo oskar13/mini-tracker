@@ -43,39 +43,25 @@
 
 				<div class="list-group list-group-flush  scrollarea">
 
+					{{range .MyTorrents}}
+					
 
-				  <a href="/torrent" class="list-group-item list-group-item-action py-3 lh-tight">
-					<div class="d-flex w-100 align-items-center justify-content-between torrent">
-						<span>
-							<h3><strong class="mb-1">Linux Mint 14</strong></h3>
-							<span class="badge text-bg-tag">Linux</span>
-							<span class="badge text-bg-tag">Bootable media</span>
-							<span class="badge text-bg-success">Shared on Scene</span>
-						</span>
-					  <small class="text-body-secondary">Uploaded 23.04.2024</small>
-					</div>
-					<div class="col-10 mb-1 small torrent-stats">Size: 2432MB Seed:3 Leech:1</div>
-				  </a>
-
-
-				  <a href="/torrent" class="list-group-item list-group-item-action py-3 lh-tight">
-					<div class="d-flex w-100 align-items-center justify-content-between torrent">
-						<span>
-							<h3><strong class="mb-1">Half Lyfe 3 [Leak][HD][FastDL].exe</strong></h3>
-							<span class="badge text-bg-success">Shared on Scene</span>
-							<span class="badge text-bg-danger">Reported: Trash</span>
-						   </span>
-						</span>
-					  <small class="text-body-secondary">Uploaded 27.12.2024</small>
-					</div>
-					<div class="col-10 mb-1 small torrent-stats">Size: 3.3GB Seed:6 Leech:1</div>
-				  </a>
-
-		  
-
-
-				  
-				  <div class="text-end col-10"><a href="#" class="btn btn-secondary btn-more">View all my uploads...</a></div>
+					<a href="/t/{{.TorrentID}}" class="list-group-item list-group-item-action py-3 lh-tight">
+						<div class="d-flex w-100 align-items-center justify-content-between torrent">
+							<span>
+								<h3><strong class="mb-1">{{.Name}}</strong></h3>
+								<span class="badge text-bg-info text-white">Access: {{.AccessType}} {{if eq .AccessType "Public"}}(anyone with account){{end}} {{if eq .AccessType "WWW"}}(anyone on the internet){{end}}</span>
+								{{if .GroupName}}
+								<a href="/groups/{{.TheTorrent.GroupID}}"><span class="badge text-bg-success">Shared on Group: {{.GroupName}}</span></a>
+								{{end}}
+							</span>
+						  <small class="text-body-secondary">Uploaded {{.Created}}</small>
+						</div>
+						<div class="col-10 mb-1 small torrent-stats">Size: {{.Size}} Seed:{{.Seeders}} Leech:{{.Leechers}}</div>
+					  </a>
+	
+					{{end}}				  
+				  <div class="text-end col-10"><a href="/my-torrents" class="btn btn-secondary btn-more">View all my uploads...</a></div>
 
 				</div>
 			  </div>
