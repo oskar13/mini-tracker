@@ -403,3 +403,71 @@ func LoadStrikes(userID int) []webdata.Strike {
 
 	return strikes
 }
+
+func GetFriendRequests(userID int) webdata.FriendRequests {
+	var friendRequests webdata.FriendRequests
+	friendRequests.Incoming = getIncomingFriendRequests(userID)
+	friendRequests.Outgoing = getOutgoingFriendRequests(userID)
+	return friendRequests
+}
+
+func getIncomingFriendRequests(userID int) []webdata.FriendRequest {
+
+	var incomingList []webdata.FriendRequest
+
+	q := "SELECT users.user_ID, users.username, users.profile_pic, friend_requests.message FROM friend_requests LEFT JOIN users ON sender_user_ID = users.user_ID WHERE receiver_user_ID = ?"
+
+	rows, err := db.DB.Query(q, userID)
+	if err != nil {
+		return []webdata.FriendRequest{}
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var result webdata.FriendRequest
+
+		err = rows.Scan(&result.User.UserID, &result.User.Username, &result.User.Cover, &result.Message)
+		if err != nil {
+			return []webdata.FriendRequest{}
+		}
+
+		incomingList = append(incomingList, result)
+	}
+	// get any error encountered during iteration
+	err = rows.Err()
+	if err != nil {
+		return []webdata.FriendRequest{}
+	}
+
+	return incomingList
+}
+
+func getOutgoingFriendRequests(userID int) []webdata.FriendRequest {
+
+	var outgoingList []webdata.FriendRequest
+
+	q := "SELECT users.user_ID, users.username, users.profile_pic, friend_requests.message FROM friend_requests LEFT JOIN users ON receiver_user_ID = users.user_ID WHERE sender_user_ID = ?"
+
+	rows, err := db.DB.Query(q, userID)
+	if err != nil {
+		return []webdata.FriendRequest{}
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var result webdata.FriendRequest
+
+		err = rows.Scan(&result.User.UserID, &result.User.Username, &result.User.Cover, &result.Message)
+		if err != nil {
+			return []webdata.FriendRequest{}
+		}
+
+		outgoingList = append(outgoingList, result)
+	}
+	// get any error encountered during iteration
+	err = rows.Err()
+	if err != nil {
+		return []webdata.FriendRequest{}
+	}
+
+	return outgoingList
+
+}

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   width="800px"
+   height="800px"
+   viewBox="0 0 24 24"
+   fill="none"
+   stroke="#000000"
+   stroke-width="1"
+   stroke-linecap="round"
+   stroke-linejoin="miter"
+   version="1.1"
+   id="svg3"
+   sodipodi:docname="chat.svg"
+   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs3" />
+  <sodipodi:namedview
+     id="namedview3"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="0.37476659"
+     inkscape:cx="533.66549"
+     inkscape:cy="607.0445"
+     inkscape:window-width="1920"
+     inkscape:window-height="1015"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer1"
+     inkscape:label="Chat">
+    <path
+       style="stroke:#ffa700;stroke-width:0.93225;stroke-linejoin:round;paint-order:markers fill stroke"
+       d="m 13.116863,1.4192926 c 6.899749,0.127261 9.601119,4.2199114 9.606358,7.9247718 l 0.0015,1.0375756 c 0.0024,1.688815 -0.980126,6.473344 -5.207394,9.390861 -3.688395,2.545605 -7.8227969,3.413911 -9.5065121,3.122264 l 5.4950961,-5.003285 -1.471652,0.01165 c -8.8042851,0 -10.7051502,-4.241445 -10.6824544,-7.94624 L 1.358925,8.7945774 C 1.3785099,5.597577 4.0596716,1.2522391 13.116863,1.4192926 Z"
+       id="rect1"
+       sodipodi:nodetypes="sssscccsss" />
+    <ellipse
+       style="fill:#ffa700;fill-opacity:1;stroke:none;stroke-width:0.93225;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;paint-order:markers fill stroke"
+       id="path3"
+       cx="7.1700888"
+       cy="9.9354515"
+       rx="1.2592509"
+       ry="1.2793994" />
+    <ellipse
+       style="fill:#ffa700;fill-opacity:1;stroke:none;stroke-width:0.93225;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;paint-order:markers fill stroke"
+       id="path3-3"
+       cx="12.078512"
+       cy="9.9078455"
+       rx="1.2592509"
+       ry="1.2793994" />
+    <ellipse
+       style="fill:#ffa700;fill-opacity:1;stroke:none;stroke-width:0.93225;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;paint-order:markers fill stroke"
+       id="path3-3-6"
+       cx="16.984362"
+       cy="9.953229"
+       rx="1.2592509"
+       ry="1.2793994" />
+  </g>
+</svg>

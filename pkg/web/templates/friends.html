@@ -4,85 +4,136 @@
 
 
 
-		{{template "sidebar" .}}
-		
-		<div class="b-example-divider"></div>
+{{template "sidebar" .}}
+
+<div class="b-example-divider"></div>
 
 
 
 
-		<div class="container overflow-scroll overview friends">
+<div class="container overflow-scroll overview friends">
 
 
-			{{template "commandbar"}}
-		
-
-			
-				<h2>Friends</h2>
-				<hr>
+	{{template "commandbar"}}
 
 
+	<div class="row">
+		{{if .FriendRequests.Incoming}}
+		<div class="col-md-6 mb-3">
+			<h2>Incoming</h2>
+			<hr>
+			<div class="list-group list-group-flush  scrollarea">
+				{{range .FriendRequests.Incoming}}
 
+				<div
+					class="list-group-item list-group-item-action py-1  align-items-center text-white text-decoration-none">
 
-
-            <div class="row">
-
-                {{if .FriendList}}
-           
-                {{range .FriendList}}
-                <div class="col-md-3">
-                    <div class="user-card card text-center" >
-                        <img src="{{.Banner}}" class="card-img-top glow" alt="...">
-    
-                        <div class="card-body">
-                            <img src="{{.Cover}}" alt="" width="96" height="96" class="rounded-circle user-pic glow">
-                          <h5 class="card-title username">{{.Username}}</h5>
-    
-                          <p class="card-text">{{.Tagline}}</p>
-                          <section class="text-start userinfo">
-                            {{if .UserBadges}}
-                            <div>
-                                <strong>Badges:</strong>
-                                {{range .UserBadges}}
-                                 <span class="badge" style="background-color: {{.Color}};">{{.BadgeTitle}}</span> 
-                                 {{end}}
-                            </div>
-                            {{end}}
-                            <div><strong>Joined:</strong> {{.Joined}}</div>
-                          </section>
-                          <div class="row">
-                            <div class="col-md-6">
-                              <a href="/profile/{{.UserID}}" class="btn btn-primary">View Profile</a>
-                            </div>
-                            <div class="col-md-6">
-                              <a href="/profile/{{.UserID}}" class="btn btn-primary">Send Message</a>
-                            </div>
-                            
-                            
-                          </div>
-                         
-
-                        </div>
-                      </div>
-                </div>
-                {{end}}
-        
-            {{else}}
-            list empty
-            {{end}}
-   
-
-
-
-
-            </div>
-
- 
-			
+					<img src="{{.User.Cover}}" alt="" width="48" height="48" class="rounded-circle m-1 my-3">
+					<a href="/profile/{{.User.UserID}}" class="m-1 my-3">
+						<strong class="username">{{.User.Username}}</strong>
+					</a>
+					<button type="button" class="btn btn-success m-1 my-3">Accept</button>
+					<button type="button" class="btn btn-danger m-1 my-3">Decline</button>
+					
+					<p><img src="/static/img/icons/chat.svg" width="24" height="24" alt="message"> {{.Message}}</p>
+				</div>
+				{{end}}
+			</div>
 		</div>
-		
-		<div class="b-example-divider"></div>
+		{{end}}
+		{{if .FriendRequests.Outgoing}}
+		<div class="col-md-6 mb-3">
+			<h2>Outgoing</h2>
+			<hr>
+			<div class="list-group list-group-flush  scrollarea">
+				{{range .FriendRequests.Outgoing}}
 
-		{{template "end"}}
+				<div
+					class="list-group-item list-group-item-action py-1  align-items-center text-white text-decoration-none">
+
+					<img src="{{.User.Cover}}" alt="" width="48" height="48" class="rounded-circle m-1 my-3">
+					<a href="/profile/{{.User.UserID}}" class="m-1 my-3">
+						<strong class="username">{{.User.Username}}</strong>
+					</a>
+					<button type="button" class="btn btn-secondary m-1 my-3">Pending...</button>
+					
+					<p><img src="/static/img/icons/chat.svg" width="24" height="24" alt="message"> {{.Message}}</p>
+				</div>
+				{{end}}
+			</div>
+		</div>
+		{{end}}
+
+	</div>
+
+
+
+
+	<h2>Friends</h2>
+	<hr>
+
+
+
+
+
+	<div class="row">
+
+		{{if .FriendList}}
+
+		{{range .FriendList}}
+		<div class="col-md-3">
+			<div class="user-card card text-center">
+				<img src="{{.Banner}}" class="card-img-top glow" alt="...">
+
+				<div class="card-body">
+					<img src="{{.Cover}}" alt="" width="96" height="96" class="rounded-circle user-pic glow">
+					<h5 class="card-title username">{{.Username}}</h5>
+
+					<p class="card-text">{{.Tagline}}</p>
+					<section class="text-start userinfo">
+						{{if .UserBadges}}
+						<div>
+							<strong>Badges:</strong>
+							{{range .UserBadges}}
+							<span class="badge" style="background-color: {{.Color}};">{{.BadgeTitle}}</span>
+							{{end}}
+						</div>
+						{{end}}
+						<div><strong>Joined:</strong> {{.Joined}}</div>
+					</section>
+					<div class="row">
+						<div class="col-md-6">
+							<a href="/profile/{{.UserID}}" class="btn btn-primary">View Profile</a>
+						</div>
+						<div class="col-md-6">
+							<a href="/profile/{{.UserID}}" class="btn btn-primary">Send Message</a>
+						</div>
+
+
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+		{{end}}
+
+		{{else}}
+		list empty
+		{{end}}
+
+
+
+
+
+	</div>
+
+
+
+</div>
+
+<div class="b-example-divider"></div>
+
+{{template "end"}}
 
 {{end}}

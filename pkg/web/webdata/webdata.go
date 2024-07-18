@@ -101,4 +101,14 @@ type DM struct {
 	Date      string
 }
 
+type FriendRequests struct {
+	Incoming []FriendRequest
+	Outgoing []FriendRequest
+}
+
+type FriendRequest struct {
+	User    User
+	Message *string
+}
+
 var SiteName string = "Mini Tracker"

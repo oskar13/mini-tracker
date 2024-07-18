@@ -18,15 +18,16 @@ func FriendsPage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var pageStruct struct {
-		Error         bool
-		ErrorText     string
-		DisplayedUser webdata.User
-		UserData      webdata.User
-		SelfEdit      bool
-		TorrentList   []webdata.TorrentWeb
-		FriendList    []webdata.User
-		SiteName      string
-		PageName      string
+		Error          bool
+		ErrorText      string
+		DisplayedUser  webdata.User
+		UserData       webdata.User
+		SelfEdit       bool
+		TorrentList    []webdata.TorrentWeb
+		FriendList     []webdata.User
+		SiteName       string
+		PageName       string
+		FriendRequests webdata.FriendRequests
 	}
 
 	pageStruct.SiteName = webdata.SiteName
@@ -34,6 +35,7 @@ func FriendsPage(w http.ResponseWriter, r *http.Request) {
 
 	pageStruct.UserData = userData
 
+	pageStruct.FriendRequests = webutils.GetFriendRequests(pageStruct.UserData.UserID)
 	pageStruct.FriendList = webutils.GetUserFriends(pageStruct.UserData.UserID)
 
 	webutils.RenderTemplate(w, []string{"pkg/web/templates/friends.html",
