@@ -1,0 +1,62 @@
+{{define "base"}}
+	{{template "head" .}}
+
+
+
+		{{template "sidebar" .}}
+		
+		<div class="b-example-divider"></div>
+
+
+
+
+		<div class="container overflow-scroll overview">
+
+
+			{{template "commandbar"}}
+
+            <h2 class="mb-5">Upload a new  torrent</h2>
+
+			<div class="row">
+				<form action="" class="px-5">
+
+					<div class="mb-5">
+						<label for="torrentFile" class="form-label fs-2">Torrent file</label>
+						<input class="form-control form-control-lg" id="torrentFile" type="file">
+					  </div>
+					<div class="mb-5">
+						<label for="formGroupExampleInput" class="form-label fs-4">Pretty title <small class="text-secondary-emphasis">(optional)</small></label>
+						<input type="text" class="form-control form-control-lg" id="formGroupExampleInput" placeholder="Title">
+					  </div>
+					  <div class="mb-5">
+
+							<label for="torrentDescription" class="form-label  fs-4">Description <small class="text-secondary-emphasis">(optional)</small></label>
+							<textarea class="form-control" id="torrentDescription" rows="3"></textarea>
+
+					  </div>
+					  <div class="mb-5">
+						<label for="formGroupExampleInput2" class="form-label fs-4">Visibility</label>
+						<select class="form-select" aria-label="Default select example">
+							<option selected>Select</option>
+							<option value="1">Public</option>
+							<option value="2">Access list</option>
+							<option value="3">Shared by link</option>
+						  </select>
+					  </div>
+
+					  
+					  <div class="col-12">
+						<button type="submit" class="btn btn-primary fs-2">Upload</button>
+					  </div>
+					
+
+				</form>
+			</div>
+		
+
+		</div>
+		
+		<div class="b-example-divider"></div>
+
+		{{template "end"}}
+{{end}}

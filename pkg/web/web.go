@@ -24,6 +24,7 @@ func StartWebsite() {
 	serverMux.HandleFunc("/friends", handlers.FriendsPage)
 	serverMux.HandleFunc("/dms/{id}/", handlers.DirectMessages)
 	serverMux.HandleFunc("/dms", handlers.DirectMessages)
+	serverMux.HandleFunc("/new", handlers.NewTorrentPage)
 	serverMux.HandleFunc("/news/{id}/", handlers.NewsPage)
 	serverMux.HandleFunc("/news", handlers.NewsPage)
 	serverMux.HandleFunc("/groups/{id}/", handlers.GroupPage)
