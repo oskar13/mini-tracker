@@ -4,13 +4,14 @@ import (
 	"os"
 
 	torrenttools "github.com/oskar13/mini-tracker/pkg/torrent-tools"
-	web "github.com/oskar13/mini-tracker/pkg/web"
+	"github.com/oskar13/mini-tracker/pkg/tracker"
 )
 
 func main() {
 
 	torrenttools.DecodeUploadedTorrent(os.Args[1])
+	tracker.StartTracker()
 
-	web.StartWebsite()
+	//web.StartWebsite()
 
 }
