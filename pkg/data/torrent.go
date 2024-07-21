@@ -31,3 +31,9 @@ type TorrentComment struct {
 	Date      string
 	Content   string
 }
+
+type Peer struct {
+	PeerID string
+	IP     string
+	Port   int
+}

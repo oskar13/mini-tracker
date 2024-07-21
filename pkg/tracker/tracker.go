@@ -3,7 +3,6 @@ package tracker
 import (
 	"fmt"
 	"net/http"
-	"net/url"
 
 	"github.com/zeebo/bencode"
 )
@@ -24,24 +23,21 @@ func hello(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		//message := r.URL.Query().Get("message")
 
-		fmt.Println(r.URL.Query().Get("info_hash"))
-
-		escaped := url.QueryEscape(r.URL.Query().Get("info_hash"))
-
-		fmt.Println(escaped)
+		fmt.Println("Sprintf x")
+		fmt.Println(fmt.Sprintf("%x", r.URL.Query().Get("info_hash")))
 
 		var response = make(map[string]interface{})
 
-		response["interval"] = 1800
+		response["interval"] = 18
 
 		var peerlist []interface{}
 
 		var peer = make(map[string]interface{})
 
-		peerlist = append(peerlist, peer)
-
-		peer["ip"] = "192.168.189.1"
+		peer["ip"] = "192.168.101.111"
 		peer["port"] = 20111
+
+		peerlist = append(peerlist, peer)
 
 		response["peers"] = peerlist
 
