@@ -33,7 +33,8 @@ type TorrentComment struct {
 }
 
 type Peer struct {
-	PeerID string
-	IP     string
-	Port   int
+	TorrentID int
+	PeerID    string
+	IP        string
+	Port      int
 }

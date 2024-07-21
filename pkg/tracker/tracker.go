@@ -4,10 +4,14 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/zeebo/bencode"
+	db "github.com/oskar13/mini-tracker/pkg/db"
 )
 
 func StartTracker() {
+
+	// Initialize the database
+	db.InitDB()
+	defer db.Close()
 
 	serverMux := http.NewServeMux()
 	serverMux.HandleFunc("/", hello)
@@ -23,28 +27,27 @@ func hello(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		//message := r.URL.Query().Get("message")
 
+		fmt.Println(r.URL.Query())
+
 		fmt.Println("Sprintf x")
 		fmt.Println(fmt.Sprintf("%x", r.URL.Query().Get("info_hash")))
+		fmt.Println(r.URL.Query().Get("peer_id"))
+		fmt.Println(r.URL.Query().Get("port"))
 
-		var response = make(map[string]interface{})
+		peers, err := LoadPeers(1)
 
-		response["interval"] = 18
-
-		var peerlist []interface{}
-
-		var peer = make(map[string]interface{})
-
-		peer["ip"] = "192.168.101.111"
-		peer["port"] = 20111
-
-		peerlist = append(peerlist, peer)
-
-		response["peers"] = peerlist
-
-		enc := bencode.NewEncoder(w)
-		if err := enc.Encode(response); err != nil {
-			panic(err)
+		if err != nil {
+			fmt.Println(err)
+			return
 		}
+
+		err = EncodePeerListAndRespond(w, 18, peers)
+
+		if err != nil {
+			fmt.Println("Error encoding peer list")
+		}
+
+		fmt.Println("Successfully updated peerlist")
 
 	}
 }
