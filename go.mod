@@ -1,10 +1,10 @@
 module github.com/oskar13/mini-tracker
 
-go 1.22.0
+go 1.22.5
 
 require (
 	github.com/go-sql-driver/mysql v1.8.1
-	github.com/oskar13/go-torrent-parser v0.0.0-20211014072822-db02b4099054
+	github.com/oskar13/go-torrent-parser v0.0.0-20240722150037-9352ea2ed8ba
 	github.com/zeebo/bencode v1.0.0
 )
 
