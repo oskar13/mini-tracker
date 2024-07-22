@@ -14,7 +14,7 @@ func StartTracker() {
 	defer db.Close()
 
 	serverMux := http.NewServeMux()
-	serverMux.HandleFunc("/", hello)
+	serverMux.HandleFunc("/www", hello)
 
 	fmt.Println("Starting tracking server at: http://localhost:7777")
 	http.ListenAndServe("localhost:7777", serverMux)
@@ -34,6 +34,8 @@ func hello(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(r.URL.Query().Get("peer_id"))
 		fmt.Println(r.URL.Query().Get("port"))
 
+		fmt.Println(GetHTTPRequestIP(r))
+
 		peers, err := LoadPeers(1)
 
 		if err != nil {
@@ -45,9 +47,9 @@ func hello(w http.ResponseWriter, r *http.Request) {
 
 		if err != nil {
 			fmt.Println("Error encoding peer list")
+		} else {
+			fmt.Println("Successfully updated peerlist")
 		}
-
-		fmt.Println("Successfully updated peerlist")
 
 	}
 }
