@@ -1,9 +1,9 @@
 package webdata
 
-// Data object to hold torrent data when processing templates
+// Data object to hold torrent data when loading data from and to database, also to be used in the templates
 type TorrentWeb struct {
 	TorrentID   int
-	Announce    string
+	Announce    string //unique url if torrent is not public
 	Name        string
 	Description string //comment added on web page
 	Comment     string //file metadata comment

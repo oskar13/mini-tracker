@@ -2,26 +2,19 @@ package torrenttools
 
 import (
 	"fmt"
-	"os"
+	"io"
 
 	gotorrentparser "github.com/oskar13/go-torrent-parser"
 )
 
-func DecodeUploadedTorrent(filename string) {
+func DecodeUploadedTorrent(file io.Reader) (*gotorrentparser.Torrent, error) {
 
-	file, err := os.Open(filename)
-	if err != nil {
-		fmt.Println(err)
-	}
 	torrent, err := gotorrentparser.Parse(file)
 
 	if err != nil {
 		fmt.Println(err)
-		return
+		return nil, err
 	}
 
-	fmt.Println(torrent.Announce)
-	fmt.Println(torrent.InfoHash)
-	fmt.Println(torrent.Files[0].Path)
-
+	return torrent, nil
 }
