@@ -16,9 +16,9 @@ func LoadTorrentData(torrentID int, userID int) (webdata.TorrentWeb, error) {
 	var user webdata.User
 	var torrent webdata.TorrentWeb
 
-	q := "SELECT torrents.created, torrents.name, torrents.size, torrents.anonymous, torrents.access_type, torrents.group_ID, torrents.upvotes, torrents.downvotes, torrents.description, torrents.info_hash, torrents.pieces, torrents.piece_length, torrents.path, users.user_ID, users.username, users.profile_pic, groups.group_name FROM torrents LEFT JOIN users ON torrents.user_ID = users.user_ID LEFT JOIN groups ON groups.group_ID = torrents.group_ID WHERE torrents.torrent_ID = ?"
+	q := "SELECT torrents.uploaded, torrents.name, torrents.size, torrents.anonymous, torrents.access_type, torrents.group_ID, torrents.upvotes, torrents.downvotes, torrents.description, torrents.info_hash, torrents.pieces, torrents.piece_length, torrents.path, users.user_ID, users.username, users.profile_pic, groups.group_name FROM torrents LEFT JOIN users ON torrents.user_ID = users.user_ID LEFT JOIN groups ON groups.group_ID = torrents.group_ID WHERE torrents.torrent_ID = ?"
 
-	err := db.DB.QueryRow(q, torrentID).Scan(&torrent.Created, &torrent.Name, &torrent.Size, &torrent.Anonymous, &torrent.AccessType, &torrent.GroupID, &torrent.UpVotes, &torrent.DownVotes, &torrent.Description, &torrent.InfoHash, &torrent.Pieces, &torrent.PieceLength, &torrent.PathJSON, &user.UserID, &user.Username, &user.Cover, &torrent.GroupName)
+	err := db.DB.QueryRow(q, torrentID).Scan(&torrent.Uploaded, &torrent.Name, &torrent.Size, &torrent.Anonymous, &torrent.AccessType, &torrent.GroupID, &torrent.UpVotes, &torrent.DownVotes, &torrent.Description, &torrent.InfoHash, &torrent.Pieces, &torrent.PieceLength, &torrent.PathJSON, &user.UserID, &user.Username, &user.Cover, &torrent.GroupName)
 	if err != nil {
 		if err == sql.ErrNoRows {
 
@@ -99,7 +99,7 @@ func LoadUserTorrents(user_ID int, access_type []string) []webdata.TorrentWeb {
 		return []webdata.TorrentWeb{}
 	}
 
-	q := `SELECT torrents.torrent_ID, torrents.created, torrents.name, torrents.upvotes, torrents.downvotes, torrents.access_type, torrents.size
+	q := `SELECT torrents.torrent_ID, torrents.uploaded, torrents.name, torrents.upvotes, torrents.downvotes, torrents.access_type, torrents.size
 	      FROM torrents
 	      WHERE torrents.user_ID = ? AND torrents.access_type IN (` + strings.Repeat("?,", len(access_type)-1) + `?)`
 
@@ -120,7 +120,7 @@ func LoadUserTorrents(user_ID int, access_type []string) []webdata.TorrentWeb {
 
 	for rows.Next() {
 		var torrent webdata.TorrentWeb
-		err := rows.Scan(&torrent.TorrentID, &torrent.Created, &torrent.Name, &torrent.UpVotes, &torrent.DownVotes, &torrent.AccessType, &torrent.Size)
+		err := rows.Scan(&torrent.TorrentID, &torrent.Uploaded, &torrent.Name, &torrent.UpVotes, &torrent.DownVotes, &torrent.AccessType, &torrent.Size)
 		if err != nil {
 			return []webdata.TorrentWeb{}
 		} else {
@@ -129,4 +129,30 @@ func LoadUserTorrents(user_ID int, access_type []string) []webdata.TorrentWeb {
 	}
 
 	return resultTorrents
+}
+
+// Create a database entry for a torrent that can be used to create the torrent file
+func CreateTorrentEntry(torrent webdata.TorrentWeb, userID int) (int, error) {
+
+	if torrent.Announce == "" {
+		return 0, errors.New("announce empty")
+	} else if torrent.InfoField == nil {
+		return 0, errors.New("info field required")
+	}
+
+	stmt, err := db.DB.Prepare("INSERT INTO torrents (user_ID,name,size,access_type,description,info_hash,info_field) VALUES (?,?,?,?,?,?,?)")
+	if err != nil {
+		return 0, fmt.Errorf("error preparing statement: %v", err)
+	}
+	defer stmt.Close()
+
+	res, err := stmt.Exec(userID, torrent.Name, torrent.Size, torrent.AccessType, torrent.Description, torrent.InfoHash, torrent.InfoField)
+
+	if err != nil {
+		return 0, fmt.Errorf("error preparing statement: %v", err)
+	}
+
+	resultID, err := res.LastInsertId()
+	return int(resultID), err
+
 }

@@ -8,13 +8,12 @@ type TorrentWeb struct {
 	Description string //comment added on web page
 	Comment     string //file metadata comment
 	Type        string //category it was posted in
-	PieceLength int64
-	Pieces      []byte
-	Private     bool
+	PieceLength *int64
+	Pieces      *[]byte
 	GroupID     *int
 	GroupName   *string
 	User        User //Uploader
-	Created     string
+	Uploaded    string
 	InfoHash    string
 	Encoding    string
 	PathJSON    *string
@@ -30,6 +29,7 @@ type TorrentWeb struct {
 	DownVotes   int
 	Anonymous   bool
 	AccessType  string
+	InfoField   []byte
 }
 
 type TorrentComment struct {

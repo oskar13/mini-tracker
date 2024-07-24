@@ -2,6 +2,7 @@ package tracker
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"net"
 	"net/http"
@@ -28,12 +29,12 @@ func CheckTorrentAccessList(torrentID int, userID int) (bool, error) {
 	return false, nil
 }
 
-func LoadPeers(torrentID int) ([]data.Peer, error) {
+func LoadPeers(torrentID int, peer_id string) ([]data.Peer, error) {
 
 	var peerList []data.Peer
-	q := "SELECT peer_id, ip, port FROM peers where torrent_ID = ?"
+	q := "SELECT peer_id, ip, port FROM peers where torrent_ID = ? AND peer_id != ?"
 
-	rows, err := db.DB.Query(q, torrentID)
+	rows, err := db.DB.Query(q, torrentID, peer_id)
 	if err != nil {
 		return []data.Peer{}, err
 	}
@@ -56,6 +57,23 @@ func LoadPeers(torrentID int) ([]data.Peer, error) {
 	}
 	return peerList, nil
 
+}
+
+func AddPeer(peer data.Peer) error {
+
+	q := "INSERT INTO peers (peers.torrent_ID, peers.peer_id, peers.ip, peers.port, peers.left) VALUES (?,?,?,?,?)"
+
+	stmt, err := db.DB.Prepare(q)
+	if err != nil {
+		return fmt.Errorf("error preparing statement: %v", err)
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(peer.TorrentID, peer.PeerID, peer.IP, peer.Port, peer.Left)
+	if err != nil {
+		return fmt.Errorf("error preparing statement: %v", err)
+	}
+	return nil
 }
 
 func EncodePeerListAndRespond(w http.ResponseWriter, interval int, peerList []data.Peer) error {
@@ -115,4 +133,17 @@ func GetHTTPRequestIP(r *http.Request) (string, error) {
 		return ip, nil
 	}
 	return "", fmt.Errorf("no valid ip found")
+}
+
+func GetTorrentIDFromHash(hash string) (int, error) {
+	var result int
+	q := "SELECT torrents.torrent_ID FROM torrents WHERE torrents.info_hash = ?"
+	err := db.DB.QueryRow(q, hash).Scan(&result)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return 0, errors.New("torrent not found")
+		}
+		return 0, err
+	}
+	return result, nil
 }

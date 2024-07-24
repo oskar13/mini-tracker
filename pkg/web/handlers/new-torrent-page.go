@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/oskar13/mini-tracker/pkg/data"
 	db "github.com/oskar13/mini-tracker/pkg/db"
 	torrenttools "github.com/oskar13/mini-tracker/pkg/torrent-tools"
 	"github.com/oskar13/mini-tracker/pkg/web/groups"
 	"github.com/oskar13/mini-tracker/pkg/web/news"
+	torrentweb "github.com/oskar13/mini-tracker/pkg/web/torrent-web"
 	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
 	"github.com/oskar13/mini-tracker/pkg/web/webdata"
 )
@@ -68,7 +70,6 @@ func NewTorrentPage(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Reeee")
 		fmt.Println(r.Form.Get("category"))
 
-		prettyTitle := r.Form.Get("pretty_title")
 		description := r.Form.Get("description")
 		visibility := r.Form.Get("visibility")
 
@@ -84,10 +85,45 @@ func NewTorrentPage(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		fmt.Println(prettyTitle)
-		fmt.Println(torrent.Announce)
-		fmt.Println(description)
-		fmt.Println("Done")
+		if visibility == "Public" {
+			torrent.Announce = "http://" + data.TrackerHostAndPort + "/www"
+		}
+
+		torrent.Description = description
+		torrent.AccessType = visibility
+
+		uploadedTorrentID, err := torrentweb.CreateTorrentEntry(torrent, userData.UserID)
+
+		if err != nil {
+			fmt.Println(err)
+			http.Error(w, "Could save uploaded torrent.", http.StatusInternalServerError)
+			return
+		}
+
+		fmt.Println("Uploaded ID ", uploadedTorrentID)
+
+		/*
+			//Send client a generated torrent file
+			newTorrentFile, err := torrenttools.TorrentFromWebTorrent(torrent)
+
+			if err != nil {
+				fmt.Println("Error creating a torrent file")
+				fmt.Println(err)
+				return
+			}
+
+			fmt.Println(string(newTorrentFile)[:])
+
+			fmt.Println(torrent.Announce)
+			fmt.Println(description)
+			fmt.Println("Done")
+
+			w.Header().Set("Content-Disposition", "attachment; filename=foo.torrent")
+			w.Header().Set("Content-Type", "application/x-bittorrent")
+
+			w.Write(newTorrentFile)
+
+		*/
 
 	} else {
 		//If was not a POST request show torrent upload form
@@ -96,7 +132,5 @@ func NewTorrentPage(w http.ResponseWriter, r *http.Request) {
 			"pkg/web/templates/end.html",
 			"pkg/web/templates/commandbar.html"}, pageStruct)
 	}
-
-	return
 
 }
