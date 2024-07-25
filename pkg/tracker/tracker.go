@@ -16,53 +16,59 @@ func StartTracker() {
 	defer db.Close()
 
 	serverMux := http.NewServeMux()
-	serverMux.HandleFunc("/www", hello)
+	serverMux.HandleFunc("/www", HandlePublicTorrents)
 
 	fmt.Println("Starting tracking server at: http://", data.TrackerHostAndPort)
 	http.ListenAndServe(data.TrackerHostAndPort, serverMux)
 
 }
 
-func hello(w http.ResponseWriter, r *http.Request) {
-	//fmt.Fprintf(w, "hello")
+// Handle anonymous public requests
+func HandlePublicTorrents(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "GET" {
-		//message := r.URL.Query().Get("message")
 
 		var newPeer data.Peer
 
 		fmt.Println(r.URL.Query())
 
-		fmt.Println("Sprintf x")
-
-		fmt.Println(fmt.Sprintf("%x", r.URL.Query().Get("info_hash")))
-		fmt.Println(r.URL.Query().Get("peer_id"))
-		fmt.Println(r.URL.Query().Get("port"))
-
 		port, err := strconv.Atoi(r.URL.Query().Get("port"))
 		if err != nil {
-			panic(err)
+			http.Error(w, "Invalid port number", http.StatusBadRequest)
+			return
 		}
 
 		left, err := strconv.Atoi(r.URL.Query().Get("left"))
 		if err != nil {
-			panic(err)
+			http.Error(w, "Could not parse how much is left to download", http.StatusBadRequest)
+			return
 		}
 
 		newPeer.InfoHash = fmt.Sprintf("%x", r.URL.Query().Get("info_hash"))
+		if len(newPeer.InfoHash) != 40 {
+			http.Error(w, "Invalid info hash size", http.StatusBadRequest)
+			return
+		}
+
 		newPeer.PeerID = r.URL.Query().Get("peer_id")
+		if len(newPeer.PeerID) != 20 {
+			http.Error(w, "Invalid peer id", http.StatusBadRequest)
+			return
+		}
+
 		newPeer.Port = port
 		newPeer.Left = left
 		torrentID, err := GetTorrentIDFromHash(newPeer.InfoHash)
 
 		if err != nil {
 			fmt.Println(err)
+			http.Error(w, "Could not fetch torrent", http.StatusInternalServerError)
 			return
 		}
 
 		newPeer.TorrentID = torrentID
 
-		peers, err := LoadPeers(torrentID, newPeer.PeerID)
+		peers, err := LoadPeers(newPeer.TorrentID, newPeer.PeerID)
 
 		if err != nil {
 			fmt.Println(err)
@@ -73,16 +79,24 @@ func hello(w http.ResponseWriter, r *http.Request) {
 
 		if err != nil {
 			fmt.Println("Error adding peer")
+			http.Error(w, "Error adding peer", http.StatusInternalServerError)
 			fmt.Println(err)
+			return
 		}
 
-		err = EncodePeerListAndRespond(w, torrentID, peers)
+		err = EncodePeerListAndRespond(w, 20, peers)
 
 		if err != nil {
 			fmt.Println("Error encoding peer list")
+			http.Error(w, "Error encoding peer list", http.StatusInternalServerError)
+			fmt.Println(err)
+			return
 		} else {
 			fmt.Println("Successfully updated peerlist")
 		}
 
+	} else {
+		http.Error(w, "Invalid ", http.StatusMethodNotAllowed)
+		return
 	}
 }

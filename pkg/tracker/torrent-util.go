@@ -29,6 +29,7 @@ func CheckTorrentAccessList(torrentID int, userID int) (bool, error) {
 	return false, nil
 }
 
+// Return list of peers without including the requester as a peer
 func LoadPeers(torrentID int, peer_id string) ([]data.Peer, error) {
 
 	var peerList []data.Peer
@@ -59,9 +60,10 @@ func LoadPeers(torrentID int, peer_id string) ([]data.Peer, error) {
 
 }
 
+// Add a new peer to database
 func AddPeer(peer data.Peer) error {
 
-	q := "INSERT INTO peers (peers.torrent_ID, peers.peer_id, peers.ip, peers.port, peers.left) VALUES (?,?,?,?,?)"
+	q := "REPLACE INTO peers (peers.torrent_ID, peers.peer_id, peers.ip, peers.port, peers.left) VALUES (?,?,?,?,?)"
 
 	stmt, err := db.DB.Prepare(q)
 	if err != nil {
@@ -76,6 +78,7 @@ func AddPeer(peer data.Peer) error {
 	return nil
 }
 
+// Takes peer list array and send bencoded response
 func EncodePeerListAndRespond(w http.ResponseWriter, interval int, peerList []data.Peer) error {
 
 	var response = make(map[string]interface{})
@@ -104,6 +107,7 @@ func EncodePeerListAndRespond(w http.ResponseWriter, interval int, peerList []da
 	return nil
 }
 
+// Get the IP address of the request
 func GetHTTPRequestIP(r *http.Request) (string, error) {
 
 	//Get IP from the X-REAL-IP header
@@ -135,6 +139,7 @@ func GetHTTPRequestIP(r *http.Request) (string, error) {
 	return "", fmt.Errorf("no valid ip found")
 }
 
+// Gets the database ID for a torrent based on its info_hash
 func GetTorrentIDFromHash(hash string) (int, error) {
 	var result int
 	q := "SELECT torrents.torrent_ID FROM torrents WHERE torrents.info_hash = ?"
