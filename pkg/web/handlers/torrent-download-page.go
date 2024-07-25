@@ -56,7 +56,7 @@ func TorrentDownloadPage(w http.ResponseWriter, r *http.Request) {
 
 			fmt.Println("Done")
 
-			w.Header().Set("Content-Disposition", "attachment; filename=foo.torrent")
+			w.Header().Set("Content-Disposition", "attachment; filename="+torrent.Name+".torrent")
 			w.Header().Set("Content-Type", "application/x-bittorrent")
 
 			w.Write(newTorrentFile)

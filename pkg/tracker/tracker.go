@@ -57,7 +57,7 @@ func HandlePublicTorrents(w http.ResponseWriter, r *http.Request) {
 		}
 
 		newPeer.Port = port
-		newPeer.Left = left
+		newPeer.Left = int64(left)
 		torrentID, err := GetTorrentIDFromHash(newPeer.InfoHash)
 
 		if err != nil {

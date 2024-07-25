@@ -6,5 +6,5 @@ type Peer struct {
 	PeerID    string
 	IP        string
 	Port      int
-	Left      int
+	Left      int64
 }
