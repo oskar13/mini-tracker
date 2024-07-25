@@ -26,7 +26,7 @@
 					<section>
 						<header>
 							<div class="d-flex w-100 align-items-center justify-content-between">
-								<h1>{{.TheTorrent.Name}}  <button class="btn btn-primary">Download</button></h1>
+								<h1>{{.TheTorrent.Name}}  <a href="/t-dl/{{.TheTorrent.TorrentID}}" class="btn btn-primary">Download</a></h1>
 							</div>
 							<div>
 								<span class="badge text-bg-info text-white">Access: {{.TheTorrent.AccessType}} {{if eq .TheTorrent.AccessType "Public"}}(anyone with account){{end}} {{if eq .TheTorrent.AccessType "WWW"}}(anyone on the internet){{end}}</span>
@@ -75,12 +75,11 @@
 						<h2>File List:</h2>
 						<ul>
 							<li>{{.TheTorrent.PathJSON}}</li>
-							<li>Ubuntu20.39.iso <span class="text-body-secondary"> - 600.89 MiB</span></li>
 						</ul>
 					</section>
 					<section>
 						<h2>Get Torrent: </h2>
-						<button class="btn btn-primary fs-3">Download <img src="static/img/icons/download.svg" alt=""></button>
+						<a href="/t-dl/{{.TheTorrent.TorrentID}}" class="btn btn-primary fs-3">Download <img src="/static/img/icons/download.svg" alt=""></a>
 					</section>
 
 				</article>

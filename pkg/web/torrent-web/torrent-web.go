@@ -16,9 +16,9 @@ func LoadTorrentData(torrentID int, userID int) (webdata.TorrentWeb, error) {
 	var user webdata.User
 	var torrent webdata.TorrentWeb
 
-	q := "SELECT torrents.uploaded, torrents.name, torrents.size, torrents.anonymous, torrents.access_type, torrents.group_ID, torrents.upvotes, torrents.downvotes, torrents.description, torrents.info_hash, torrents.pieces, torrents.piece_length, torrents.path, users.user_ID, users.username, users.profile_pic, groups.group_name FROM torrents LEFT JOIN users ON torrents.user_ID = users.user_ID LEFT JOIN groups ON groups.group_ID = torrents.group_ID WHERE torrents.torrent_ID = ?"
+	q := "SELECT torrents.torrent_ID, torrents.uploaded, torrents.name, torrents.size, torrents.anonymous, torrents.access_type, torrents.group_ID, torrents.upvotes, torrents.downvotes, torrents.description, torrents.info_hash, torrents.pieces, torrents.piece_length, torrents.path, users.user_ID, users.username, users.profile_pic, groups.group_name FROM torrents LEFT JOIN users ON torrents.user_ID = users.user_ID LEFT JOIN groups ON groups.group_ID = torrents.group_ID WHERE torrents.torrent_ID = ?"
 
-	err := db.DB.QueryRow(q, torrentID).Scan(&torrent.Uploaded, &torrent.Name, &torrent.Size, &torrent.Anonymous, &torrent.AccessType, &torrent.GroupID, &torrent.UpVotes, &torrent.DownVotes, &torrent.Description, &torrent.InfoHash, &torrent.Pieces, &torrent.PieceLength, &torrent.PathJSON, &user.UserID, &user.Username, &user.Cover, &torrent.GroupName)
+	err := db.DB.QueryRow(q, torrentID).Scan(&torrent.TorrentID, &torrent.Uploaded, &torrent.Name, &torrent.Size, &torrent.Anonymous, &torrent.AccessType, &torrent.GroupID, &torrent.UpVotes, &torrent.DownVotes, &torrent.Description, &torrent.InfoHash, &torrent.Pieces, &torrent.PieceLength, &torrent.PathJSON, &user.UserID, &user.Username, &user.Cover, &torrent.GroupName)
 	if err != nil {
 		if err == sql.ErrNoRows {
 
@@ -58,6 +58,23 @@ func LoadTorrentData(torrentID int, userID int) (webdata.TorrentWeb, error) {
 	}
 
 	return webdata.TorrentWeb{}, errors.New("no access")
+}
+
+func LoadTorrentInfoField(torrentID int) ([]byte, error) {
+	var torrent webdata.TorrentWeb
+
+	q := "SELECT info_field FROM torrents WHERE torrent_ID = ?"
+
+	err := db.DB.QueryRow(q, torrentID).Scan(&torrent.InfoField)
+	if err != nil {
+		if err == sql.ErrNoRows {
+
+			return nil, errors.New("no torrent found")
+		}
+		return nil, err
+	}
+
+	return torrent.InfoField, nil
 }
 
 func LoadTorrentComments(torrentID int) ([]webdata.TorrentComment, error) {

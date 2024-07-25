@@ -126,6 +126,7 @@ func NewTorrentPage(w http.ResponseWriter, r *http.Request) {
 		*/
 
 	} else {
+
 		//If was not a POST request show torrent upload form
 		webutils.RenderTemplate(w, []string{"pkg/web/templates/new-torrent.html",
 			"pkg/web/templates/sidebar.html", "pkg/web/templates/head.html",
