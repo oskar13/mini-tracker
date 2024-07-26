@@ -30,8 +30,8 @@ func StartWebsite() {
 	serverMux.HandleFunc("/groups/{id}/", handlers.GroupPage)
 	serverMux.HandleFunc("/groups", handlers.GroupListPage)
 	serverMux.HandleFunc("/groups/{groupid}/post/{postid}", handlers.GroupPostPage)
-	serverMux.HandleFunc("/t/{id}/", handlers.TorrentPage)
-	serverMux.HandleFunc("/t-dl/{id}/", handlers.TorrentDownloadPage)
+	serverMux.HandleFunc("/t/{uuid}/", handlers.TorrentPage)
+	serverMux.HandleFunc("/t-dl/{uuid}/", handlers.TorrentDownloadPage)
 
 	serverMux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./pkg/web/static/"))))
 

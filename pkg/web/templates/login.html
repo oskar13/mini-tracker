@@ -40,27 +40,27 @@
 
 						<h2 class="mb-5">Login</h2>
 						{{ if ( eq true .Error ) }}
-						<div class="pt-2 text-warning-emphasis bg-warning-subtle border border-warning-subtle rounded-3  mb-3">
-							<p>{{ .ErrorText }}</p>
+						<div class="p-2 text-warning-emphasis bg-warning-subtle border border-warning-subtle rounded-3  mb-3">
+							<p class="m-0">{{ .ErrorText }}</p>
 						</div>
 						{{ end }}
 
 						{{ if ( eq true .LogoutMessage ) }}
-						<div class="pt-2 text-success-emphasis bg-success-subtle border border-success-subtle rounded-3  mb-3">
-							<p>Successfully logged out.</p>
+						<div class="p-2 text-success-emphasis bg-success-subtle border border-success-subtle rounded-3  mb-3">
+							<p class="m-0">Successfully logged out.</p>
 						</div>
 						{{ end }}
 
 						{{ if ( eq true .Message ) }}
-						<div class="pt-2 text-success-emphasis bg-success-subtle border border-success-subtle rounded-3  mb-3">
-							<p> {{.MessageText}} </p>
+						<div class="p-2 text-success-emphasis bg-success-subtle border border-success-subtle rounded-3  mb-3">
+							<p class="m-0"> {{.MessageText}} </p>
 						</div>
 						{{ end }}
 
 
 						{{ if ( eq true .LoggedIn ) }}
 						<div class="p-2 text-info-emphasis bg-info-subtle border border-info-subtle rounded-3  mb-3">
-							<span>You are already logged in</span>
+							<span class="m-0">You are already logged in</span>
 
 	
 

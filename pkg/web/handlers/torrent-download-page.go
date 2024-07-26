@@ -3,8 +3,8 @@ package handlers
 import (
 	"fmt"
 	"net/http"
-	"strconv"
 
+	"github.com/google/uuid"
 	"github.com/oskar13/mini-tracker/pkg/data"
 	torrenttools "github.com/oskar13/mini-tracker/pkg/torrent-tools"
 	torrentweb "github.com/oskar13/mini-tracker/pkg/web/torrent-web"
@@ -12,18 +12,18 @@ import (
 )
 
 func TorrentDownloadPage(w http.ResponseWriter, r *http.Request) {
-	torrentIdString := r.PathValue("id")
+	torrentUuidString := r.PathValue("uuid")
 
 	var torrent webdata.TorrentWeb
 
-	if torrentIdString != "" {
-		torrentID, err := strconv.Atoi(torrentIdString)
+	if torrentUuidString != "" {
+		torrentUuid, err := uuid.Parse(torrentUuidString)
 		if err != nil {
-			http.Error(w, "Invalid ID", http.StatusBadRequest)
+			http.Error(w, "Invalid uuid", http.StatusBadRequest)
 			return
 		} else {
 			// Try torrent info
-			torrent, err = torrentweb.LoadTorrentData(torrentID, 0)
+			torrent, err = torrentweb.LoadTorrentData(torrentUuid.String(), 0)
 			if err != nil {
 
 				http.Error(w, "Error loading torrent data", http.StatusBadRequest)

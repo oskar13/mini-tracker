@@ -26,7 +26,8 @@ func SignupPage(w http.ResponseWriter, r *http.Request) {
 
 	if userData.LoggedIn {
 		//Show user a message about being logged in, also remind that one account per lifetime
-
+		pageStruct.Error = true
+		pageStruct.ErrorText = "You already have an account. Reminder: Ban evasion is not allowed."
 	} else {
 		if r.Method == "POST" {
 			// Handle signup form contents
@@ -51,9 +52,11 @@ func SignupPage(w http.ResponseWriter, r *http.Request) {
 					pageStruct.Error = true
 					fmt.Println(err)
 					pageStruct.ErrorText = fmt.Sprintf("%v", err)
+				} else {
+					http.Redirect(w, r, "/login?message=creation-success", http.StatusSeeOther)
+
 				}
 
-				http.Redirect(w, r, "/login?message=success", http.StatusSeeOther)
 			}
 
 		} else if r.Method == "GET" {

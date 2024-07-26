@@ -92,7 +92,7 @@ func NewTorrentPage(w http.ResponseWriter, r *http.Request) {
 		torrent.Description = description
 		torrent.AccessType = visibility
 
-		uploadedTorrentID, err := torrentweb.CreateTorrentEntry(torrent, userData.UserID)
+		uploadedTorrentUuid, err := torrentweb.CreateTorrentEntry(torrent, userData.UserID)
 
 		if err != nil {
 			fmt.Println(err)
@@ -100,7 +100,9 @@ func NewTorrentPage(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		fmt.Println("Uploaded ID ", uploadedTorrentID)
+		fmt.Println("Uploaded uuid ", uploadedTorrentUuid)
+
+		http.Redirect(w, r, "/t/"+uploadedTorrentUuid, http.StatusSeeOther)
 
 		/*
 			//Send client a generated torrent file

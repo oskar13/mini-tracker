@@ -30,6 +30,7 @@ type TorrentWeb struct {
 	Anonymous   bool
 	AccessType  string
 	InfoField   []byte
+	Uuid        string
 }
 
 type TorrentComment struct {

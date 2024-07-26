@@ -3,8 +3,8 @@ package handlers
 import (
 	"fmt"
 	"net/http"
-	"strconv"
 
+	"github.com/google/uuid"
 	db "github.com/oskar13/mini-tracker/pkg/db"
 	torrentweb "github.com/oskar13/mini-tracker/pkg/web/torrent-web"
 	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
@@ -31,16 +31,16 @@ func TorrentPage(w http.ResponseWriter, r *http.Request) {
 	pageStruct.SiteName = webdata.SiteName
 	pageStruct.PageName = "Torrent"
 
-	torrentIdString := r.PathValue("id")
+	torrentUuidString := r.PathValue("uuid")
 
-	if torrentIdString != "" {
-		torrentID, err := strconv.Atoi(torrentIdString)
+	if torrentUuidString != "" {
+		torrentUuid, err := uuid.Parse(torrentUuidString)
 		if err != nil {
 			pageStruct.Error = true
 			pageStruct.ErrorText = fmt.Sprint(err)
 		} else {
 			// Try torrent info
-			pageStruct.TheTorrent, err = torrentweb.LoadTorrentData(torrentID, userData.UserID)
+			pageStruct.TheTorrent, err = torrentweb.LoadTorrentData(torrentUuid.String(), userData.UserID)
 			if err != nil {
 				pageStruct.Error = true
 				pageStruct.ErrorText = fmt.Sprintf("%v", err)
