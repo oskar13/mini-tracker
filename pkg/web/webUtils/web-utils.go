@@ -101,7 +101,7 @@ func RenderTemplate(w http.ResponseWriter, templates []string, data interface{})
 	}
 }
 
-func LoginUser(w http.ResponseWriter, r *http.Request, username string, givenPassword string) (error, webdata.User) {
+func LoginUser(w http.ResponseWriter, r *http.Request, username string, givenPassword string) (webdata.User, error) {
 	var user webdata.User
 
 	q := "SELECT user_ID, username, profile_pic, disabled, password FROM users WHERE username = ?"
@@ -109,9 +109,9 @@ func LoginUser(w http.ResponseWriter, r *http.Request, username string, givenPas
 	err := db.DB.QueryRow(q, username).Scan(&user.UserID, &user.Username, &user.Cover, &user.Disabled, &user.Password)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return errors.New("no account found"), webdata.User{}
+			return webdata.User{}, errors.New("no account found")
 		}
-		return err, webdata.User{}
+		return webdata.User{}, err
 	}
 
 	if comparePasswords(user.Password, givenPassword) {
@@ -130,10 +130,10 @@ func LoginUser(w http.ResponseWriter, r *http.Request, username string, givenPas
 			Secure:   false, //fix this in production
 		})
 
-		return nil, user
+		return user, nil
 	}
 
-	return errors.New("wrong password"), webdata.User{}
+	return webdata.User{}, errors.New("wrong password")
 
 }
 
@@ -257,13 +257,13 @@ func CreateUser(username string, password string, password2 string, ref string) 
 		return err
 	}
 
-	inserteId, err := res.LastInsertId()
+	insertedId, err := res.LastInsertId()
 
 	if err != nil {
 		return err
 	}
 
-	err = UseRefCode(int(inserteId), ref)
+	err = UseRefCode(int(insertedId), ref)
 
 	if err != nil {
 		return err
@@ -290,7 +290,7 @@ func UsernameExists(username string) (bool, error) {
 	return true, nil
 }
 
-// Returns true if refcode is valid
+// Returns true if reference code is valid
 func CheckRefCode(ref string) (int, error) {
 	var user_ID int
 	var invited_user *int

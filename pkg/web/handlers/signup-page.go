@@ -25,11 +25,11 @@ func SignupPage(w http.ResponseWriter, r *http.Request) {
 	userData := webutils.GetUserData(r, db.DB)
 
 	if userData.LoggedIn {
-		//Show user a message about being logged in, aslo remind that one account per lifetime
+		//Show user a message about being logged in, also remind that one account per lifetime
 
 	} else {
 		if r.Method == "POST" {
-			// Handle sighnup form contents
+			// Handle signup form contents
 
 			r.ParseForm()
 			username := r.Form.Get("username")
@@ -49,10 +49,11 @@ func SignupPage(w http.ResponseWriter, r *http.Request) {
 
 				if err != nil {
 					pageStruct.Error = true
+					fmt.Println(err)
 					pageStruct.ErrorText = fmt.Sprintf("%v", err)
 				}
 
-				http.Redirect(w, r, "/login?message=csuccess", http.StatusSeeOther)
+				http.Redirect(w, r, "/login?message=success", http.StatusSeeOther)
 			}
 
 		} else if r.Method == "GET" {

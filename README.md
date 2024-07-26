@@ -2,7 +2,7 @@
 A small-mid scale torrent tracker site written in go with support for private tracking.
 
 ## Current progress
-![50%](https://progress-bar.dev/50)
+![60%](https://progress-bar.dev/60)
 
 This project is not functional yet.
 
@@ -19,6 +19,7 @@ To run the code at current state, edit start.sh with your MySQL credentials, mak
 - Site news with commenting
 - User profiles
 - Community hubs
+- Public torrent tracking
 
 ### Goals
 - Make it easy to share torrent files between small number of people

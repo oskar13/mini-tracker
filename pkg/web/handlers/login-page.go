@@ -50,7 +50,7 @@ func LoginPage(w http.ResponseWriter, r *http.Request) {
 				Password:        r.FormValue("password"),
 			}
 
-			err, resultUserData := webutils.LoginUser(w, r, loginData.UserNameOrEmail, loginData.Password)
+			resultUserData, err := webutils.LoginUser(w, r, loginData.UserNameOrEmail, loginData.Password)
 
 			if err != nil {
 
@@ -72,7 +72,7 @@ func LoginPage(w http.ResponseWriter, r *http.Request) {
 
 			if message != "" {
 
-				if message == "csuccess" {
+				if message == "success" {
 					pageStruct.Message = true
 
 					pageStruct.MessageText = "Account creation success. You can now log in."
