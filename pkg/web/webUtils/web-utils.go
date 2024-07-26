@@ -9,11 +9,13 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 	"text/template"
 	"time"
 
 	db "github.com/oskar13/mini-tracker/pkg/db"
 	"github.com/oskar13/mini-tracker/pkg/web/webdata"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func CheckLogin(w http.ResponseWriter, r *http.Request, userData webdata.User) bool {
@@ -99,13 +101,12 @@ func RenderTemplate(w http.ResponseWriter, templates []string, data interface{})
 	}
 }
 
-func LoginUser(w http.ResponseWriter, r *http.Request, username string, password string) (error, webdata.User) {
+func LoginUser(w http.ResponseWriter, r *http.Request, username string, givenPassword string) (error, webdata.User) {
 	var user webdata.User
-	var salt string
 
-	q := "SELECT user_ID, username, profile_pic, disabled, password, salt FROM users WHERE username = ?"
+	q := "SELECT user_ID, username, profile_pic, disabled, password FROM users WHERE username = ?"
 
-	err := db.DB.QueryRow(q, username).Scan(&user.UserID, &user.Username, &user.Cover, &user.Disabled, &user.Password, &salt)
+	err := db.DB.QueryRow(q, username).Scan(&user.UserID, &user.Username, &user.Cover, &user.Disabled, &user.Password)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return errors.New("no account found"), webdata.User{}
@@ -113,7 +114,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request, username string, password
 		return err, webdata.User{}
 	}
 
-	if user.Password == password {
+	if comparePasswords(user.Password, givenPassword) {
 
 		//set up session
 
@@ -193,6 +194,31 @@ func ReadUserIP(r *http.Request) string {
 	return IPAddress
 }
 
+func HashAndSalt(pwd string) (string, error) {
+	pwd_byte := []byte(pwd)
+
+	hash, err := bcrypt.GenerateFromPassword(pwd_byte, bcrypt.MinCost)
+	if err != nil {
+		log.Println(err)
+		return "", err
+	}
+
+	return string(hash), nil
+}
+
+func comparePasswords(hashedPwd string, plainPwd string) bool {
+	bytePlainPwd := []byte(plainPwd)
+	byteHash := []byte(hashedPwd)
+	err := bcrypt.CompareHashAndPassword(byteHash, bytePlainPwd)
+
+	if err != nil {
+		log.Println(err)
+		return false
+	}
+
+	return true
+}
+
 func CreateUser(username string, password string, password2 string, ref string) error {
 
 	//
@@ -217,11 +243,15 @@ func CreateUser(username string, password string, password2 string, ref string) 
 		return errors.New("username taken")
 	}
 
-	q := `INSERT INTO users (users.username, users.salt, users.password) VALUES (?,?,?)`
+	hashedPwd, err := HashAndSalt(password)
 
-	salt := password
+	if err != nil {
+		return err
+	}
 
-	res, err := db.DB.Exec(q, username, salt, password)
+	q := `INSERT INTO users (users.username, users.password) VALUES (?,?)`
+
+	res, err := db.DB.Exec(q, username, hashedPwd)
 
 	if err != nil {
 		return err
@@ -244,13 +274,16 @@ func CreateUser(username string, password string, password2 string, ref string) 
 
 func UsernameExists(username string) (bool, error) {
 	var user_ID int
-	q := "SELECT users.user_ID FROM users WHERE users.username = ?"
+	q := "SELECT users.user_ID FROM users WHERE LOWER(users.username) = ?"
 
-	err := db.DB.QueryRow(q, username).Scan(&user_ID)
+	usernameLower := strings.ToLower(username)
+
+	err := db.DB.QueryRow(q, usernameLower).Scan(&user_ID)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return false, nil
 		}
+
 		return false, err
 	}
 
