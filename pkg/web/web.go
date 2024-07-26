@@ -36,6 +36,6 @@ func StartWebsite() {
 	serverMux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./pkg/web/static/"))))
 
 	fmt.Println("Starting web interface at: http://localhost:8080")
-	http.ListenAndServe("localhost:8080", serverMux)
+	http.ListenAndServe(":8080", serverMux)
 
 }

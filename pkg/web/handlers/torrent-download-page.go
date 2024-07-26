@@ -31,7 +31,7 @@ func TorrentDownloadPage(w http.ResponseWriter, r *http.Request) {
 			}
 
 			if torrent.AccessType == "Public" || torrent.AccessType == "WWW" {
-				torrent.Announce = "http://" + data.TrackerHostAndPort + "/www"
+				torrent.Announce = "http://" + data.TrackerHost + data.TrackerPort + "/www"
 				torrent.InfoField, err = torrentweb.LoadTorrentInfoField(torrent.TorrentID)
 				if err != nil {
 					http.Error(w, "Error loading info field", http.StatusInternalServerError)

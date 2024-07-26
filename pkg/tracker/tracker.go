@@ -18,8 +18,8 @@ func StartTracker() {
 	serverMux := http.NewServeMux()
 	serverMux.HandleFunc("/www", HandlePublicTorrents)
 
-	fmt.Println("Starting tracking server at: http://", data.TrackerHostAndPort)
-	http.ListenAndServe(data.TrackerHostAndPort, serverMux)
+	fmt.Println("Starting tracking server at: http://", data.TrackerPort)
+	http.ListenAndServe(data.TrackerPort, serverMux)
 
 }
 
@@ -67,6 +67,13 @@ func HandlePublicTorrents(w http.ResponseWriter, r *http.Request) {
 		}
 
 		newPeer.TorrentID = torrentID
+		newPeer.IP, err = GetHTTPRequestIP(r)
+
+		if err != nil {
+			fmt.Println("Error getting ip")
+			http.Error(w, "Could not fetch IP address of requester", http.StatusInternalServerError)
+			return
+		}
 
 		peers, err := LoadPeers(newPeer.TorrentID, newPeer.PeerID)
 

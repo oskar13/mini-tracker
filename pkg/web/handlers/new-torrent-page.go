@@ -86,7 +86,7 @@ func NewTorrentPage(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if visibility == "Public" {
-			torrent.Announce = "http://" + data.TrackerHostAndPort + "/www"
+			torrent.Announce = "http://" + data.TrackerHost + data.TrackerPort + "/www"
 		}
 
 		torrent.Description = description

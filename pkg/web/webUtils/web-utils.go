@@ -126,7 +126,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request, username string, password
 			Value:    sessionToken,
 			MaxAge:   60 * 30,
 			HttpOnly: true,
-			Secure:   true,
+			Secure:   false, //fix this in production
 		})
 
 		return nil, user

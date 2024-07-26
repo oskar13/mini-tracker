@@ -1,3 +1,4 @@
 package data
 
-var TrackerHostAndPort string = "localhost:7777"
+var TrackerHost string = "192.168.101.132"
+var TrackerPort string = ":7777"
