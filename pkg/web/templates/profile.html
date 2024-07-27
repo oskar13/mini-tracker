@@ -84,10 +84,16 @@
 				</div>
 				<div class="col-md-8">
 					<h2>Torrents shared with site users</h2>
+					<div class="list-group list-group-flush  scrollarea px-5 mb-3">
 					{{if .TorrentList}}
-					<ul>
+				
 						{{range .TorrentList}}
-						<li>{{.Name}}</li>
+						<a href="/t/{{.Uuid}}" class="list-group-item list-group-item-action  lh-tight">
+								<strong>
+									{{.Name}}
+								</strong>
+						</a>
+			
 						{{end}}
 		
 		
@@ -98,15 +104,15 @@
 		
 		
 		
-					</ul>
 					{{else}}
 					<p>No public torrents from this user.</p>
 					{{end}}
+					</div>
 
 					
 					{{if .UserGroups}}
 					<h2>User Groups</h2>
-					<div class="list-group list-group-flush  scrollarea">
+					<div class="list-group list-group-flush  scrollarea px-5">
 						{{range .UserGroups}}
 
 						<a href="/groups/{{.GroupID}}" class="list-group-item list-group-item-action py-3">
