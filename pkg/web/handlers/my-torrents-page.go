@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	db "github.com/oskar13/mini-tracker/pkg/db"
-	"github.com/oskar13/mini-tracker/pkg/web/groups"
 	torrentweb "github.com/oskar13/mini-tracker/pkg/web/torrent-web"
 	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
 	"github.com/oskar13/mini-tracker/pkg/web/webdata"
@@ -23,13 +22,10 @@ func MyTorrentsPage(w http.ResponseWriter, r *http.Request) {
 		Error               bool
 		ErrorText           string
 		UserData            webdata.User
-		SelfEdit            bool
-		UnlistedTorrentList []webdata.TorrentWeb
-		PublicTorrentList   []webdata.TorrentWeb
 		SiteName            string
 		PageName            string
-		Strikes             []webdata.Strike
-		UserGroups          []groups.GroupInfo
+		UnlistedTorrentList []webdata.TorrentWeb
+		PublicTorrentList   []webdata.TorrentWeb
 	}
 
 	pageStruct.UserData = userData
