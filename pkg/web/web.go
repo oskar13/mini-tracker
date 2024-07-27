@@ -28,6 +28,7 @@ func StartWebsite() {
 	serverMux.HandleFunc("/news/{id}/", handlers.NewsPage)
 	serverMux.HandleFunc("/news", handlers.NewsPage)
 	serverMux.HandleFunc("/my-t", handlers.MyTorrentsPage)
+	serverMux.HandleFunc("/my-groups", handlers.MyGroupsPage)
 	serverMux.HandleFunc("/groups/{id}/", handlers.GroupPage)
 	serverMux.HandleFunc("/groups", handlers.GroupListPage)
 	serverMux.HandleFunc("/groups/{groupid}/post/{postid}", handlers.GroupPostPage)
