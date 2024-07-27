@@ -18,7 +18,7 @@ func StartTracker() {
 	serverMux := http.NewServeMux()
 	serverMux.HandleFunc("/www", HandlePublicTorrents)
 
-	fmt.Println("Starting tracking server at: http://", data.TrackerPort)
+	fmt.Println("Starting tracking server at: http://localhost", data.TrackerPort)
 	http.ListenAndServe(data.TrackerPort, serverMux)
 
 }

@@ -1,0 +1,41 @@
+{{define "base"}}
+	{{template "head" .}}
+
+
+
+		{{template "sidebar" .}}
+		
+		<div class="b-example-divider"></div>
+
+
+
+
+		<div class="container overflow-scroll overview">
+			{{template "commandbar"}}
+
+			<div class="row px-5">
+				<h2>My Torrents</h2>
+				<hr>
+				<div class="col-md-12 mb-5">
+					<h3>Public torrents</h3>
+					<div class="list-group list-group-flush  scrollarea px-5">
+					{{range .PublicTorrentList}}
+						{{template "torrent-list-item" .}}
+					{{end}}
+					</div>
+	
+				</div>
+				<div class="col-md-12 ">
+					<h3>Unlisted Torrents</h3>
+					{{range .UnlistedTorrentList}}
+					<li>{{.Name}}</li>
+					{{end}}
+				</div>
+			</div>
+			
+		</div>
+		
+		<div class="b-example-divider"></div>
+
+		{{template "end"}}
+{{end}}
