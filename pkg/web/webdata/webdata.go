@@ -110,6 +110,7 @@ type FriendRequests struct {
 type FriendRequest struct {
 	User    User
 	Message *string
+	Date    string
 }
 
 var SiteName string = "Mini Tracker"

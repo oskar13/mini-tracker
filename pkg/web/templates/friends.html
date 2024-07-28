@@ -18,9 +18,10 @@
 
 
 	<div class="row">
+		<h2>Friend requests</h2>
 		{{if .FriendRequests.Incoming}}
-		<div class="col-md-6 mb-3">
-			<h2>Incoming</h2>
+		<div class="col-md-6 mb-3 px-5">
+			<h3>Incoming</h3>
 			<hr>
 			<div class="list-group list-group-flush  scrollarea">
 				{{range .FriendRequests.Incoming}}
@@ -35,15 +36,15 @@
 					<button type="button" class="btn btn-success m-1 my-3">Accept</button>
 					<button type="button" class="btn btn-danger m-1 my-3">Decline</button>
 					
-					<p><img src="/static/img/icons/chat.svg" width="24" height="24" alt="message"> {{.Message}}</p>
+					<p><img src="/static/img/icons/chat.svg" width="24" height="24" alt="message"> {{.Message}} <small class="text-body-secondary fst-italic fw-lighter">({{.Date}})</small></p>
 				</div>
 				{{end}}
 			</div>
 		</div>
 		{{end}}
 		{{if .FriendRequests.Outgoing}}
-		<div class="col-md-6 mb-3">
-			<h2>Outgoing</h2>
+		<div class="col-md-6 mb-3 px-5">
+			<h3>Outgoing</h3>
 			<hr>
 			<div class="list-group list-group-flush  scrollarea">
 				{{range .FriendRequests.Outgoing}}
@@ -56,8 +57,8 @@
 						<strong class="username">{{.User.Username}}</strong>
 					</a>
 					<button type="button" class="btn btn-secondary m-1 my-3">Pending...</button>
-					
-					<p><img src="/static/img/icons/chat.svg" width="24" height="24" alt="message"> {{.Message}}</p>
+					<button type="button" class="btn btn-danger m-1 my-3">Cancel</button>
+					<p><img src="/static/img/icons/chat.svg" width="24" height="24" alt="message"> {{.Message}} <small class="text-body-secondary fst-italic fw-lighter">({{.Date}})</small></p>
 				</div>
 				{{end}}
 			</div>
