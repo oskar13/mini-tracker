@@ -23,8 +23,23 @@ Installer script coming soon. To run the code at current state, edit start.sh wi
 
 (Optional) In MySQL workbench forward engineer a schema with insert commands. Log in with user accounts provided in tests/testusers.txt file.
 
+## Access to torrents
+Torrents can be categorized by their access type.
 
-### Goals
+All public torrents and the list of peers are accessible through the public tracker interface without having an account.
+
+- **Public Listed** torrents will appear in searches and category pages.
+- **Public Unlisted** torrents will be accessible through their URL which opens the torrent info page. 
+
+Private torrents require an account to access the info page. To access peers on the tracker, IP address together with unique tracking URL (generated during torrent file download from the info page) is used to authenticate users. While this approach has some serious security flaws there are no other alternatives with the current bittorrent technology. Main goal here is to limit the information visibility on the web and enable tracking user upload/download ratios.
+
+- **Members Listed** torrents will appear in searches and category pages for site members.
+- **Members Unlisted** info page can be accessed by site members who have the URL.
+- **Members Access List** info page can be accessed by site members who have the URL and are on the access list set by the uploader.
+- **Group Public** if a group is set as Public (any site member can access) they by default torrents of that group are set as Group Public which means that any site member can view and download them.
+- **Group Private** only members of the group can see the torrent.
+
+## Goals
 - Make it easy to share torrent files between small number of people
 - Provide a simple to use interface for uploading torrents to a tracker
 - Feature a small community hub related to torrents
