@@ -32,8 +32,8 @@ func MyTorrentsPage(w http.ResponseWriter, r *http.Request) {
 	pageStruct.SiteName = webdata.SiteName
 	pageStruct.PageName = "My Torrents"
 
-	pageStruct.PublicListedTorrents = torrentweb.LoadUserTorrents(pageStruct.UserData.UserID, []string{"Public Listed"})
-	pageStruct.PublicUnlistedTorrents = torrentweb.LoadUserTorrents(pageStruct.UserData.UserID, []string{"Public Unlisted"})
+	pageStruct.PublicListedTorrents = torrentweb.ListTorrents(pageStruct.UserData.UserID, []string{"Public Listed"}, 99)
+	pageStruct.PublicUnlistedTorrents = torrentweb.ListTorrents(pageStruct.UserData.UserID, []string{"Public Unlisted"}, 99)
 
 	webutils.RenderTemplate(w, []string{"pkg/web/templates/sidebar.html", "pkg/web/templates/my-torrents.html",
 		"pkg/web/templates/torrent-list-item.html",

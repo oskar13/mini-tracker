@@ -111,8 +111,8 @@ func LoadTorrentComments(torrentID int) ([]webdata.TorrentComment, error) {
 	return comments, nil
 }
 
-// Load public torrents in user profile view or elsewhere, set flag to true to
-func LoadUserTorrents(user_ID int, access_type []string) []webdata.TorrentWeb {
+// Load load torrents by access list rules and user id. If userID is set to 0 load all torrents with matching access list rules.
+func ListTorrents(userID int, access_type []string, limit int) []webdata.TorrentWeb {
 
 	var resultTorrents []webdata.TorrentWeb
 
@@ -121,14 +121,25 @@ func LoadUserTorrents(user_ID int, access_type []string) []webdata.TorrentWeb {
 	}
 
 	q := `SELECT torrents.torrent_ID, torrents.uploaded, torrents.name, torrents.upvotes, torrents.downvotes, torrents.access_type, torrents.size, torrents.uuid
-	      FROM torrents
-	      WHERE torrents.user_ID = ? AND torrents.access_type IN (` + strings.Repeat("?,", len(access_type)-1) + `?)`
+	      FROM torrents WHERE  `
+	if userID != 0 {
+
+		q += ` torrents.user_ID = ? AND `
+	}
+	q += ` torrents.access_type IN (` + strings.Repeat("?,", len(access_type)-1) + `?)
+		  LIMIT ?`
+
+	//fmt.Println(q)
 
 	args := make([]interface{}, 0, len(access_type)+1)
-	args = append(args, user_ID)
+	if userID != 0 {
+		args = append(args, userID)
+	}
+
 	for _, at := range access_type {
 		args = append(args, at)
 	}
+	args = append(args, limit)
 
 	rows, err := db.DB.Query(q, args...)
 
