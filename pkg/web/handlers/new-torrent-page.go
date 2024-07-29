@@ -3,12 +3,11 @@ package handlers
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/oskar13/mini-tracker/pkg/data"
 	db "github.com/oskar13/mini-tracker/pkg/db"
 	torrenttools "github.com/oskar13/mini-tracker/pkg/torrent-tools"
-	"github.com/oskar13/mini-tracker/pkg/web/groups"
-	"github.com/oskar13/mini-tracker/pkg/web/news"
 	torrentweb "github.com/oskar13/mini-tracker/pkg/web/torrent-web"
 	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
 	"github.com/oskar13/mini-tracker/pkg/web/webdata"
@@ -27,8 +26,6 @@ func NewTorrentPage(w http.ResponseWriter, r *http.Request) {
 		UserData   webdata.User
 		SiteName   string
 		PageName   string
-		NewsList   []news.NewsArticle
-		Community  []groups.GroupPost
 		MyTorrents []webdata.TorrentWeb
 	}
 	pageStruct.UserData = userData
@@ -67,16 +64,33 @@ func NewTorrentPage(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		fmt.Println("Reeee")
 		fmt.Println(r.Form.Get("category"))
 
 		description := r.Form.Get("description")
 		visibility := r.Form.Get("visibility")
+		category := r.Form.Get("category")
+		var categoryID int
 
 		if visibility == "" || visibility == "Select" {
 			//TODO proper validation
 			http.Error(w, "Torrent visibility not set, must be set.", http.StatusMethodNotAllowed)
 			return
+		}
+
+		if category == "" {
+			//TODO proper validation
+			http.Error(w, "Torrent category not set, must be set.", http.StatusMethodNotAllowed)
+			return
+		} else {
+			categoryID, err = strconv.Atoi(category)
+			if err != nil {
+				http.Error(w, "Invalid", http.StatusBadRequest)
+				return
+			}
+			if categoryID < 0 && categoryID > 999 {
+				http.Error(w, "Invalid", http.StatusBadRequest)
+				return
+			}
 		}
 
 		torrent, err := torrenttools.DecodeUploadedTorrent(file)
@@ -85,18 +99,19 @@ func NewTorrentPage(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		if visibility == "Public" {
+		if visibility == "Public Listed" || visibility == "Public Unlisted" {
 			torrent.Announce = "http://" + data.TrackerHost + data.TrackerPort + "/www"
 		}
 
 		torrent.Description = description
 		torrent.AccessType = visibility
+		torrent.CategoryID = categoryID
 
 		uploadedTorrentUuid, err := torrentweb.CreateTorrentEntry(torrent, userData.UserID)
 
 		if err != nil {
 			fmt.Println(err)
-			http.Error(w, "Could save uploaded torrent.", http.StatusInternalServerError)
+			http.Error(w, "Could not save uploaded torrent.", http.StatusInternalServerError)
 			return
 		}
 

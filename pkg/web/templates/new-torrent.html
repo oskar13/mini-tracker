@@ -30,13 +30,38 @@
 							<textarea name="description" class="form-control" id="torrentDescription" rows="3"></textarea>
 
 					  </div>
+
 					  <div class="mb-5">
-						<label for="formGroupExampleInput2" class="form-label fs-4">Visibility</label>
+						<label for="formGroupExampleInput2" class="form-label fs-4">Category <small class="text-secondary-emphasis">(required for listed)</small></label>
+						<select name="category" class="form-select" aria-label="Default select example">
+							<option selected value="">Select</option>
+							<option disabled value="100">Audio</option>
+							<option value="101">Audio &rarr; Music</option>
+							<option value="199">Audio &rarr; Other</option>
+							<option disabled value="200">Video</option>
+							<option value="201">Video &rarr; Movies</option>
+							<option value="299">Video &rarr; Other</option>
+							<option disabled value="300">Applications</option>
+							<option value="301">Applications &rarr; Windows</option>
+							<option value="399">Applications &rarr; Other</option>
+							<option disabled value="400">Games</option>
+							<option value="401">Games &rarr; PC</option>
+							<option value="499">Games &rarr; Other</option>
+							<option disabled value="600">Other</option>
+							<option value="601">Other &rarr; E-books</option>
+							<option value="699">Other &rarr; Other</option>
+						  </select>
+					  </div>
+
+					  <div class="mb-5">
+						<label for="formGroupExampleInput2" class="form-label fs-4">Visibility <small class="text-secondary-emphasis">(required)</small></label>
 						<select name="visibility" class="form-select" aria-label="Default select example">
 							<option >Select</option>
-							<option selected value="Public">Public (anyone with link can access on internet)</option>
-							<option value="Members Only">Site members only</option>
-							<option disabled value="3">Group Only (use group page to post your torrent)</option>
+							<option selected value="Public Listed">Public Listed (will appear on a public list on the internet)</option>
+							<option value="Public Unlisted">Public Unlisted (anyone with the link can access on the internet)</option>
+							<option value="Members Access List">Selected site members only</option>
+							<option disabled value="0">Group Public (use group page to post your torrent)</option>
+							<option disabled value="0">Group Private (use group page to post your torrent)</option>
 						  </select>
 					  </div>
 

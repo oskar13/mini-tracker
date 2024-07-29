@@ -78,7 +78,7 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	pageStruct.TorrentList = torrentweb.LoadUserTorrents(pageStruct.DisplayedUser.UserID, []string{"Public"})
+	pageStruct.TorrentList = torrentweb.LoadUserTorrents(pageStruct.DisplayedUser.UserID, []string{"Public Listed", "Members Listed", "Group Public"})
 
 	webutils.RenderTemplate(w, []string{"pkg/web/templates/sidebar.html", "pkg/web/templates/profile.html",
 		"pkg/web/templates/head.html",

@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
+	"github.com/oskar13/mini-tracker/pkg/data"
 	"github.com/oskar13/mini-tracker/pkg/db"
 	"github.com/oskar13/mini-tracker/pkg/tracker"
 	"github.com/oskar13/mini-tracker/pkg/web/groups"
@@ -17,9 +18,9 @@ func LoadTorrentData(torrentUuid string, userID int) (webdata.TorrentWeb, error)
 	var user webdata.User
 	var torrent webdata.TorrentWeb
 
-	q := "SELECT torrents.torrent_ID, torrents.uuid, torrents.uploaded, torrents.name, torrents.size, torrents.anonymous, torrents.access_type, torrents.group_ID, torrents.upvotes, torrents.downvotes, torrents.description, torrents.info_hash, torrents.pieces, torrents.piece_length, torrents.path, users.user_ID, users.username, users.profile_pic, groups.group_name FROM torrents LEFT JOIN users ON torrents.user_ID = users.user_ID LEFT JOIN groups ON groups.group_ID = torrents.group_ID WHERE torrents.uuid = ?"
+	q := "SELECT torrents.torrent_ID, torrents.uuid, torrents.uploaded, torrents.name, torrents.size, torrents.anonymous, torrents.access_type, torrents.group_ID, torrents.upvotes, torrents.downvotes, torrents.description, torrents.info_hash, torrents.pieces, torrents.piece_length, torrents.path, users.user_ID, users.username, users.profile_pic, groups.group_name, torrents.category_ID FROM torrents LEFT JOIN users ON torrents.user_ID = users.user_ID LEFT JOIN groups ON groups.group_ID = torrents.group_ID WHERE torrents.uuid = ?"
 
-	err := db.DB.QueryRow(q, torrentUuid).Scan(&torrent.TorrentID, &torrent.Uuid, &torrent.Uploaded, &torrent.Name, &torrent.Size, &torrent.Anonymous, &torrent.AccessType, &torrent.GroupID, &torrent.UpVotes, &torrent.DownVotes, &torrent.Description, &torrent.InfoHash, &torrent.Pieces, &torrent.PieceLength, &torrent.PathJSON, &user.UserID, &user.Username, &user.Cover, &torrent.GroupName)
+	err := db.DB.QueryRow(q, torrentUuid).Scan(&torrent.TorrentID, &torrent.Uuid, &torrent.Uploaded, &torrent.Name, &torrent.Size, &torrent.Anonymous, &torrent.AccessType, &torrent.GroupID, &torrent.UpVotes, &torrent.DownVotes, &torrent.Description, &torrent.InfoHash, &torrent.Pieces, &torrent.PieceLength, &torrent.PathJSON, &user.UserID, &user.Username, &user.Cover, &torrent.GroupName, &torrent.CategoryID)
 	if err != nil {
 		if err == sql.ErrNoRows {
 
@@ -32,6 +33,8 @@ func LoadTorrentData(torrentUuid string, userID int) (webdata.TorrentWeb, error)
 		torrent.User = user
 	}
 
+	torrent.ParentCategoryID, torrent.ParentCategory, torrent.Category = data.GetCategoryNameAndID(torrent.CategoryID)
+
 	torrent.Discussion, err = LoadTorrentComments(torrent.TorrentID)
 
 	if err != nil {
@@ -39,7 +42,7 @@ func LoadTorrentData(torrentUuid string, userID int) (webdata.TorrentWeb, error)
 	}
 
 	//Check torrent access based on access_type field that overrides all else
-	if torrent.AccessType == "Public" || torrent.AccessType == "WWW" || torrent.AccessType == "Link Only" {
+	if torrent.AccessType == "Public Listed" || torrent.AccessType == "Public Unlisted" {
 		return torrent, nil
 	}
 
@@ -160,14 +163,14 @@ func CreateTorrentEntry(torrent webdata.TorrentWeb, userID int) (string, error) 
 
 	torrent.Uuid = uuid.New().String()
 
-	stmt, err := db.DB.Prepare("INSERT INTO torrents (user_ID,name,size,access_type,description,info_hash,info_field,uuid) VALUES (?,?,?,?,?,?,?,?)")
+	stmt, err := db.DB.Prepare("INSERT INTO torrents (user_ID,name,size,access_type,description,info_hash,info_field,uuid,category_ID) VALUES (?,?,?,?,?,?,?,?,?)")
 	if err != nil {
 		return "", fmt.Errorf("error preparing statement: %v", err)
 	}
 	defer stmt.Close()
 	fmt.Println(torrent.Uuid)
 
-	_, err = stmt.Exec(userID, torrent.Name, torrent.Size, torrent.AccessType, torrent.Description, torrent.InfoHash, torrent.InfoField, torrent.Uuid)
+	_, err = stmt.Exec(userID, torrent.Name, torrent.Size, torrent.AccessType, torrent.Description, torrent.InfoHash, torrent.InfoField, torrent.Uuid, torrent.CategoryID)
 
 	if err != nil {
 		return "", fmt.Errorf("error preparing statement: %v", err)

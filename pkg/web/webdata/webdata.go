@@ -2,35 +2,39 @@ package webdata
 
 // Data object to hold torrent data when loading data from and to database, also to be used in the templates
 type TorrentWeb struct {
-	TorrentID   int
-	Announce    string //unique url if torrent is not public
-	Name        string
-	Description string //comment added on web page
-	Comment     string //file metadata comment
-	Type        string //category it was posted in
-	PieceLength *int64
-	Pieces      *[]byte
-	GroupID     *int
-	GroupName   *string
-	User        User //Uploader
-	Uploaded    string
-	InfoHash    string
-	Encoding    string
-	PathJSON    *string
-	Size        string
-	Seeders     int
-	Leechers    int
-	FilesCount  int
-	Discussion  []TorrentComment
-	Tags        []string
-	TagIDs      []string
-	TagColors   []string
-	UpVotes     int
-	DownVotes   int
-	Anonymous   bool
-	AccessType  string
-	InfoField   []byte
-	Uuid        string
+	TorrentID        int
+	Announce         string //unique url if torrent is not public
+	Name             string
+	Description      string //comment added on web page
+	Comment          string //file metadata comment
+	Type             string //category it was posted in
+	PieceLength      *int64
+	Pieces           *[]byte
+	GroupID          *int
+	GroupName        *string
+	User             User //Uploader
+	Uploaded         string
+	InfoHash         string
+	Encoding         string
+	PathJSON         *string
+	Size             string
+	Seeders          int
+	Leechers         int
+	FilesCount       int
+	Discussion       []TorrentComment
+	Tags             []string
+	TagIDs           []string
+	TagColors        []string
+	UpVotes          int
+	DownVotes        int
+	Anonymous        bool
+	AccessType       string
+	InfoField        []byte
+	Uuid             string
+	CategoryID       int
+	ParentCategoryID int
+	Category         string
+	ParentCategory   string
 }
 
 type TorrentComment struct {

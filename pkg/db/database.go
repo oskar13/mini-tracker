@@ -32,7 +32,7 @@ func InitDB() {
 	if pingErr != nil {
 		log.Fatal(pingErr)
 	}
-	fmt.Println("Connected!")
+	fmt.Println("DB Connected!")
 
 	if err != nil {
 		log.Fatal(err)

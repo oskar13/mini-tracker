@@ -30,7 +30,7 @@ func TorrentDownloadPage(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			if torrent.AccessType == "Public" || torrent.AccessType == "WWW" {
+			if torrent.AccessType == "Public Listed" || torrent.AccessType == "Public Unlisted" {
 				torrent.Announce = "http://" + data.TrackerHost + data.TrackerPort + "/www"
 				torrent.InfoField, err = torrentweb.LoadTorrentInfoField(torrent.TorrentID)
 				if err != nil {
