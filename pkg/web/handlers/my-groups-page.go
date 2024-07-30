@@ -19,18 +19,21 @@ func MyGroupsPage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var pageStruct struct {
-		Error      bool
-		ErrorText  string
-		UserData   webdata.User
-		SelfEdit   bool
-		SiteName   string
-		PageName   string
-		UserGroups []groups.GroupInfo
+		Error         bool
+		ErrorText     string
+		UserData      webdata.User
+		SelfEdit      bool
+		SiteName      string
+		PageName      string
+		PublicGroups  []groups.GroupInfo
+		PrivateGroups []groups.GroupInfo
 	}
 
 	pageStruct.UserData = userData
 	pageStruct.SiteName = webdata.SiteName
 	pageStruct.PageName = "My Groups"
+	pageStruct.PublicGroups = groups.GetUserGroupsList(userData.UserID, "Public")
+	pageStruct.PrivateGroups = groups.GetUserGroupsList(userData.UserID, "Private")
 
 	webutils.RenderTemplate(w, []string{"pkg/web/templates/sidebar.html", "pkg/web/templates/my-groups.html",
 		"pkg/web/templates/head.html",
