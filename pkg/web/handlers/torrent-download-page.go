@@ -43,7 +43,7 @@ func TorrentDownloadPage(w http.ResponseWriter, r *http.Request) {
 			}
 
 			//Send client a generated torrent file
-			newTorrentFile, err := torrenttools.TorrentFromWebTorrent(torrent)
+			newTorrentFile, err := torrenttools.TorrentFromDatabase(torrent)
 
 			if err != nil {
 				http.Error(w, "Error creating new torrent file", http.StatusBadRequest)

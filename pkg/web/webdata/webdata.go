@@ -4,6 +4,7 @@ package webdata
 type TorrentWeb struct {
 	TorrentID        int
 	Announce         string //unique url if torrent is not public
+	AnnounceList     []string
 	Name             string
 	Description      string //comment added on web page
 	Comment          string //file metadata comment

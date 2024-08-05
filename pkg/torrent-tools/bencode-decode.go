@@ -24,12 +24,13 @@ func DecodeUploadedTorrent(file io.Reader) (webdata.TorrentWeb, error) {
 
 	torrent.InfoField = decoded.Metadata.Info
 	torrent.InfoHash = decoded.InfoHash
-	torrent.Announce = decoded.Announce
+	torrent.AnnounceList = decoded.Announce
 	return torrent, nil
 }
 
-func TorrentFromWebTorrent(torrent webdata.TorrentWeb) ([]byte, error) {
-	newTorrentFile, err := gotorrentparser.NewTorrent(torrent.Announce, torrent.InfoField)
+// Build a torrent from data
+func TorrentFromDatabase(torrent webdata.TorrentWeb) ([]byte, error) {
+	newTorrentFile, err := gotorrentparser.NewTorrent(torrent.Announce, torrent.AnnounceList, torrent.InfoField)
 
 	if err != nil {
 		fmt.Println(err)
