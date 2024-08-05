@@ -2,6 +2,7 @@ package torrentweb
 
 import (
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"strings"
@@ -164,7 +165,7 @@ func ListTorrents(userID int, access_type []string, limit int) []webdata.Torrent
 }
 
 // Create a database entry for a torrent that can be used to create the torrent file and return uuid
-func CreateTorrentEntry(torrent webdata.TorrentWeb, userID int) (string, error) {
+func CreateTorrentEntry(torrent webdata.TorrentWeb, userID int, keepAnnounceList bool) (string, error) {
 
 	if torrent.Announce == "" {
 		return "", errors.New("announce empty")
@@ -173,15 +174,27 @@ func CreateTorrentEntry(torrent webdata.TorrentWeb, userID int) (string, error) 
 	}
 
 	torrent.Uuid = uuid.New().String()
+	torrent.AnnounceListJSON = "[]"
 
-	stmt, err := db.DB.Prepare("INSERT INTO torrents (user_ID,name,size,access_type,description,info_hash,info_field,uuid,category_ID) VALUES (?,?,?,?,?,?,?,?,?)")
+	if keepAnnounceList {
+
+		jsonResult, err := json.Marshal(torrent.AnnounceList)
+
+		if err != nil {
+			return "", err
+		}
+
+		torrent.AnnounceListJSON = string(jsonResult)
+	}
+
+	stmt, err := db.DB.Prepare("INSERT INTO torrents (user_ID,name,size,access_type,description,info_hash,info_field,uuid,category_ID, announce_list) VALUES (?,?,?,?,?,?,?,?,?,?)")
 	if err != nil {
 		return "", fmt.Errorf("error preparing statement: %v", err)
 	}
 	defer stmt.Close()
 	fmt.Println(torrent.Uuid)
 
-	_, err = stmt.Exec(userID, torrent.Name, torrent.Size, torrent.AccessType, torrent.Description, torrent.InfoHash, torrent.InfoField, torrent.Uuid, torrent.CategoryID)
+	_, err = stmt.Exec(userID, torrent.Name, torrent.Size, torrent.AccessType, torrent.Description, torrent.InfoHash, torrent.InfoField, torrent.Uuid, torrent.CategoryID, torrent.AnnounceListJSON)
 
 	if err != nil {
 		return "", fmt.Errorf("error preparing statement: %v", err)

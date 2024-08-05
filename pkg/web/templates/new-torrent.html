@@ -22,7 +22,7 @@
 
 					<div class="mb-5">
 						<label for="torrentFile" class="form-label fs-2">Torrent file</label>
-						<input name="torrent" class="form-control form-control-lg" id="torrentFile" type="file">
+						<input name="torrent" class="form-control form-control-lg" id="torrentFile" accept=".torrent" type="file">
 					  </div>
 					  <div class="mb-5">
 
@@ -65,6 +65,23 @@
 						  </select>
 					  </div>
 
+					  <div class="mb-5">
+						<label for="formGroupExampleInput2" class="form-label fs-4">Include other trackers <small class="text-secondary-emphasis">(only allowed for public listed torrents)</small></label>
+
+						<div class="form-check">
+												<input class="form-check-input" type="radio" name="keepTrackers" value="no" id="keepTrackers1" checked >
+												<label class="form-check-label" for="keepTrackers1">
+													Track only on this tracker
+												</label>
+						</div>
+						<div class="form-check">
+												<input class="form-check-input" type="radio" name="keepTrackers" value="yes" id="keepTrackers2" >
+												<label class="form-check-label" for="keepTrackers2">
+													Keep other trackers <small class="text-secondary-emphasis">(mainly used when reuploading a torrent from another site)</small>.
+												</label>
+						</div>
+						
+					  </div>
 					  
 					  <div class="col-12">
 						<button type="submit" class="btn btn-primary fs-2">Upload</button>

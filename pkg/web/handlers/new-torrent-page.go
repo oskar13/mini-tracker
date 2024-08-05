@@ -69,12 +69,24 @@ func NewTorrentPage(w http.ResponseWriter, r *http.Request) {
 		description := r.Form.Get("description")
 		visibility := r.Form.Get("visibility")
 		category := r.Form.Get("category")
+		keepTrackersString := r.Form.Get("keepTrackers")
+		keepTracker := false
+
 		var categoryID int
 
 		if visibility == "" || visibility == "Select" {
 			//TODO proper validation
 			http.Error(w, "Torrent visibility not set, must be set.", http.StatusMethodNotAllowed)
 			return
+		}
+
+		if keepTrackersString != "yes" && keepTrackersString != "no" {
+			http.Error(w, "Invalid form data.", http.StatusMethodNotAllowed)
+			return
+		} else {
+			if keepTrackersString == "yes" {
+				keepTracker = true
+			}
 		}
 
 		if category == "" {
@@ -103,11 +115,16 @@ func NewTorrentPage(w http.ResponseWriter, r *http.Request) {
 			torrent.Announce = "http://" + data.TrackerHost + data.TrackerPort + "/www"
 		}
 
+		if visibility != "Public Listed" && keepTracker {
+			http.Error(w, "Only public listed torrents are allowed to have other trackers included.", http.StatusBadRequest)
+			return
+		}
+
 		torrent.Description = description
 		torrent.AccessType = visibility
 		torrent.CategoryID = categoryID
 
-		uploadedTorrentUuid, err := torrentweb.CreateTorrentEntry(torrent, userData.UserID)
+		uploadedTorrentUuid, err := torrentweb.CreateTorrentEntry(torrent, userData.UserID, keepTracker)
 
 		if err != nil {
 			fmt.Println(err)

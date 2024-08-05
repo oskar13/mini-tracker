@@ -18,13 +18,12 @@ func DecodeUploadedTorrent(file io.Reader) (webdata.TorrentWeb, error) {
 		return webdata.TorrentWeb{}, err
 	}
 
-	fmt.Println(decoded.Files)
-
 	torrent.Name = string(decoded.Files[0].Path[0])
 
 	torrent.InfoField = decoded.Metadata.Info
 	torrent.InfoHash = decoded.InfoHash
 	torrent.AnnounceList = decoded.Announce
+
 	return torrent, nil
 }
 
