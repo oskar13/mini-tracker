@@ -175,7 +175,8 @@ func CreateTorrentEntry(torrent webdata.TorrentWeb, userID int, keepAnnounceList
 	}
 
 	torrent.Uuid = uuid.New().String()
-	torrent.AnnounceListJSON = "[]"
+	v := "[]"
+	torrent.AnnounceListJSON = &v
 
 	if keepAnnounceList {
 
@@ -187,7 +188,7 @@ func CreateTorrentEntry(torrent webdata.TorrentWeb, userID int, keepAnnounceList
 			return "", err
 		}
 
-		torrent.AnnounceListJSON = string(jsonResult)
+		v = string(jsonResult)
 	}
 
 	stmt, err := db.DB.Prepare("INSERT INTO torrents (user_ID,name,size,access_type,description,info_hash,info_field,uuid,category_ID, announce_list, keep_trackers) VALUES (?,?,?,?,?,?,?,?,?,?,?)")
@@ -216,7 +217,7 @@ func CreatePublicTorrentFile(torrent webdata.TorrentWeb) ([]byte, error) {
 
 		fmt.Println("KEEPING TRACKERS")
 
-		err := json.Unmarshal([]byte(torrent.AnnounceListJSON), &torrent.AnnounceList)
+		err := json.Unmarshal([]byte(*torrent.AnnounceListJSON), &torrent.AnnounceList)
 		if err != nil {
 			return nil, err
 		}
