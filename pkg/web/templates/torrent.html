@@ -33,6 +33,10 @@
 								{{if .TheTorrent.GroupName}}
 								<a href="/groups/{{.TheTorrent.GroupID}}"><span class="badge text-bg-success">Shared on Group: {{.TheTorrent.GroupName}}</span></a>
 								{{end}}
+
+								{{if .TheTorrent.KeepTrackers}}
+								<a href="#"><span class="badge text-bg-warning">⚠️ Other Trackers ⚠️</span></a>
+								{{end}}
 							</div>
 						</header>
 
@@ -61,6 +65,10 @@
 							<div class="col-md-4">
 								<strong>Info Hash:</strong> {{.TheTorrent.InfoHash}}
 							</div>
+							<div class="col-md-4">
+								<strong>External trackers:</strong> {{if .TheTorrent.KeepTrackers}} <span class="badge text-bg-warning">Enabled ⚠️</span> {{else}} Disabled {{end}}
+							</div>
+							
 						</div>
 					</section>
 					<section>

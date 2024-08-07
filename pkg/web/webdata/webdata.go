@@ -37,6 +37,7 @@ type TorrentWeb struct {
 	ParentCategoryID int
 	Category         string
 	ParentCategory   string
+	KeepTrackers     bool
 }
 
 type TorrentComment struct {

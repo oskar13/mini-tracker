@@ -17,13 +17,14 @@ func StartTracker() {
 
 	serverMux := http.NewServeMux()
 	serverMux.HandleFunc("/www", HandlePublicTorrents)
+	serverMux.HandleFunc("/p/{id}/", HandlePrivateTorrents)
 
 	fmt.Println("Starting tracking server at: http://localhost", data.TrackerPort)
 	http.ListenAndServe(data.TrackerPort, serverMux)
 
 }
 
-// Handle anonymous public requests
+// Handle anonymous public requests, no identification, no checks.
 func HandlePublicTorrents(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "GET" {
@@ -106,4 +107,10 @@ func HandlePublicTorrents(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid ", http.StatusMethodNotAllowed)
 		return
 	}
+}
+
+// Handles all peer requests that require user authentication
+func HandlePrivateTorrents(w http.ResponseWriter, r *http.Request) {
+	trackingIdentifier := r.PathValue("id")
+	fmt.Println(trackingIdentifier)
 }
