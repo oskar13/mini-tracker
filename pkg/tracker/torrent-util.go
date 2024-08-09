@@ -78,6 +78,24 @@ func AddPeer(peer data.Peer) error {
 	return nil
 }
 
+// Add a new peer to database
+func RemovePeer(peer data.Peer) error {
+
+	q := "DELETE FROM peers WHERE torrent_ID = ? AND peer_id = ?"
+
+	stmt, err := db.DB.Prepare(q)
+	if err != nil {
+		return fmt.Errorf("error preparing statement: %v", err)
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(peer.TorrentID, peer.PeerID)
+	if err != nil {
+		return fmt.Errorf("error preparing statement: %v", err)
+	}
+	return nil
+}
+
 // Takes peer list array and send bencoded response
 func EncodePeerListAndRespond(w http.ResponseWriter, interval int, peerList []data.Peer) error {
 

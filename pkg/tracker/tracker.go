@@ -76,6 +76,18 @@ func HandlePublicTorrents(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		event := r.URL.Query().Get("event")
+
+		if event == "stopped" {
+			//Remove peer from peerlist
+			err = RemovePeer(newPeer)
+			if err != nil {
+				fmt.Println("Error removing peer from peers list")
+				fmt.Println(err)
+			}
+			return
+		}
+
 		peers, err := LoadPeers(newPeer.TorrentID, newPeer.PeerID)
 
 		if err != nil {
