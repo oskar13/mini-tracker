@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 
 	db "github.com/oskar13/mini-tracker/pkg/db"
@@ -37,6 +38,13 @@ func FriendsPage(w http.ResponseWriter, r *http.Request) {
 
 	pageStruct.FriendRequests = webutils.GetFriendRequests(pageStruct.UserData.UserID)
 	pageStruct.FriendList = webutils.GetUserFriends(pageStruct.UserData.UserID)
+
+	if r.Method == "POST" {
+
+		r.ParseForm()
+		//TODO Handle posted data
+		fmt.Println(r.Form)
+	}
 
 	webutils.RenderTemplate(w, []string{"pkg/web/templates/friends.html",
 		"pkg/web/templates/sidebar.html", "pkg/web/templates/head.html",

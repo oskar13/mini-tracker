@@ -448,7 +448,7 @@ func getIncomingFriendRequests(userID int) []webdata.FriendRequest {
 
 	var incomingList []webdata.FriendRequest
 
-	q := "SELECT users.user_ID, users.username, users.profile_pic, friend_requests.message, friend_requests.date FROM friend_requests LEFT JOIN users ON sender_user_ID = users.user_ID WHERE receiver_user_ID = ?"
+	q := "SELECT friend_request_ID, users.user_ID, users.username, users.profile_pic, friend_requests.message, friend_requests.date FROM friend_requests LEFT JOIN users ON sender_user_ID = users.user_ID WHERE receiver_user_ID = ?"
 
 	rows, err := db.DB.Query(q, userID)
 	if err != nil {
@@ -458,7 +458,7 @@ func getIncomingFriendRequests(userID int) []webdata.FriendRequest {
 	for rows.Next() {
 		var result webdata.FriendRequest
 
-		err = rows.Scan(&result.User.UserID, &result.User.Username, &result.User.Cover, &result.Message, &result.Date)
+		err = rows.Scan(&result.FriendRequestID, &result.User.UserID, &result.User.Username, &result.User.Cover, &result.Message, &result.Date)
 		if err != nil {
 			return []webdata.FriendRequest{}
 		}
@@ -478,7 +478,7 @@ func getOutgoingFriendRequests(userID int) []webdata.FriendRequest {
 
 	var outgoingList []webdata.FriendRequest
 
-	q := "SELECT users.user_ID, users.username, users.profile_pic, friend_requests.message, friend_requests.date FROM friend_requests LEFT JOIN users ON receiver_user_ID = users.user_ID WHERE sender_user_ID = ?"
+	q := "SELECT friend_request_ID, users.user_ID, users.username, users.profile_pic, friend_requests.message, friend_requests.date FROM friend_requests LEFT JOIN users ON receiver_user_ID = users.user_ID WHERE sender_user_ID = ?"
 
 	rows, err := db.DB.Query(q, userID)
 	if err != nil {
@@ -488,7 +488,7 @@ func getOutgoingFriendRequests(userID int) []webdata.FriendRequest {
 	for rows.Next() {
 		var result webdata.FriendRequest
 
-		err = rows.Scan(&result.User.UserID, &result.User.Username, &result.User.Cover, &result.Message, &result.Date)
+		err = rows.Scan(&result.FriendRequestID, &result.User.UserID, &result.User.Username, &result.User.Cover, &result.Message, &result.Date)
 		if err != nil {
 			return []webdata.FriendRequest{}
 		}

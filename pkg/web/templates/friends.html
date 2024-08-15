@@ -33,8 +33,10 @@
 					<a href="/profile/{{.User.UserID}}" class="m-1 my-3">
 						<strong class="username">{{.User.Username}}</strong>
 					</a>
-					<button type="button" class="btn btn-success m-1 my-3">Accept</button>
-					<button type="button" class="btn btn-danger m-1 my-3">Decline</button>
+					<form method="post">
+						<button type="submit"  class="btn btn-success m-1 my-3" name="accept" value="{{.FriendRequestID}}">Accept</button>
+						<button type="submit" class="btn btn-danger m-1 my-3" name="decline" value="{{.FriendRequestID}}">Decline</button>
+					</form>
 					
 					<p><img src="/static/img/icons/chat.svg" width="24" height="24" alt="message"> {{.Message}} <small class="text-body-secondary fst-italic fw-lighter">({{.Date}})</small></p>
 				</div>
@@ -56,8 +58,11 @@
 					<a href="/profile/{{.User.UserID}}" class="m-1 my-3">
 						<strong class="username">{{.User.Username}}</strong>
 					</a>
-					<button type="button" class="btn btn-secondary m-1 my-3">Pending...</button>
-					<button type="button" class="btn btn-danger m-1 my-3">Cancel</button>
+					<button type="button" class="btn btn-secondary m-1 my-3" disabled>Pending...</button>
+					<form method="post" style="display:inline;">
+						<button type="submit" class="btn btn-danger m-1 my-3" name="cancel" value="{{.FriendRequestID}}">Cancel</button>	
+					</form>
+
 					<p><img src="/static/img/icons/chat.svg" width="24" height="24" alt="message"> {{.Message}} <small class="text-body-secondary fst-italic fw-lighter">({{.Date}})</small></p>
 				</div>
 				{{end}}
