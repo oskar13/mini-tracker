@@ -1,8 +1,6 @@
 package news
 
 import (
-	"fmt"
-
 	"github.com/oskar13/mini-tracker/pkg/db"
 )
 
@@ -56,8 +54,6 @@ func LoadNewsList(limit int) ([]NewsArticle, error) {
 
 func LoadNewsComments(newsID int) ([]NewsComment, error) {
 	var comments []NewsComment
-
-	fmt.Println("Loading comments")
 
 	q := "SELECT comments.comment_ID, comments.content, users.user_ID, users.username, users.profile_pic FROM comments LEFT JOIN users ON users.user_ID = comments.user_ID WHERE comments.post_ID = ?"
 	rows, err := db.DB.Query(q, newsID)

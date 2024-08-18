@@ -91,7 +91,6 @@ func LoadTorrentComments(torrentID int) ([]webdata.TorrentComment, error) {
 
 	rows, err := db.DB.Query(q, torrentID)
 
-	fmt.Println(err)
 	if err != nil {
 		fmt.Println("Error executing query:", err)
 		return []webdata.TorrentComment{}, err
@@ -131,8 +130,6 @@ func ListTorrents(userID int, access_type []string, limit int) []webdata.Torrent
 	q += ` torrents.access_type IN (` + strings.Repeat("?,", len(access_type)-1) + `?)
 		  LIMIT ?`
 
-	//fmt.Println(q)
-
 	args := make([]interface{}, 0, len(access_type)+1)
 	if userID != 0 {
 		args = append(args, userID)
@@ -145,7 +142,6 @@ func ListTorrents(userID int, access_type []string, limit int) []webdata.Torrent
 
 	rows, err := db.DB.Query(q, args...)
 
-	fmt.Println(err)
 	if err != nil {
 		fmt.Println("Error executing query:", err)
 		return []webdata.TorrentWeb{}

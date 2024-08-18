@@ -54,7 +54,7 @@ func ValidateSessionData(r *http.Request) (webdata.User, error) {
 	}
 
 	sessionID := cookie.Value
-	fmt.Println("Session-cookie:", sessionID)
+	//fmt.Println("Session-cookie:", sessionID)
 	if sessionID == "" {
 		log.Println("Session uid is empty in the cookie")
 		return webdata.User{}, fmt.Errorf("session uid is empty")
@@ -80,7 +80,7 @@ func ValidateSessionData(r *http.Request) (webdata.User, error) {
 		return webdata.User{}, fmt.Errorf("session expired")
 	}
 
-	fmt.Println("UserID validated:", userData.Username)
+	//fmt.Println("UserID validated:", userData.Username)
 
 	return userData, nil
 }
@@ -403,8 +403,8 @@ func ParseBadgeBlob(blob *string) []webdata.Badges {
 		return []webdata.Badges{}
 
 	}
-	fmt.Println("JSON parse result")
-	fmt.Println(result)
+	// fmt.Println("JSON parse result")
+	// fmt.Println(result)
 	return result
 }
 
