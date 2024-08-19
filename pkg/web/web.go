@@ -27,13 +27,14 @@ func StartWebsite() {
 	serverMux.HandleFunc("/new", handlers.NewTorrentPage)
 	serverMux.HandleFunc("/news/{id}/", handlers.NewsPage)
 	serverMux.HandleFunc("/news", handlers.NewsPage)
-	serverMux.HandleFunc("/my-t", handlers.MyTorrentsPage)
-	serverMux.HandleFunc("/my-groups", handlers.MyGroupsPage)
 	serverMux.HandleFunc("/groups/{id}/", handlers.GroupPage)
 	serverMux.HandleFunc("/groups", handlers.GroupListPage)
 	serverMux.HandleFunc("/groups/{groupid}/post/{postid}", handlers.GroupPostPage)
 	serverMux.HandleFunc("/t/{uuid}/", handlers.TorrentPage)
 	serverMux.HandleFunc("/t-dl/{uuid}/", handlers.TorrentDownloadPage)
+	serverMux.HandleFunc("/my-t", handlers.MyTorrentsPage)
+	serverMux.HandleFunc("/my-groups", handlers.MyGroupsPage)
+	serverMux.HandleFunc("/cat/{catid}/", handlers.TorrentSearchPage)
 
 	serverMux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./pkg/web/static/"))))
 
