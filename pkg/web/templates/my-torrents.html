@@ -18,6 +18,9 @@
 				<hr>
 				<div class="col-md-12 mb-5">
 					<h3>Public listed torrents</h3>
+					{{if not .PublicListedTorrents}}
+					<p>You have no listed torrents</p>
+					{{end}}
 					<div class="list-group list-group-flush  scrollarea px-5">
 					{{range .PublicListedTorrents}}
 						{{template "torrent-list-item" .}}
@@ -25,15 +28,20 @@
 					</div>
 	
 				</div>
+
 				<div class="col-md-12 ">
 					<h3>Public unlisted Torrents</h3>
-
+					{{if not .PublicUnlistedTorrents}}
+					<p>You have no unlisted torrents</p>
+					{{end}}
 					<div class="list-group list-group-flush  scrollarea px-5">
 						{{range .PublicUnlistedTorrents}}
 							{{template "torrent-list-item" .}}
 						{{end}}
 					</div>
 				</div>
+				
+
 			</div>
 			
 		</div>
