@@ -28,16 +28,20 @@ services:
       DB_USER: minitorrentuser
       DB_PASSWORD_FILE: /run/secrets/db_password
       DB_NAME: minitorrent
+      INSTALLER_TOKEN_FILE: /run/secrets/installer_token
     ports:
       - "8080:8080"
     secrets:
       - db_password
+      - installer_token
 
 secrets:
   db_password:
     file: db_password.txt
   db_root_password:
     file: db_root_password.txt
+  installer_token:
+    file: installer_token.txt
 
 volumes:
   db_data:

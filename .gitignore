@@ -35,5 +35,6 @@ static/uploads/group-covers/*
 
 #ignore password files
 *password.txt
+*token.txt
 
 /db_data

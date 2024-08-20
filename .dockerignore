@@ -3,4 +3,5 @@ CHANGELOG.md
 docker-compose.yml
 Dockerfile
 *password.txt
+*token.txt
 /db*

@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/go-sql-driver/mysql"
+	"github.com/oskar13/mini-tracker/pkg/data"
 )
 
 var DB *sql.DB
@@ -19,7 +20,7 @@ func InitDB() {
 
 	cfg := mysql.Config{
 		User:                 os.Getenv("DB_USER"),
-		Passwd:               readPassword(os.Getenv("DB_PASSWORD_FILE")),
+		Passwd:               data.ReadPassword(os.Getenv("DB_PASSWORD_FILE")),
 		Net:                  "tcp",
 		Addr:                 fmt.Sprintf("%s:%s", dbHost, dbPort),
 		DBName:               os.Getenv("DB_NAME"),
@@ -48,13 +49,4 @@ func Close() {
 	if DB != nil {
 		DB.Close()
 	}
-}
-
-func readPassword(filePath string) string {
-	data, err := os.ReadFile(filePath)
-	if err != nil {
-		log.Fatalf("Failed to read password file: %v", err)
-	}
-	fmt.Println(string(data))
-	return string(data)
 }
