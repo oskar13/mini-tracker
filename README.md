@@ -12,16 +12,23 @@ A small/mid scale torrent tracker and a site written in Go. It features public a
 
 
 ## Current progress
-![60%](https://progress-bar.dev/60)
-
 > [!NOTE]  
 > This project is not fully functional yet and is still in its early development stage.
 
 ## How to run
-Installer coming soon. To run the code at current state, edit start.sh with your MySQL credentials, make a minitorrent database on your server. 
 
-In MySQL workbench forward engineer a schema with insert commands. Log in with user accounts provided in tests/testusers.txt file.
+### Requirements
+ * A recent MariaDB (tested with 11.5.2) or MySQL database install.
+ * Go >= 1.23
+### With docker
 
+Run `gen_secrets.sh` which will generate password files with openssl. Build and run docker containers with `docker-compose up --build `. Navigate to port 8080 on the server to start the web install process (see bellow).
+
+### Locally
+Run `gen_secrets.sh` which will generate password files with openssl. Then edit start.sh with your MySQL credentials (make a non root user with access to a database). Edit `db_password.txt` with the user's password. `db_root_password.txt` is only needed when using docker so this file can be ignored. Run `start.sh` to start the server with go run. Navigate to port 8080 and proceed with the installer (see bellow).
+
+## Web Installer
+If no previous data in database is detected then the installer will be launched in website root. When entering the installer, a token is needed to proceed. You can find it in `installer_token.txt` in project root directory after running `gen_secrets.sh`. After successfully validating the token, you can create admin user account, set site name and finish the install.
 
 ### MySQL Workbench project
 With this repository also comes a MySQL Workbench project with ERD diagram with embedded data to test out site functionality.
