@@ -32,3 +32,8 @@ launch.sh
 # Ignore profile picture uploads
 static/uploads/user-covers/*
 static/uploads/group-covers/*
+
+#ignore password files
+*password.txt
+
+/db_data

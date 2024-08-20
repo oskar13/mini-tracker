@@ -13,12 +13,16 @@ var DB *sql.DB
 
 func InitDB() {
 	// Capture connection properties.
+
+	dbHost := os.Getenv("DB_HOST")
+	dbPort := os.Getenv("DB_PORT")
+
 	cfg := mysql.Config{
-		User:                 os.Getenv("DBUSER"),
-		Passwd:               os.Getenv("DBPASS"),
+		User:                 os.Getenv("DB_USER"),
+		Passwd:               readPassword(os.Getenv("DB_PASSWORD_FILE")),
 		Net:                  "tcp",
-		Addr:                 "127.0.0.1:3306",
-		DBName:               "minitorrent",
+		Addr:                 fmt.Sprintf("%s:%s", dbHost, dbPort),
+		DBName:               os.Getenv("DB_NAME"),
 		AllowNativePasswords: true,
 	}
 	// Get a database handle.
@@ -44,4 +48,13 @@ func Close() {
 	if DB != nil {
 		DB.Close()
 	}
+}
+
+func readPassword(filePath string) string {
+	data, err := os.ReadFile(filePath)
+	if err != nil {
+		log.Fatalf("Failed to read password file: %v", err)
+	}
+	fmt.Println(string(data))
+	return string(data)
 }
