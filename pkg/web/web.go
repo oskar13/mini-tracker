@@ -2,10 +2,12 @@ package web
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	db "github.com/oskar13/mini-tracker/pkg/db"
 	"github.com/oskar13/mini-tracker/pkg/web/handlers"
+	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
 )
 
 func StartWebsite() {
@@ -13,6 +15,14 @@ func StartWebsite() {
 	// Initialize the database
 	db.InitDB()
 	defer db.Close()
+
+	//Check for database tables,
+	err := webutils.CheckInitData()
+
+	if err != nil {
+		log.Println("Failed to check initial data!")
+		log.Fatal(err)
+	}
 
 	serverMux := http.NewServeMux()
 	serverMux.HandleFunc("/", handlers.MainPage)

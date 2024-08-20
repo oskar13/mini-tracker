@@ -14,9 +14,51 @@ import (
 	"time"
 
 	db "github.com/oskar13/mini-tracker/pkg/db"
+	"github.com/oskar13/mini-tracker/pkg/installer"
 	"github.com/oskar13/mini-tracker/pkg/web/webdata"
 	"golang.org/x/crypto/bcrypt"
 )
+
+func CheckInitData() error {
+	//Validity of user table
+	err := validateSchema()
+	if err != nil {
+		return err
+	}
+
+	//Check if any user exists, if not run the installer
+	tableEmpty, err := checkUsers()
+	if err != nil {
+		return err
+	}
+
+	if tableEmpty {
+		return installer.Run()
+	}
+
+	return nil
+}
+
+func validateSchema() error {
+	var schema_revision string
+	q := "SELECT schema_revision FROM sys_info WHERE schema_revision = ?"
+	return db.DB.QueryRow(q, webdata.SchemaRevision).Scan(&schema_revision)
+}
+
+func checkUsers() (bool, error) {
+	var count int
+	q := "select count(1) where exists (select * from minitorrent.users)"
+	err := db.DB.QueryRow(q).Scan(&count)
+	if err != nil {
+		return false, err
+	}
+
+	if count == 0 {
+		return true, nil
+	}
+
+	return false, nil
+}
 
 func CheckLogin(w http.ResponseWriter, r *http.Request, userData webdata.User) bool {
 	if userData.UserID == 0 {
