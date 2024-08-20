@@ -17,14 +17,16 @@ A small/mid scale torrent tracker and a site written in Go. It features public a
 
 ## How to run
 
-### Requirements
- * A recent MariaDB (tested with 11.5.2) or MySQL database install.
- * Go >= 1.23
 ### With docker
 
 Run `gen_secrets.sh` which will generate password files with openssl. Build and run docker containers with `docker-compose up --build `. Navigate to port 8080 on the server to start the web install process (see bellow).
 
 ### Locally
+
+#### Requirements:
+ * A recent MariaDB (tested with 11.5.2) or MySQL database install.
+ * Go >= 1.23
+
 Run `gen_secrets.sh` which will generate password files with openssl. Then edit start.sh with your MySQL credentials (make a non root user with access to a database). Edit `db_password.txt` with the user's password. `db_root_password.txt` is only needed when using docker so this file can be ignored. Run `start.sh` to start the server with go run. Navigate to port 8080 and proceed with the installer (see bellow).
 
 ## Web Installer
