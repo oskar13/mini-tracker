@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	db "github.com/oskar13/mini-tracker/pkg/db"
+	"github.com/oskar13/mini-tracker/pkg/installer"
 	"github.com/oskar13/mini-tracker/pkg/web/handlers"
 	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
 )
@@ -17,7 +18,7 @@ func StartWebsite() {
 	defer db.Close()
 
 	//Check for database tables,
-	err := webutils.CheckInitData()
+	err := checkInitData()
 
 	if err != nil {
 		log.Println("Failed to check initial data!")
@@ -51,4 +52,24 @@ func StartWebsite() {
 	fmt.Println("Starting web interface at: http://localhost:8080")
 	http.ListenAndServe(":8080", serverMux)
 
+}
+
+func checkInitData() error {
+	//Validity of user table
+	err := webutils.ValidateSchema()
+	if err != nil {
+		return err
+	}
+
+	//Check if any user exists, if not run the installer
+	tableEmpty, err := webutils.CheckUsers()
+	if err != nil {
+		return err
+	}
+
+	if tableEmpty {
+		return installer.Run()
+	}
+
+	return nil
 }
