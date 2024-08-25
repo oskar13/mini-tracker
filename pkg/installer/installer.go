@@ -35,6 +35,8 @@ func Start(wg *sync.WaitGroup) {
 			ErrorText   string
 			Message     bool
 			MessageText string
+			Token       string
+			NoToken     bool
 		}
 
 		token := r.URL.Query().Get("token")
@@ -43,21 +45,18 @@ func Start(wg *sync.WaitGroup) {
 
 			if token == installerToken {
 				fmt.Println("YAAY right token")
+				pageStruct.Token = token
 
-				fmt.Println("Shuting down ...")
-				// Shut down server here
-				err := srv.Shutdown(context.Background())
-				if err != nil {
-					log.Println("server.Shutdown:", err)
-				}
 			} else {
 				fmt.Print("BOOO!!!")
 				fmt.Println(" Correct token is:")
 				fmt.Println(installerToken)
+				pageStruct.Error = true
+				pageStruct.ErrorText = "Incorrect installer key."
 			}
 
 		} else {
-			fmt.Fprintln(w, "Invalid  installer token") // Server HTML page to fetch token and return to server at /callback
+			pageStruct.NoToken = true
 
 		}
 		webutils.RenderTemplate(w, []string{"pkg/installer/templates/installer.html"}, pageStruct)
@@ -84,6 +83,8 @@ func Start(wg *sync.WaitGroup) {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 		}
 	})
+
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./pkg/installer/static/"))))
 
 	go func() {
 		defer wg.Done()
