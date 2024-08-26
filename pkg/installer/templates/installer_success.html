@@ -35,7 +35,18 @@
 
 				<div class=" align-self-center" style="border-radius: 1rem;">
 					<div class=" p-3 text-center">
-                        <h1>Installer Success</h1>
+                        <h1>Install Success</h1>
+
+						{{if not .Error }}
+						<p>Yay, your tracker has been set up, now log-in, configure the site and invite your first users.</p>
+						<form action="/shutdown-installer">
+							<input class="visually-hidden" type="text" name="token" value="{{.Token}}">
+							<input class="btn btn-primary" type="submit" value="Exit Installer">
+						</form>
+						{{else}}
+						<p>{{.ErrorText}}</p>
+						{{end}}
+
 					</div>
 				</div>
 

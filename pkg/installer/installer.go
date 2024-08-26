@@ -64,12 +64,32 @@ func Start(wg *sync.WaitGroup) {
 
 	http.HandleFunc("/install-success", func(w http.ResponseWriter, r *http.Request) {
 		//Display success message after install, steps to do next
+
+		var pageStruct struct {
+			Error     bool
+			ErrorText string
+			Token     string
+		}
 		token := r.URL.Query().Get("token")
 		if token != "" {
 			if token == installerToken {
-				var emptyStruct struct{}
+				pageStruct.Token = installerToken
 				//Render a welcome page after install
-				webutils.RenderTemplate(w, []string{"pkg/installer/templates/installer_success.html"}, emptyStruct)
+				webutils.RenderTemplate(w, []string{"pkg/installer/templates/installer_success.html"}, pageStruct)
+			} else {
+				http.Redirect(w, r, "/", http.StatusSeeOther)
+			}
+
+		} else {
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+		}
+	})
+
+	//Shut down installer if the key is right
+	http.HandleFunc("/shutdown-installer", func(w http.ResponseWriter, r *http.Request) {
+		token := r.URL.Query().Get("token")
+		if token != "" {
+			if token == installerToken {
 				// Shut down server here
 				err := srv.Shutdown(context.Background())
 				if err != nil {
@@ -78,7 +98,6 @@ func Start(wg *sync.WaitGroup) {
 			} else {
 				http.Redirect(w, r, "/", http.StatusSeeOther)
 			}
-
 		} else {
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 		}
