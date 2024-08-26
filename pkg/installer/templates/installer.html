@@ -35,26 +35,48 @@
 
 				<div class=" align-self-center" style="border-radius: 1rem;">
 					<div class=" p-3 text-center">
-                        <h1>MiniTorrent Installer</h1>
-                        {{if not .NoToken}}
-                            {{if not .Error }}
-                            <p>Yay</p>
-                            <form action="/install-success">
-                                <input type="text" name="token" value="{{.Token}}">
-                                <input type="submit" value="Submit">
-                            </form>
-                            {{else}}
-                            <p>{{.ErrorText}}</p>
-                            {{end}}
-                        {{else}}
-                            <form>
-                                <div class="mb-3">
-                                    <input type="text" class="form-control" name="token" placeholder="key">
-                                  </div>
-                                  <button type="submit" class="btn btn-primary">Submit</button>
-                                
-                            </form>
-                        {{end}}
+						<h1>MiniTorrent Installer</h1>
+						{{if not .NoToken}}
+						{{if not .Error }}
+						<p>Welcome to MiniTorrent installer. Initialize the database and create your admin account.</p>
+						<form action="/install-success">
+							<input class="visually-hidden" type="text" name="token" value="{{.Token}}">
+
+
+
+							<div class="col-md-5 mx-auto">
+								<div class="mb-3">
+									<label for="email" class="form-label">Email address</label>
+									<input type="email" class="form-control" id="email" aria-describedby="email"
+										name="email">
+									<div id="email" class="form-text"><i>optional</i></div>
+								</div>
+								<div class="mb-3">
+									<label for="username" class="form-label">Username</label>
+									<input type="text" class="form-control" id="username" aria-describedby="username"
+										name="username">
+								</div>
+								<div class="mb-3">
+									<label for="password" class="form-label">Password</label>
+									<input type="password" class="form-control" id="password" name="password">
+								</div>
+							</div>
+
+
+							<input class="btn btn-outline-light" type="submit" value="Submit">
+						</form>
+						{{else}}
+						<p>{{.ErrorText}}</p>
+						{{end}}
+						{{else}}
+						<form>
+							<div class="mb-3">
+								<input type="text" class="form-control" name="token" placeholder="key">
+							</div>
+							<button type="submit" class="btn btn-outline-light">Submit</button>
+
+						</form>
+						{{end}}
 
 
 					</div>

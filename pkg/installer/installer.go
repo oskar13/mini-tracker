@@ -41,16 +41,10 @@ func Start(wg *sync.WaitGroup) {
 
 		token := r.URL.Query().Get("token")
 		if token != "" {
-			fmt.Println("Found Token:", token)
-
 			if token == installerToken {
-				fmt.Println("YAAY right token")
 				pageStruct.Token = token
-
 			} else {
-				fmt.Print("BOOO!!!")
-				fmt.Println(" Correct token is:")
-				fmt.Println(installerToken)
+
 				pageStruct.Error = true
 				pageStruct.ErrorText = "Incorrect installer key."
 			}
