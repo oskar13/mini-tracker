@@ -35,14 +35,14 @@
 
 				<div class=" align-self-center" style="border-radius: 1rem;">
 					<div class=" p-3 text-center">
-                        <h1>Install Success</h1>
-
 						{{if not .Error }}
-						<p>Yay, your tracker has been set up, now log-in, configure the site and invite your first users.</p>
+                        <h1>Install Success ✅</h1>
+						<p>🎉 Yay, your tracker has been set up, now log-in, configure the site and invite your first users. 🎉</p>
 						<form action="/shutdown-installer">
 							<input class="visually-hidden" type="text" name="token" value="{{.Token}}">
-							<input class="btn btn-primary" type="submit" value="Exit Installer">
+							<input class="btn btn-primary" type="submit" value="Exit Installer" onclick="show()">
 						</form>
+						<p id="message" class="visually-hidden">Refresh the page to log in.</p>
 						{{else}}
 						<p>{{.ErrorText}}</p>
 						{{end}}
@@ -55,6 +55,13 @@
 
 
 	</main>
+
+	<script>
+		function show() {
+			var element = document.getElementById("message");
+			element.classList.remove("visually-hidden");
+		}
+	</script>
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
