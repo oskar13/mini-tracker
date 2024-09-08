@@ -46,7 +46,7 @@ func SignupPage(w http.ResponseWriter, r *http.Request) {
 				pageStruct.Error = true
 
 			} else {
-				err := webutils.CreateUser(username, password, password2, ref)
+				err := webutils.CreateUser(username, password, password2, ref, 99, false)
 
 				if err != nil {
 					pageStruct.Error = true

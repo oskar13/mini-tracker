@@ -4,8 +4,6 @@ github.com/go-sql-driver/mysql v1.8.1 h1:LedoTUt/eveggdHS9qUFC1EFSa8bU2+1pZjSRpv
 github.com/go-sql-driver/mysql v1.8.1/go.mod h1:wEBSXgmK//2ZFJyE+qWnIsVGmvmEKlqwuVSjsCm7DZg=
 github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
 github.com/google/uuid v1.6.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
-github.com/oskar13/go-torrent-parser v0.0.0-20240722150037-9352ea2ed8ba h1:npydOCz46SoMyw7zIj3Xf9M9x+xEHyV/iGfGE2jOA90=
-github.com/oskar13/go-torrent-parser v0.0.0-20240722150037-9352ea2ed8ba/go.mod h1:8ARmxs8Pa5FfrdZ6poG6KxxqT8XFRGxFouqxdtd8jac=
 github.com/oskar13/go-torrent-parser v0.0.0-20240805084031-9e6bc21d3e9b h1:kO17WbwJD9ISPq0e31u6rZyGHDGtTFOGtqg9rmC4wIQ=
 github.com/oskar13/go-torrent-parser v0.0.0-20240805084031-9e6bc21d3e9b/go.mod h1:8ARmxs8Pa5FfrdZ6poG6KxxqT8XFRGxFouqxdtd8jac=
 github.com/zeebo/bencode v1.0.0 h1:zgop0Wu1nu4IexAZeCZ5qbsjU4O1vMrfCrVgUjbHVuA=

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/oskar13/mini-tracker/pkg/data"
@@ -49,4 +50,60 @@ func Close() {
 	if DB != nil {
 		DB.Close()
 	}
+}
+
+func CreateSchema() error {
+
+	// Load the schema SQL file
+	schemaSQL, err := loadSQLFile("db/db_scripts/initialize_empty.sql")
+	if err != nil {
+		log.Fatalf("Failed to load schema file: %v", err)
+		return err
+	}
+
+	// Execute the schema script
+	err = executeSQL(DB, schemaSQL)
+	if err != nil {
+		log.Fatalf("Failed to execute schema: %v", err)
+		return err
+	}
+
+	log.Println("Database schema created successfully!")
+
+	return nil
+}
+
+// Load SQL schema file and return its content as a string
+func loadSQLFile(filename string) (string, error) {
+	data, err := os.ReadFile(filename)
+	if err != nil {
+		return "", err
+	}
+	return string(data), nil
+}
+
+// Function to execute SQL commands
+func executeSQL(db *sql.DB, sqlScript string) error {
+	// MySQL driver does not support executing multiple statements by default
+	statements := splitSQLStatements(sqlScript)
+	for _, stmt := range statements {
+		_, err := db.Exec(stmt)
+		if err != nil {
+			return fmt.Errorf("failed to execute statement: %s, error: %v", stmt, err)
+		}
+	}
+	return nil
+}
+
+// Split SQL script into individual statements (naive approach, adjust for complex cases)
+func splitSQLStatements(script string) []string {
+	// You can split based on semicolons for simple cases or use a more sophisticated parser
+	statements := []string{}
+	for _, stmt := range strings.Split(script, ";") {
+		trimmed := strings.TrimSpace(stmt)
+		if len(trimmed) > 0 {
+			statements = append(statements, trimmed)
+		}
+	}
+	return statements
 }

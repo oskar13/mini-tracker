@@ -9,6 +9,7 @@ import (
 	"sync"
 
 	"github.com/oskar13/mini-tracker/pkg/data"
+	"github.com/oskar13/mini-tracker/pkg/db"
 	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
 )
 
@@ -56,7 +57,7 @@ func Start(wg *sync.WaitGroup) {
 		webutils.RenderTemplate(w, []string{"pkg/installer/templates/installer.html"}, pageStruct)
 	})
 
-	http.HandleFunc("/install-success", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/install-result", func(w http.ResponseWriter, r *http.Request) {
 		//Display success message after install, steps to do next
 
 		var pageStruct struct {
@@ -68,8 +69,34 @@ func Start(wg *sync.WaitGroup) {
 		if token != "" {
 			if token == installerToken {
 				pageStruct.Token = installerToken
-				//Render a welcome page after install
-				webutils.RenderTemplate(w, []string{"pkg/installer/templates/installer_success.html"}, pageStruct)
+				email := r.URL.Query().Get("email")
+				username := r.URL.Query().Get("username")
+				password := r.URL.Query().Get("password")
+
+				if email != "" && !webutils.ValidateEmail(email) {
+					pageStruct.Error = true
+					pageStruct.ErrorText = "Invalid email address"
+				} else {
+					if username == "" || password == "" {
+						pageStruct.Error = true
+						pageStruct.ErrorText = "Missing admin account details"
+					} else {
+
+						err := db.CreateSchema()
+						if err != nil {
+							log.Println("Failed initialize schema")
+							log.Panic(err)
+						}
+
+						err = webutils.CreateUser(username, password, password, "", 0, true)
+						if err != nil {
+							log.Println("Failed to create admin user.")
+							log.Panic(err)
+						}
+					}
+				}
+
+				webutils.RenderTemplate(w, []string{"pkg/installer/templates/installer_result.html"}, pageStruct)
 			} else {
 				http.Redirect(w, r, "/", http.StatusSeeOther)
 			}
@@ -84,6 +111,7 @@ func Start(wg *sync.WaitGroup) {
 		token := r.URL.Query().Get("token")
 		if token != "" {
 			if token == installerToken {
+				http.Redirect(w, r, "/", http.StatusSeeOther)
 				// Shut down server here
 				err := srv.Shutdown(context.Background())
 				if err != nil {

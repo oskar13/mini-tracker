@@ -39,7 +39,7 @@
 						{{if not .NoToken}}
 						{{if not .Error }}
 						<p>Welcome to MiniTorrent installer. Initialize the database and create your admin account.</p>
-						<form action="/install-success">
+						<form action="/install-result">
 							<input class="visually-hidden" type="text" name="token" value="{{.Token}}">
 
 
@@ -62,6 +62,7 @@
 								</div>
 							</div>
 
+							<p><strong>Warning!</strong> Proceeding with install will delete anything that is currently stored in <strong>minitorrent</strong> database.</p>
 
 							<input class="btn btn-outline-light" type="submit" value="Submit">
 						</form>

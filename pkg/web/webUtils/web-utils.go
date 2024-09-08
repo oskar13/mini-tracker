@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/mail"
 	"strings"
 	"text/template"
 	"time"
@@ -241,14 +242,16 @@ func comparePasswords(hashedPwd string, plainPwd string) bool {
 	return true
 }
 
-func CreateUser(username string, password string, password2 string, ref string) error {
+func CreateUser(username string, password string, password2 string, ref string, adminLevel int, ignoreRefCode bool) error {
 
 	//
 
-	_, err := CheckRefCode(ref)
+	if !ignoreRefCode {
+		_, err := CheckRefCode(ref)
 
-	if err != nil {
-		return err
+		if err != nil {
+			return err
+		}
 	}
 
 	if password != password2 {
@@ -271,9 +274,9 @@ func CreateUser(username string, password string, password2 string, ref string) 
 		return err
 	}
 
-	q := `INSERT INTO users (users.username, users.password) VALUES (?,?)`
+	q := `INSERT INTO users (users.username, users.password, users.admin_level) VALUES (?,?,?)`
 
-	res, err := db.DB.Exec(q, username, hashedPwd)
+	res, err := db.DB.Exec(q, username, hashedPwd, adminLevel)
 
 	if err != nil {
 		return err
@@ -284,11 +287,12 @@ func CreateUser(username string, password string, password2 string, ref string) 
 	if err != nil {
 		return err
 	}
+	if !ignoreRefCode {
+		err = UseRefCode(int(insertedId), ref)
 
-	err = UseRefCode(int(insertedId), ref)
-
-	if err != nil {
-		return err
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
@@ -525,4 +529,9 @@ func getOutgoingFriendRequests(userID int) []webdata.FriendRequest {
 
 	return outgoingList
 
+}
+
+func ValidateEmail(email string) bool {
+	_, err := mail.ParseAddress(email)
+	return err == nil
 }

@@ -1,6 +1,8 @@
 package web
 
 import (
+	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -58,7 +60,14 @@ func checkInitData() error {
 	//Validity of user table
 	err := webutils.ValidateSchema()
 	if err != nil {
-		return err
+		//Revision number missmatch
+		if err == sql.ErrNoRows {
+			return errors.New("database exists but schema revision number does not match, please see guide to migrate your current schema, quitting...")
+		} else {
+			//Probably need to freshly initialize database
+			return installer.Run()
+		}
+
 	}
 
 	//Check if any user exists, if not run the installer

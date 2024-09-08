@@ -1,3 +1,23 @@
+#MySQL workbench backup file
+*.bak
+
+# Dependency directories (remove the comment below to include it)
+# vendor/
+
+# Go workspace file
+go.work
+
+# VScode files
+.vscode
+.VSCodeCounter
+
+launch.sh
+
+# Ignore profile picture uploads
+static/uploads/user-covers/*
+static/uploads/group-covers/*
+
+
 README.md
 CHANGELOG.md
 docker-compose.yml
