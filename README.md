@@ -27,13 +27,10 @@ Run `gen_secrets.sh` which will generate password files with openssl. Build and 
  * A recent MariaDB (tested with 11.5.2) or MySQL database install.
  * Go >= 1.23
 
-Run `gen_secrets.sh` which will generate password files with openssl. Then edit start.sh with your MySQL credentials (make a non root user with access to a database). Edit `db_password.txt` with the user's password. `db_root_password.txt` is only needed when using docker so this file can be ignored. Run `start.sh` to start the server with go run. Navigate to port 8080 and proceed with the installer (see bellow).
+Run `gen_secrets.sh` which will generate password files with openssl. Then edit start.sh with your MySQL credentials with access to a database (make sure to create an empty database). Edit `db_password.txt` with the user's password. `db_root_password.txt` is only needed when using docker so this file can be ignored. Run `start.sh` to start the server with go run. Navigate to port 8080 and proceed with the installer (see bellow).
 
-## Web Installer
-If no previous data in database is detected then the installer will be launched in website root. When entering the installer, a token is needed to proceed. You can find it in `installer_token.txt` in project root directory after running `gen_secrets.sh`. After successfully validating the token, you can create admin user account, set site name and finish the install.
-
-### MySQL Workbench project
-With this repository also comes a MySQL Workbench project with ERD diagram with embedded data to test out site functionality.
+## Web Install Process
+If no valid data is detected on startup, then the installer will be launched in website root (empty database has to exist or the installer will not run). When entering the installer, a token is needed to proceed. You can find it in `installer_token.txt` in project root directory after running `gen_secrets.sh`. After successfully validating the token, you can create the admin user account and finish the install.
 
 ## Goals
 - Make it easy to share torrent files between small number of people
@@ -66,8 +63,6 @@ Private torrents require an account to access the info page. To access peers on 
 - **Group Private** only members of the group can see the torrent.
 
 
-
-
 ## Why
 Sometimes there is a need to move large files (over 20G - HDD backup images, neural networks, etc.) from one computer to another over the internet with a one-time transaction. In this case, it wouldn't make sense to buy storage space with an expensive cloud storage provider or set up FTP server which requires additional configuration. 
 
@@ -78,6 +73,9 @@ Instead one should use a P2P protocol like Bit-torrent which is resilient to pot
 The problem is that in the current situation, it might be hard to use widely known public trackers to share files between friends or colleagues. Some domains may be blocked by ISPs or draw unwanted attention when connecting to them. Also, there might be a privacy/legal concerns when sharing a file on a public tracker.
 
 The solution is to run your own tracker that is easily deployable when needed. One which features different privacy levels.
+
+## MySQL Workbench project
+With this repository also comes a MySQL Workbench project (`db_model/mysql_project.mwb`) with ERD diagram and embedded data to test out site functionality. 
 
 ---
 
