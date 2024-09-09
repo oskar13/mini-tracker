@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	db "github.com/oskar13/mini-tracker/pkg/db"
+	"github.com/oskar13/mini-tracker/pkg/web/accounts"
 	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
 	"github.com/oskar13/mini-tracker/pkg/web/webdata"
 )
@@ -22,7 +23,7 @@ func SignupPage(w http.ResponseWriter, r *http.Request) {
 		UserData      webdata.User
 	}
 
-	userData := webutils.GetUserData(r, db.DB)
+	userData := accounts.GetUserData(r, db.DB)
 
 	if userData.LoggedIn {
 		//Show user a message about being logged in, also remind that one account per lifetime
@@ -46,7 +47,7 @@ func SignupPage(w http.ResponseWriter, r *http.Request) {
 				pageStruct.Error = true
 
 			} else {
-				err := webutils.CreateUser(username, password, password2, ref, 99, false)
+				err := accounts.CreateUser(username, password, password2, ref, 99, false)
 
 				if err != nil {
 					pageStruct.Error = true
@@ -70,7 +71,7 @@ func SignupPage(w http.ResponseWriter, r *http.Request) {
 			} else {
 				//check ref code
 
-				_, err := webutils.CheckRefCode(ref)
+				_, err := accounts.CheckRefCode(ref)
 
 				if err != nil {
 					// invalid code show error message

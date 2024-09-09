@@ -4,15 +4,16 @@ import (
 	"net/http"
 
 	db "github.com/oskar13/mini-tracker/pkg/db"
+	"github.com/oskar13/mini-tracker/pkg/web/accounts"
 	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
 	"github.com/oskar13/mini-tracker/pkg/web/webdata"
 )
 
 func TorrentSearchPage(w http.ResponseWriter, r *http.Request) {
 
-	userData := webutils.GetUserData(r, db.DB)
+	userData := accounts.GetUserData(r, db.DB)
 
-	if !webutils.CheckLogin(w, r, userData) {
+	if !accounts.CheckLogin(w, r, userData) {
 		http.Redirect(w, r, "/login", http.StatusForbidden)
 		return
 	}

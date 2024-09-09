@@ -10,6 +10,7 @@ import (
 
 	"github.com/oskar13/mini-tracker/pkg/data"
 	"github.com/oskar13/mini-tracker/pkg/db"
+	"github.com/oskar13/mini-tracker/pkg/web/accounts"
 	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
 )
 
@@ -88,7 +89,7 @@ func Start(wg *sync.WaitGroup) {
 							log.Panic(err)
 						}
 
-						err = webutils.CreateUser(username, password, password, "", 0, true)
+						err = accounts.CreateUser(username, password, password, "", 0, true)
 						if err != nil {
 							log.Println("Failed to create admin user.")
 							log.Panic(err)

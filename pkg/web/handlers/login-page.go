@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	db "github.com/oskar13/mini-tracker/pkg/db"
+	"github.com/oskar13/mini-tracker/pkg/web/accounts"
 	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
 	"github.com/oskar13/mini-tracker/pkg/web/webdata"
 )
@@ -22,13 +23,13 @@ func LoginPage(w http.ResponseWriter, r *http.Request) {
 		UserData      webdata.User
 	}
 
-	userData := webutils.GetUserData(r, db.DB)
+	userData := accounts.GetUserData(r, db.DB)
 
 	if userData.LoggedIn {
 
 		if r.URL.Path == "/logout" {
 			//Log user out
-			userData = webutils.LogOutUser(w, userData)
+			userData = accounts.LogOutUser(w, userData)
 			pageStruct.LogoutMessage = true
 
 		} else {
@@ -50,7 +51,7 @@ func LoginPage(w http.ResponseWriter, r *http.Request) {
 				Password:        r.FormValue("password"),
 			}
 
-			resultUserData, err := webutils.LoginUser(w, r, loginData.UserNameOrEmail, loginData.Password)
+			resultUserData, err := accounts.LoginUser(w, r, loginData.UserNameOrEmail, loginData.Password)
 
 			if err != nil {
 
