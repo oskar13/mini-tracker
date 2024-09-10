@@ -20,7 +20,6 @@ import (
 func CheckLogin(w http.ResponseWriter, r *http.Request, userData webdata.User) bool {
 	if userData.UserID == 0 {
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
-
 		return false
 	}
 

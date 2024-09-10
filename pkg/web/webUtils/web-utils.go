@@ -17,7 +17,7 @@ import (
 func ValidateSchema() error {
 	var schema_revision string
 	q := "SELECT schema_revision FROM sys_info WHERE schema_revision = ?"
-	return db.DB.QueryRow(q, webdata.SchemaRevision).Scan(&schema_revision)
+	return db.DB.QueryRow(q, db.SchemaRevision).Scan(&schema_revision)
 }
 
 // Check if any users exist in database

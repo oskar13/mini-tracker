@@ -60,7 +60,6 @@ func LoadPeers(torrentID int, peer_id string) ([]data.Peer, error) {
 
 }
 
-// Add a new peer to database
 func AddPeer(peer data.Peer) error {
 
 	q := "REPLACE INTO peers (peers.torrent_ID, peers.peer_id, peers.ip, peers.port, peers.left) VALUES (?,?,?,?,?)"
@@ -78,7 +77,6 @@ func AddPeer(peer data.Peer) error {
 	return nil
 }
 
-// Add a new peer to database
 func RemovePeer(peer data.Peer) error {
 
 	q := "DELETE FROM peers WHERE torrent_ID = ? AND peer_id = ?"
@@ -158,7 +156,7 @@ func GetHTTPRequestIP(r *http.Request) (string, error) {
 }
 
 // Gets the database ID for a torrent based on its info_hash
-func GetTorrentIDFromHash(hash string) (int, error) {
+func GetTorrentIdByHash(hash string) (int, error) {
 	var result int
 	q := "SELECT torrents.torrent_ID FROM torrents WHERE torrents.info_hash = ?"
 	err := db.DB.QueryRow(q, hash).Scan(&result)

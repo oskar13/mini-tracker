@@ -122,4 +122,3 @@ type FriendRequest struct {
 }
 
 var SiteName string = "Mini Tracker"
-var SchemaRevision string = "0.14"

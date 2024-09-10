@@ -13,9 +13,10 @@ import (
 
 var DB *sql.DB
 
-func InitDB() {
-	// Capture connection properties.
+// Revision number in sys_info table must match this
+var SchemaRevision string = "0.14"
 
+func InitDB() {
 	dbHost := os.Getenv("DB_HOST")
 	dbPort := os.Getenv("DB_PORT")
 
@@ -97,7 +98,7 @@ func executeSQL(db *sql.DB, sqlScript string) error {
 
 // Split SQL script into individual statements (naive approach, adjust for complex cases)
 func splitSQLStatements(script string) []string {
-	// You can split based on semicolons for simple cases or use a more sophisticated parser
+	// Split statements by semicolon
 	statements := []string{}
 	for _, stmt := range strings.Split(script, ";") {
 		trimmed := strings.TrimSpace(stmt)

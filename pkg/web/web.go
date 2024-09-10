@@ -60,9 +60,9 @@ func checkInitData() error {
 	//Validity of user table
 	err := webutils.ValidateSchema()
 	if err != nil {
-		//Revision number missmatch
+		//Revision number miss match
 		if err == sql.ErrNoRows {
-			return errors.New("database exists but schema revision number does not match, please see guide to migrate your current schema, quitting...")
+			return errors.New("database exists but schema revision number does not match, please see guide to migrate your current schema, quitting")
 		} else {
 			//Probably need to freshly initialize database
 			return installer.Run()

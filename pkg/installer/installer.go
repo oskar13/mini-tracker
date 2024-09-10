@@ -17,7 +17,7 @@ import (
 var installerToken = data.ReadPassword(os.Getenv("INSTALLER_TOKEN_FILE"))
 
 func Run() error {
-	log.Println("Starting Installer")
+	log.Println("Starting Installer on port")
 
 	serverDone := &sync.WaitGroup{}
 	serverDone.Add(1)

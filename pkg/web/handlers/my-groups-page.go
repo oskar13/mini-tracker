@@ -15,7 +15,6 @@ func MyGroupsPage(w http.ResponseWriter, r *http.Request) {
 	userData := accounts.GetUserData(r, db.DB)
 
 	if !accounts.CheckLogin(w, r, userData) {
-		http.Redirect(w, r, "/login", http.StatusForbidden)
 		return
 	}
 
