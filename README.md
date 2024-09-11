@@ -21,18 +21,18 @@ A small/mid scale torrent tracker and a site written in Go. It features public a
 
 Run `gen_secrets.sh` which will generate password files with openssl. Build and run docker containers with `docker-compose up --build `. Navigate to port 8080 on the server to start the web install process (see bellow).
 
-### Locally
+### Bare-Metal
 
 #### Requirements:
- * A recent MariaDB (tested with 11.5.2) or MySQL database install.
+ * A recent MariaDB (tested with 11.5.2) or MySQL database install. Must support JSON datatype fields.
  * Go >= 1.23
 
-Run `gen_secrets.sh` which will generate password files with openssl. Then edit start.sh with your MySQL credentials with access to a database (make sure to create an empty database). Edit `db_password.txt` with the user's password. `db_root_password.txt` is only needed when using docker so this file can be ignored. Run `start.sh` to start the server with go run. Navigate to port 8080 and proceed with the installer (see bellow).
+Run `gen_secrets.sh` which will generate password files with openssl. Then edit `start.sh` and add your MySQL credentials with access to a database (make sure to create an empty database). Edit `db_password.txt` with the database user's password. `db_root_password.txt` is only needed when using docker so this file can be ignored. Run `start.sh` to start the server with go run. Navigate to port 8080 and proceed with the installer (see bellow).
 
 ## Web Install Process
 If no valid data is detected on startup, then the installer will be launched in website root (empty database has to exist or the installer will not run). When entering the installer, a token is needed to proceed. You can find it in `installer_token.txt` in project root directory after running `gen_secrets.sh` or in the application console output. After successfully validating the token, you can create the admin user account and finish the install which might require you to reload the page after exiting the installer.
 
-## Goals
+## Goals of this project
 - Make it easy to share torrent files between small number of people
 - Provide a simple to use interface for uploading torrents to a tracker
 - Feature a small community hub related to torrents
@@ -46,7 +46,9 @@ If no valid data is detected on startup, then the installer will be launched in 
 - Promote piracy
 - Promote sharing illegal content
 
-## Access to torrents
+## Features
+
+### Access to torrents
 Torrents can be categorized by their access type.
 
 All public torrents and the list of peers are accessible through the public tracker interface without having an account.

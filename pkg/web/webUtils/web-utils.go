@@ -5,10 +5,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 	"net/mail"
-	"text/template"
 
 	db "github.com/oskar13/mini-tracker/pkg/db"
 	"github.com/oskar13/mini-tracker/pkg/web/webdata"
@@ -47,8 +47,10 @@ func RenderTemplate(w http.ResponseWriter, templates []string, data interface{})
 
 	err = tmpl.ExecuteTemplate(w, "base", data)
 	if err != nil {
-		log.Printf("Error executing template: %v", err)
-		http.Error(w, "Failed to execute template", http.StatusInternalServerError)
+
+		log.Printf("error executing template: %v", err)
+		return
+		//http.Error(w, "Failed to execute template", http.StatusInternalServerError)
 	}
 }
 

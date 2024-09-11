@@ -47,9 +47,7 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 			pageStruct.ErrorText = fmt.Sprint(err)
 		} else {
 			loadedUserData, err2 := webutils.LoadUserProfileData(userId)
-			fmt.Println("LOADED USER DATA", loadedUserData)
 
-			fmt.Println("ERROR", err2)
 			if err2 != nil {
 				pageStruct.Error = true
 				pageStruct.ErrorText = fmt.Sprint(err2)

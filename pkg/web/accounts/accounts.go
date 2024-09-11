@@ -127,7 +127,8 @@ func ValidateSessionData(r *http.Request) (webdata.User, error) {
 
 	cookie, err := r.Cookie("session-token")
 	if err != nil {
-		log.Printf("Error retrieving session cookie: %v", err)
+		//log.Printf("Error retrieving session cookie: %v", err)
+		//No cookie found, return empty
 		return webdata.User{}, err
 	}
 

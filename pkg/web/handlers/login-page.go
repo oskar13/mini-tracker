@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 
 	db "github.com/oskar13/mini-tracker/pkg/db"
@@ -51,7 +50,7 @@ func LoginPage(w http.ResponseWriter, r *http.Request) {
 				Password:        r.FormValue("password"),
 			}
 
-			resultUserData, err := accounts.LoginUser(w, r, loginData.UserNameOrEmail, loginData.Password)
+			_, err := accounts.LoginUser(w, r, loginData.UserNameOrEmail, loginData.Password)
 
 			if err != nil {
 
@@ -62,8 +61,6 @@ func LoginPage(w http.ResponseWriter, r *http.Request) {
 				webutils.RenderTemplate(w, []string{"pkg/web/templates/login.html"}, pageStruct)
 				return
 			}
-
-			fmt.Println(resultUserData)
 
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 
