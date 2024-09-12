@@ -54,6 +54,17 @@ func RenderTemplate(w http.ResponseWriter, templates []string, data interface{})
 	}
 }
 
+func ReturnErrorResponse(w http.ResponseWriter, r *http.Request, errMsg string, statusCode int) {
+
+	w.WriteHeader(statusCode)
+	w.Header().Set("Content-Type", "text/html")
+
+	// Send the error message to the response writer
+	fmt.Fprintf(w, "<html><body><h1>Error %d</h1><p>%s</p></body></html>", statusCode, errMsg)
+
+	return
+}
+
 func ReadUserIP(r *http.Request) string {
 	IPAddress := r.Header.Get("X-Real-Ip")
 	if IPAddress == "" {

@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -41,38 +40,37 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 	idString := r.PathValue("id")
 
 	if idString != "" {
+		// Process user ID to load a profile
 		userId, err := strconv.Atoi(idString)
 		if err != nil {
-			pageStruct.Error = true
-			pageStruct.ErrorText = fmt.Sprint(err)
-		} else {
-			loadedUserData, err2 := webutils.LoadUserProfileData(userId)
-
-			if err2 != nil {
-				pageStruct.Error = true
-				pageStruct.ErrorText = fmt.Sprint(err2)
-
-			} else {
-				pageStruct.DisplayedUser = loadedUserData
-				pageStruct.Strikes = webutils.LoadStrikes(pageStruct.DisplayedUser.UserID)
-				pageStruct.UserGroups = groups.GetUserGroupsList(pageStruct.DisplayedUser.UserID, "Public")
-			}
+			webutils.ReturnErrorResponse(w, r, "Bad request", http.StatusBadRequest)
+			return
 		}
+
+		loadedUserData, err2 := webutils.LoadUserProfileData(userId)
+
+		if err2 != nil {
+			webutils.ReturnErrorResponse(w, r, "User not found", http.StatusNotFound)
+			return
+		}
+
+		pageStruct.DisplayedUser = loadedUserData
+		pageStruct.Strikes = webutils.LoadStrikes(pageStruct.DisplayedUser.UserID)
+		pageStruct.UserGroups = groups.GetUserGroupsList(pageStruct.DisplayedUser.UserID, "Public")
+
 	} else {
 		// Display data for self
 		loadedUserData, err2 := webutils.LoadUserProfileData(pageStruct.UserData.UserID)
 		if err2 != nil {
-			pageStruct.Error = true
-			pageStruct.ErrorText = fmt.Sprint(err2)
-
-		} else {
-			pageStruct.DisplayedUser = loadedUserData
-			pageStruct.SelfEdit = true
-			pageStruct.Strikes = webutils.LoadStrikes(pageStruct.DisplayedUser.UserID)
-			pageStruct.UserGroups = groups.GetUserGroupsList(pageStruct.DisplayedUser.UserID, "Public")
-			pageStruct.UserGroups = append(pageStruct.UserGroups, groups.GetUserGroupsList(pageStruct.DisplayedUser.UserID, "Private")...)
-
+			webutils.ReturnErrorResponse(w, r, "User not found / Internal server error", http.StatusNotFound)
+			return
 		}
+
+		pageStruct.DisplayedUser = loadedUserData
+		pageStruct.SelfEdit = true
+		pageStruct.Strikes = webutils.LoadStrikes(pageStruct.DisplayedUser.UserID)
+		pageStruct.UserGroups = groups.GetUserGroupsList(pageStruct.DisplayedUser.UserID, "Public")
+		pageStruct.UserGroups = append(pageStruct.UserGroups, groups.GetUserGroupsList(pageStruct.DisplayedUser.UserID, "Private")...)
 
 	}
 
