@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"strconv"
 
-	db "github.com/oskar13/mini-tracker/pkg/db"
 	"github.com/oskar13/mini-tracker/pkg/web/accounts"
 	"github.com/oskar13/mini-tracker/pkg/web/news"
 	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
@@ -14,7 +13,7 @@ import (
 
 func NewsPage(w http.ResponseWriter, r *http.Request) {
 
-	userData := accounts.GetUserData(r, db.DB)
+	userData := accounts.GetUserData(r)
 
 	if !accounts.CheckLogin(w, r, userData) {
 		return

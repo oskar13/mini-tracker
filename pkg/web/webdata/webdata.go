@@ -56,6 +56,7 @@ type User struct {
 	UserID           int
 	Username         string
 	Password         string
+	AdminLevel       int
 	Email            string
 	Cover            string
 	Banner           *string

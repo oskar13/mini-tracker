@@ -3,7 +3,6 @@ package handlers
 import (
 	"net/http"
 
-	db "github.com/oskar13/mini-tracker/pkg/db"
 	"github.com/oskar13/mini-tracker/pkg/web/accounts"
 	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
 	"github.com/oskar13/mini-tracker/pkg/web/webdata"
@@ -22,7 +21,7 @@ func LoginPage(w http.ResponseWriter, r *http.Request) {
 		UserData      webdata.User
 	}
 
-	userData := accounts.GetUserData(r, db.DB)
+	userData := accounts.GetUserData(r)
 
 	if userData.LoggedIn {
 

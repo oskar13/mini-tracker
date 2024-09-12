@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 
-	db "github.com/oskar13/mini-tracker/pkg/db"
 	"github.com/oskar13/mini-tracker/pkg/web/accounts"
 	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
 	"github.com/oskar13/mini-tracker/pkg/web/webdata"
@@ -23,7 +22,7 @@ func SignupPage(w http.ResponseWriter, r *http.Request) {
 		UserData      webdata.User
 	}
 
-	userData := accounts.GetUserData(r, db.DB)
+	userData := accounts.GetUserData(r)
 
 	if userData.LoggedIn {
 		//Show user a message about being logged in, also remind that one account per lifetime

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 
-	db "github.com/oskar13/mini-tracker/pkg/db"
 	"github.com/oskar13/mini-tracker/pkg/web/accounts"
 	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
 	"github.com/oskar13/mini-tracker/pkg/web/webdata"
@@ -12,7 +11,7 @@ import (
 
 func FriendsPage(w http.ResponseWriter, r *http.Request) {
 
-	userData := accounts.GetUserData(r, db.DB)
+	userData := accounts.GetUserData(r)
 
 	if !accounts.CheckLogin(w, r, userData) {
 		return

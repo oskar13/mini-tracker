@@ -139,9 +139,9 @@ func ValidateSessionData(r *http.Request) (webdata.User, error) {
 		return webdata.User{}, fmt.Errorf("session uid is empty")
 	}
 
-	q := "SELECT user_ID, username, profile_pic, created, disabled, session_expiry, gender FROM users WHERE session_uid = ?"
+	q := "SELECT user_ID, admin_level, username, profile_pic, created, disabled, session_expiry, gender FROM users WHERE session_uid = ?"
 
-	err = db.DB.QueryRow(q, sessionID).Scan(&userData.UserID, &userData.Username, &userData.Cover, &userData.Joined, &userData.Disabled, &userData.SessionExpiry, &userData.Gender)
+	err = db.DB.QueryRow(q, sessionID).Scan(&userData.UserID, &userData.AdminLevel, &userData.Username, &userData.Cover, &userData.Joined, &userData.Disabled, &userData.SessionExpiry, &userData.Gender)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			log.Println("Session uid not found in the database")
@@ -164,7 +164,8 @@ func ValidateSessionData(r *http.Request) (webdata.User, error) {
 	return userData, nil
 }
 
-func GetUserData(r *http.Request, DB *sql.DB) webdata.User {
+// Validated and returns user data
+func GetUserData(r *http.Request) webdata.User {
 
 	var userData webdata.User
 	userData.LoggedIn = false

@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"strconv"
 
-	db "github.com/oskar13/mini-tracker/pkg/db"
 	"github.com/oskar13/mini-tracker/pkg/web/accounts"
 	"github.com/oskar13/mini-tracker/pkg/web/groups"
 	torrentweb "github.com/oskar13/mini-tracker/pkg/web/torrent-web"
@@ -14,7 +13,7 @@ import (
 
 func ProfilePage(w http.ResponseWriter, r *http.Request) {
 
-	userData := accounts.GetUserData(r, db.DB)
+	userData := accounts.GetUserData(r)
 
 	if !accounts.CheckLogin(w, r, userData) {
 		return
@@ -25,7 +24,8 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 		ErrorText     string
 		DisplayedUser webdata.User
 		UserData      webdata.User
-		SelfEdit      bool
+		ViewSelf      bool
+		CanEdit       bool
 		TorrentList   []webdata.TorrentWeb
 		SiteName      string
 		PageName      string
@@ -57,27 +57,36 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 		pageStruct.DisplayedUser = loadedUserData
 		pageStruct.Strikes = webutils.LoadStrikes(pageStruct.DisplayedUser.UserID)
 		pageStruct.UserGroups = groups.GetUserGroupsList(pageStruct.DisplayedUser.UserID, "Public")
+		pageStruct.TorrentList = torrentweb.ListTorrents(pageStruct.DisplayedUser.UserID, []string{"Public Listed", "Members Listed", "Group Public"}, 10)
 
-	} else {
-		// Display data for self
-		loadedUserData, err2 := webutils.LoadUserProfileData(pageStruct.UserData.UserID)
-		if err2 != nil {
-			webutils.ReturnErrorResponse(w, r, "User not found / Internal server error", http.StatusNotFound)
-			return
+		if pageStruct.DisplayedUser.UserID == pageStruct.UserData.UserID {
+			pageStruct.ViewSelf = true
 		}
 
-		pageStruct.DisplayedUser = loadedUserData
-		pageStruct.SelfEdit = true
-		pageStruct.Strikes = webutils.LoadStrikes(pageStruct.DisplayedUser.UserID)
-		pageStruct.UserGroups = groups.GetUserGroupsList(pageStruct.DisplayedUser.UserID, "Public")
-		pageStruct.UserGroups = append(pageStruct.UserGroups, groups.GetUserGroupsList(pageStruct.DisplayedUser.UserID, "Private")...)
+		if pageStruct.UserData.AdminLevel <= 3 || pageStruct.ViewSelf {
+			pageStruct.CanEdit = true
 
+			pageStruct.UserGroups = append(pageStruct.UserGroups, groups.GetUserGroupsList(pageStruct.DisplayedUser.UserID, "Private")...)
+		}
+
+		if r.Method == "POST" {
+			if err := handleProfilePost(r); err != nil {
+				http.Error(w, "Error processing request", http.StatusInternalServerError)
+				return
+			}
+		}
+
+	} else {
+		webutils.ReturnErrorResponse(w, r, "User not found", http.StatusNotFound)
+		return
 	}
-
-	pageStruct.TorrentList = torrentweb.ListTorrents(pageStruct.DisplayedUser.UserID, []string{"Public Listed", "Members Listed", "Group Public"}, 10)
 
 	webutils.RenderTemplate(w, []string{"pkg/web/templates/sidebar.html", "pkg/web/templates/profile.html",
 		"pkg/web/templates/head.html",
 		"pkg/web/templates/end.html",
 		"pkg/web/templates/commandbar.html"}, pageStruct)
+}
+
+func handleProfilePost(r *http.Request) error {
+	return nil
 }

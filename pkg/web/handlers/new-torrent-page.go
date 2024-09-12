@@ -6,7 +6,6 @@ import (
 	"strconv"
 
 	"github.com/oskar13/mini-tracker/pkg/data"
-	db "github.com/oskar13/mini-tracker/pkg/db"
 	torrenttools "github.com/oskar13/mini-tracker/pkg/torrent-tools"
 	"github.com/oskar13/mini-tracker/pkg/web/accounts"
 	torrentweb "github.com/oskar13/mini-tracker/pkg/web/torrent-web"
@@ -16,7 +15,7 @@ import (
 
 func NewTorrentPage(w http.ResponseWriter, r *http.Request) {
 
-	userData := accounts.GetUserData(r, db.DB)
+	userData := accounts.GetUserData(r)
 
 	if !accounts.CheckLogin(w, r, userData) {
 		return
