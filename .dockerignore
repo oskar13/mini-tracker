@@ -24,4 +24,6 @@ docker-compose.yml
 Dockerfile
 *password.txt
 *token.txt
-/db*
+/db_data
+/db_model
+/node_modules
