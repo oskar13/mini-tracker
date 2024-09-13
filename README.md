@@ -32,6 +32,9 @@ Run `gen_secrets.sh` which will generate password files with openssl. Then edit 
 ## Web Install Process
 If no valid data is detected on startup, then the installer will be launched in website root (empty database has to exist or the installer will not run). When entering the installer, a token is needed to proceed. You can find it in `installer_token.txt` in project root directory after running `gen_secrets.sh` or in the application console output. After successfully validating the token, you can create the admin user account and finish the install which might require you to reload the page after exiting the installer.
 
+## Use of npm and node modules
+Currently admin panel of the site is built using TailwindCSS. Compiled CSS is already provided with the repository. If there is a need to recompile the CSS for admin interface then this can achieved by running `npm run build-css` or `npm run build-css:watch` after installing npm dependencies.
+
 ## Goals of this project
 - Make it easy to share torrent files between small number of people
 - Provide a simple to use interface for uploading torrents to a tracker
