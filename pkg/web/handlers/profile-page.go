@@ -57,6 +57,12 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 		}
 
 		pageStruct.DisplayedUser = loadedUserData
+
+		// Load password field for user self password edit
+		if pageStruct.DisplayedUser.UserID == pageStruct.UserData.UserID {
+			pageStruct.DisplayedUser.Password = pageStruct.UserData.Password
+		}
+
 		pageStruct.Strikes = webutils.LoadStrikes(pageStruct.DisplayedUser.UserID)
 		pageStruct.UserGroups = groups.GetUserGroupsList(pageStruct.DisplayedUser.UserID, "Public")
 		pageStruct.TorrentList = torrentweb.ListTorrents(pageStruct.DisplayedUser.UserID, []string{"Public Listed", "Members Listed", "Group Public"}, 10)
@@ -65,14 +71,18 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 			pageStruct.ViewSelf = true
 		}
 
-		if pageStruct.UserData.AdminLevel <= 3 || pageStruct.ViewSelf {
+		if pageStruct.UserData.AdminLevel >= 90 && pageStruct.UserData.AdminLevel > pageStruct.DisplayedUser.AdminLevel {
+			pageStruct.CanEdit = true
+
+			pageStruct.UserGroups = append(pageStruct.UserGroups, groups.GetUserGroupsList(pageStruct.DisplayedUser.UserID, "Private")...)
+		} else if pageStruct.ViewSelf {
 			pageStruct.CanEdit = true
 
 			pageStruct.UserGroups = append(pageStruct.UserGroups, groups.GetUserGroupsList(pageStruct.DisplayedUser.UserID, "Private")...)
 		}
 
 		if r.Method == "POST" {
-			if pageStruct.CanEdit == false {
+			if !pageStruct.CanEdit {
 				http.Error(w, "You have no edit rights", http.StatusForbidden)
 				return
 			}
@@ -111,24 +121,22 @@ func handleProfilePost(r *http.Request, userData webdata.User) (webdata.User, er
 		}
 	}
 
+	fmt.Println(userData.Password)
+
 	oldPassword := r.FormValue("password-old")
 	newPassword := r.FormValue("password-new")
 	newPassword2 := r.FormValue("password-new2")
 
-	if oldPassword != "" || newPassword != "" || newPassword2 != "" {
-		if accounts.ComparePasswords(userData.Password, oldPassword) {
-			if newPassword != newPassword2 {
-				return webdata.User{}, errors.New("new passwords do not match")
-			} else {
-				hashedPwd, err := accounts.HashAndSalt(newPassword)
-				if err != nil {
-					return webdata.User{}, err
-				}
-				userData.Password = hashedPwd
-			}
-
-		} else {
-			return webdata.User{}, errors.New("invalid password")
+	if userData.Password == "" && newPassword != "" {
+		//Editing someone else's password, don't ask for old password
+		err := accounts.SetPassword(userData.UserID, newPassword)
+		if err != nil {
+			return webdata.User{}, err
+		}
+	} else if oldPassword != "" && newPassword != "" && newPassword2 != "" {
+		err := accounts.UserUpdatePassword(userData.UserID, oldPassword, newPassword, newPassword2)
+		if err != nil {
+			return webdata.User{}, err
 		}
 	}
 
@@ -163,5 +171,5 @@ func handleProfilePost(r *http.Request, userData webdata.User) (webdata.User, er
 		return webdata.User{}, errors.New(fmt.Sprint(err))
 	}
 
-	return webdata.User{}, nil
+	return userData, nil
 }

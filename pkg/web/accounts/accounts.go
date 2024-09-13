@@ -139,9 +139,9 @@ func ValidateSessionData(r *http.Request) (webdata.User, error) {
 		return webdata.User{}, fmt.Errorf("session uid is empty")
 	}
 
-	q := "SELECT user_ID, admin_level, username, profile_pic, created, disabled, session_expiry, gender FROM users WHERE session_uid = ?"
+	q := "SELECT user_ID, admin_level, username, password, profile_pic, created, disabled, session_expiry, gender FROM users WHERE session_uid = ?"
 
-	err = db.DB.QueryRow(q, sessionID).Scan(&userData.UserID, &userData.AdminLevel, &userData.Username, &userData.Cover, &userData.Joined, &userData.Disabled, &userData.SessionExpiry, &userData.Gender)
+	err = db.DB.QueryRow(q, sessionID).Scan(&userData.UserID, &userData.AdminLevel, &userData.Username, &userData.Password, &userData.Cover, &userData.Joined, &userData.Disabled, &userData.SessionExpiry, &userData.Gender)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			log.Println("Session uid not found in the database")
@@ -248,6 +248,31 @@ func CreateUser(username string, password string, password2 string, ref string, 
 	return nil
 }
 
+// Lets user update their password, checks if their old password is correct
+func UserUpdatePassword(userID int, oldPassword string, newPassword string, newPassword2 string) error {
+
+	if newPassword != newPassword2 {
+		return errors.New("new passwords do not match")
+	}
+
+	var storedHash string
+	q := "SELECT users.password FROM users WHERE LOWER(users.user_ID) = ?"
+
+	err := db.DB.QueryRow(q, userID).Scan(&storedHash)
+	if err != nil {
+		return err
+	}
+
+	if ComparePasswords(storedHash, oldPassword) {
+		SetPassword(userID, newPassword)
+	} else {
+		return errors.New("invalid password")
+	}
+
+	return nil
+}
+
+// Sets password with not checking the previous password
 func SetPassword(userID int, password string) error {
 	hashedPwd, err := HashAndSalt(password)
 	if err != nil {
@@ -334,9 +359,10 @@ func CreateRefCode(user_ID int, ref string) error {
 }
 
 func UpdateAccountFields(userData webdata.User) error {
-	q := `UPDATE users SET users.email = ? , users.password = ?, users.tagline = ?, users.bio = ?,  users.gender = ? WHERE users.user_id = ?`
+	q := `UPDATE users SET users.email = ? ,users.tagline = ?, users.bio = ?,  users.gender = ? WHERE users.user_id = ?`
 
-	_, err := db.DB.Exec(q, userData.Email, userData.Password, userData.Tagline, userData.Bio, userData.Gender, userData.UserID)
+	fmt.Println(userData.Password)
+	_, err := db.DB.Exec(q, userData.Email, userData.Tagline, userData.Bio, userData.Gender, userData.UserID)
 
 	if err != nil {
 		return err

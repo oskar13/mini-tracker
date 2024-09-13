@@ -81,8 +81,8 @@ func LoadUserProfileData(user_ID int) (webdata.User, error) {
 
 	var user webdata.User
 
-	q := `SELECT users.username, users.profile_pic, users.banner_image, users.created, users.disabled, users.tagline, users.bio, users.gender FROM users WHERE user_ID = ?`
-	err := db.DB.QueryRow(q, user_ID).Scan(&user.Username, &user.Cover, &user.Banner, &user.Joined, &user.Disabled, &user.Tagline, &user.Bio, &user.Gender)
+	q := `SELECT users.username, users.admin_level, users.profile_pic, users.banner_image, users.created, users.disabled, users.tagline, users.bio, users.gender FROM users WHERE user_ID = ?`
+	err := db.DB.QueryRow(q, user_ID).Scan(&user.Username, &user.AdminLevel, &user.Cover, &user.Banner, &user.Joined, &user.Disabled, &user.Tagline, &user.Bio, &user.Gender)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return webdata.User{}, errors.New("no account found")
