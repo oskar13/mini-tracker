@@ -53,8 +53,14 @@ func StartWebsite() {
 	serverMux.HandleFunc("/my-t", handlers.MyTorrentsPage)
 	serverMux.HandleFunc("/my-groups", handlers.MyGroupsPage)
 	serverMux.HandleFunc("/cat/{catid}/", handlers.TorrentSearchPage)
+	//Admin panel routes
 	serverMux.HandleFunc("/admin/main", adminHandler.MainPage)
+	serverMux.HandleFunc("/admin/reports", adminHandler.ReportsPage)
+	serverMux.HandleFunc("/admin/user-list", adminHandler.UserListPage)
+	serverMux.HandleFunc("/admin/site-news", adminHandler.SiteNewsPage)
+	serverMux.HandleFunc("/admin/site-settings", adminHandler.SiteSettingsPage)
 
+	//Static content
 	serverMux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./pkg/web/static/"))))
 
 	fmt.Println("Starting web interface at: http://localhost:8080")

@@ -3,7 +3,7 @@
 <div class="d-flex flex-column flex-shrink-0 p-3 sidebar" style="width: 280px;">
     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
         <img class="sidebar-icon"  id="site-icon" src="/static/img/icons/planet-dark.svg"  alt="">
-    <h1 id="site-title">Mini Tracker</h1>
+    <h1 id="site-title">{{.SiteName}}</h1>
     </a>
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
@@ -55,6 +55,14 @@
         Direct Messages
         </a>
     </li>
+    {{if ge .UserData.AdminLevel 90}}
+    <li>
+        <a href="/admin/main" class="nav-link text-white">
+            <img src="/static/img/icons/setting.svg" class="sidebar-icon" alt="">
+        Admin Panel
+        </a>
+    </li>
+    {{end}}
     </ul>
     <hr>
     <div class="dropdown">
