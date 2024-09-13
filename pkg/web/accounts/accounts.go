@@ -361,7 +361,6 @@ func CreateRefCode(user_ID int, ref string) error {
 func UpdateAccountFields(userData webdata.User) error {
 	q := `UPDATE users SET users.email = ? ,users.tagline = ?, users.bio = ?,  users.gender = ? WHERE users.user_id = ?`
 
-	fmt.Println(userData.Password)
 	_, err := db.DB.Exec(q, userData.Email, userData.Tagline, userData.Bio, userData.Gender, userData.UserID)
 
 	if err != nil {
