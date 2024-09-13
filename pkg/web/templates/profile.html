@@ -23,11 +23,15 @@
 						{{end}}
 				   
 
-                        <div class="card-body">
+                        <form class="card-body" action="" method="POST">
                             <img src="{{.DisplayedUser.Cover}}" alt="{{.DisplayedUser.Username}} profile pic" width="96" height="96" class="rounded-circle user-pic glow">
                           <h5 class="card-title username">{{.DisplayedUser.Username}}</h5>
     
                           <p class="card-text">{{.DisplayedUser.Tagline}}</p>
+						  {{ if  .CanEdit}}
+						  <label for="tagline">Edit tagline:</label><br>
+						  <input type="text" id="tagline" name="tagline" ><br>
+						  {{end}}
                           <section class="text-start userinfo">
                             {{if .DisplayedUser.UserBadges}}
                             <div>
@@ -41,20 +45,34 @@
 
 							{{if .DisplayedUser.Bio}}
 							<h3>Bio:</h3>
+							
 							<p>{{.DisplayedUser.Bio}}</p>
+							{{end}}
+
+							{{ if  .CanEdit}}
+							<label for="bio">Edit bio:</label><br>
+							<input type="text" id="bio" name="bio" ><br>
 							{{end}}
 
 							{{ if .DisplayedUser.Gender }}
 							<p>Gender: {{.DisplayedUser.Gender}}</p>
 							{{end}}
 
-							{{ if  .SelfEdit}}
-							<p>can edit yourself</p>
+							{{ if  .CanEdit}}
+							<label for="gender">Edit gender:</label><br>
+							<input type="text" id="gender" name="gender" ><br>
 							{{end}}
+
+	
 				
                           </section>
-                         
-                        </div>
+
+
+                         	{{ if  .CanEdit}}
+							 <input class="btn button btn-primary" type="submit" value="Submit">
+							{{end}}
+				
+                        </form>
 
 
 					</div>

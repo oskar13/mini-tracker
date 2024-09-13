@@ -39,7 +39,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request, username string, givenPas
 		return webdata.User{}, err
 	}
 
-	if comparePasswords(user.Password, givenPassword) {
+	if ComparePasswords(user.Password, givenPassword) {
 
 		//set up session
 
@@ -77,7 +77,7 @@ func LogOutUser(w http.ResponseWriter, user webdata.User) webdata.User {
 
 }
 
-func comparePasswords(hashedPwd string, plainPwd string) bool {
+func ComparePasswords(hashedPwd string, plainPwd string) bool {
 	bytePlainPwd := []byte(plainPwd)
 	byteHash := []byte(hashedPwd)
 	err := bcrypt.CompareHashAndPassword(byteHash, bytePlainPwd)
@@ -248,6 +248,23 @@ func CreateUser(username string, password string, password2 string, ref string, 
 	return nil
 }
 
+func SetPassword(userID int, password string) error {
+	hashedPwd, err := HashAndSalt(password)
+	if err != nil {
+		return err
+	}
+
+	q := `UPDATE users SET users.password = ? WHERE users.user_id = ?`
+
+	_, err = db.DB.Exec(q, hashedPwd, userID)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func UsernameExists(username string) (bool, error) {
 	var user_ID int
 	q := "SELECT users.user_ID FROM users WHERE LOWER(users.username) = ?"
@@ -313,5 +330,17 @@ func CreateRefCode(user_ID int, ref string) error {
 	if err != nil {
 		return err
 	}
+	return nil
+}
+
+func UpdateAccountFields(userData webdata.User) error {
+	q := `UPDATE users SET users.email = ? , users.password = ?, users.tagline = ?, users.bio = ?,  users.gender = ? WHERE users.user_id = ?`
+
+	_, err := db.DB.Exec(q, userData.Email, userData.Password, userData.Tagline, userData.Bio, userData.Gender, userData.UserID)
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

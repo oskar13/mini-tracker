@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"errors"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -70,10 +72,17 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if r.Method == "POST" {
-			if err := handleProfilePost(r); err != nil {
-				http.Error(w, "Error processing request", http.StatusInternalServerError)
+			if pageStruct.CanEdit == false {
+				http.Error(w, "You have no edit rights", http.StatusForbidden)
 				return
 			}
+
+			newData, err := handleProfilePost(r, pageStruct.DisplayedUser)
+			if err != nil {
+				http.Error(w, "Error processing request:"+fmt.Sprint(err), http.StatusInternalServerError)
+				return
+			}
+			pageStruct.DisplayedUser = newData
 		}
 
 	} else {
@@ -87,6 +96,72 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 		"pkg/web/templates/commandbar.html"}, pageStruct)
 }
 
-func handleProfilePost(r *http.Request) error {
-	return nil
+func handleProfilePost(r *http.Request, userData webdata.User) (webdata.User, error) {
+
+	if err := r.ParseForm(); err != nil {
+		return webdata.User{}, nil
+	}
+
+	email := r.FormValue("email")
+	if email != "" {
+		if webutils.ValidateEmail(email) {
+			userData.Email = email
+		} else {
+			return webdata.User{}, errors.New("invalid email address")
+		}
+	}
+
+	oldPassword := r.FormValue("password-old")
+	newPassword := r.FormValue("password-new")
+	newPassword2 := r.FormValue("password-new2")
+
+	if oldPassword != "" || newPassword != "" || newPassword2 != "" {
+		if accounts.ComparePasswords(userData.Password, oldPassword) {
+			if newPassword != newPassword2 {
+				return webdata.User{}, errors.New("new passwords do not match")
+			} else {
+				hashedPwd, err := accounts.HashAndSalt(newPassword)
+				if err != nil {
+					return webdata.User{}, err
+				}
+				userData.Password = hashedPwd
+			}
+
+		} else {
+			return webdata.User{}, errors.New("invalid password")
+		}
+	}
+
+	tagline := r.FormValue("tagline")
+	if tagline != "" {
+		if len(tagline) > 140 {
+			return webdata.User{}, errors.New("tagline too long")
+		} else {
+			userData.Tagline = &tagline
+		}
+	}
+	bio := r.FormValue("bio")
+	if bio != "" {
+		if len(bio) > 500 {
+			return webdata.User{}, errors.New("bio too long")
+		} else {
+			userData.Bio = &bio
+		}
+	}
+	gender := r.FormValue("gender")
+	if gender != "" {
+		if len(gender) > 100 {
+			return webdata.User{}, errors.New("gender too long")
+		} else {
+			userData.Gender = &gender
+		}
+	}
+
+	err := accounts.UpdateAccountFields(userData)
+
+	if err != nil {
+		return webdata.User{}, errors.New(fmt.Sprint(err))
+	}
+
+	return webdata.User{}, nil
 }
