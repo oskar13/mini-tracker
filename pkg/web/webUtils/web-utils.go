@@ -62,7 +62,6 @@ func ReturnErrorResponse(w http.ResponseWriter, r *http.Request, errMsg string, 
 	// Send the error message to the response writer
 	fmt.Fprintf(w, "<html><body><h1>Error %d</h1><p>%s</p></body></html>", statusCode, errMsg)
 
-	return
 }
 
 func ReadUserIP(r *http.Request) string {

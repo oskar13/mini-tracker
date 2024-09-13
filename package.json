@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "tailwind": "^4.0.0"
+  },
+
+  "scripts": {
+    "build-css" : "npx tailwindcss -i ./tailwind.css -o ./pkg/web/static/css/tw.css",
+    "build-css:watch" : "npx tailwindcss -i ./tailwind.css -o ./pkg/web/static/css/tw.css --watch"
+  }
+}

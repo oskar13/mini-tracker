@@ -38,3 +38,4 @@ static/uploads/group-covers/*
 *token.txt
 
 /db_data
+/node_modules

@@ -9,6 +9,7 @@ import (
 
 	db "github.com/oskar13/mini-tracker/pkg/db"
 	"github.com/oskar13/mini-tracker/pkg/installer"
+	adminHandler "github.com/oskar13/mini-tracker/pkg/web/adminPanel/handlers"
 	"github.com/oskar13/mini-tracker/pkg/web/handlers"
 	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
 )
@@ -52,6 +53,7 @@ func StartWebsite() {
 	serverMux.HandleFunc("/my-t", handlers.MyTorrentsPage)
 	serverMux.HandleFunc("/my-groups", handlers.MyGroupsPage)
 	serverMux.HandleFunc("/cat/{catid}/", handlers.TorrentSearchPage)
+	serverMux.HandleFunc("/admin/main", adminHandler.MainPage)
 
 	serverMux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./pkg/web/static/"))))
 
