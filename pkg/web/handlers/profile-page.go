@@ -136,12 +136,6 @@ func handleProfilePost(r *http.Request, userData webdata.User) (webdata.User, er
 		if err != nil {
 			return webdata.User{}, err
 		}
-	} else {
-		fmt.Println("didnt hit any condition")
-		fmt.Println("userdata.password", userData.Password)
-		fmt.Println("password-old", oldPassword)
-		fmt.Println("password-new", newPassword)
-		fmt.Println("password-new2", newPassword2)
 	}
 
 	tagline := r.FormValue("tagline")

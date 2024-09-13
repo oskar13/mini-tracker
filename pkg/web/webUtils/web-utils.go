@@ -245,3 +245,17 @@ func ValidateEmail(email string) bool {
 	_, err := mail.ParseAddress(email)
 	return err == nil
 }
+
+func LoadSiteData() error {
+
+	var siteName string
+	q := `SELECT site_name FROM sys_info`
+	err := db.DB.QueryRow(q).Scan(&siteName)
+	if err != nil {
+		return err
+	}
+
+	webdata.SiteName = siteName
+
+	return nil
+}

@@ -20,10 +20,14 @@ func StartWebsite() {
 	defer db.Close()
 
 	//Check for database tables,
-	err := checkInitData()
 
-	if err != nil {
+	if err := checkInitData(); err != nil {
 		log.Println("Failed to check initial data!")
+		log.Fatal(err)
+	}
+
+	if err := webutils.LoadSiteData(); err != nil {
+		log.Println("Failed to load site data!")
 		log.Fatal(err)
 	}
 
