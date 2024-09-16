@@ -23,7 +23,7 @@ func SiteNewsPage(w http.ResponseWriter, r *http.Request) {
 	}
 	pageStruct.UserData = userData
 	pageStruct.SiteName = webdata.SiteName
-	pageStruct.PageName = "Reports Admin Page"
+	pageStruct.PageName = "News Admin Page"
 
 	webutils.RenderTemplate(w, []string{"pkg/web/adminPanel/templates/site-news.html", "pkg/web/adminPanel/templates/head.html", "pkg/web/adminPanel/templates/sidebar.html", "pkg/web/adminPanel/templates/footer.html"}, pageStruct)
 

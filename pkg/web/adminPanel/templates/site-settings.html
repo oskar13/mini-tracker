@@ -4,7 +4,74 @@
 
 {{template "sidebar" .}}
 
-Site settings
+
+
+<div class="p-4 sm:ml-64 dark:text-white">
+	<div class="md:container md:mx-auto ">
+		<div
+			class="lg:w-10/12 mx-auto text-center mb-10 tracking-wide bg-white rounded p-10 py-16 bg-gray-50 dark:bg-gray-800">
+			<h1 class="text-3xl font-bold mb-10 dark:text-white">Site Settings</h1>
+			<p class="dark:text-white mb-10">General site settings only available for main administrator of the site.</p>
+
+
+			<div class="grid grid-cols-2 gap-4 mb-4 text-left">
+
+
+				<div
+					class="rounded bg-gray-50  dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-600 bo rounded-lg p-4">
+
+					<p class="text-2xl text-gray-400 dark:text-gray-500">
+					<form>
+						<div class="mb-4">
+							<label class="block text-gray-700  font-bold mb-2 text-xl dark:text-white" for="site-name">
+								Site name:
+							</label>
+							<input
+								class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-gray-300 dark:bg-gray-700 dark:border-gray-500"
+								id="site-name" type="text" placeholder="{{.SiteName}}">
+						</div>
+
+						<button
+							class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+							type="button">
+							Update
+						</button>
+
+
+					</form>
+					</p>
+
+				</div>
+				<div class=" bg-gray-50  dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-600 bo rounded-lg p-4">
+					<h3 class="block text-gray-700  font-bold mb-2 text-xl dark:text-white">Version Info:</h3>
+					<p>
+						DB schema version: 0.14
+						<br>
+						Site and tracker version: 0.1
+					</p>
+
+				</div>
+
+
+			</div>
+
+			<div class="grid grid-cols-2 gap-4 mb-4 text-left">
+				<div class=" bg-gray-50  dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-600 bo rounded-lg p-4">
+					<h3 class="block text-gray-700  font-bold mb-2 text-xl dark:text-white">Site access rules</h3>
+					<p>
+						Configurable interface coming soon
+					</p>
+
+				</div>
+
+
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
 
 {{template "footer" .}}
 {{end}}

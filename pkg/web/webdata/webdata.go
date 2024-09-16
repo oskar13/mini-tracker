@@ -123,3 +123,7 @@ type FriendRequest struct {
 }
 
 var SiteName string = "Mini Tracker"
+
+var MainAdminLevel int = 99
+var ModLevel int = 90
+var UserLevel int = 10

@@ -16,6 +16,11 @@ func MainPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if userData.AdminLevel < webdata.ModLevel {
+		webutils.ReturnErrorResponse(w, r, "You have no access rights to browse this page", http.StatusForbidden)
+		return
+	}
+
 	var pageStruct struct {
 		UserData webdata.User
 		SiteName string

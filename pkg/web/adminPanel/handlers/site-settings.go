@@ -16,6 +16,11 @@ func SiteSettingsPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if userData.AdminLevel < webdata.MainAdminLevel {
+		webutils.ReturnErrorResponse(w, r, "You have no access rights to browse this page", http.StatusForbidden)
+		return
+	}
+
 	var pageStruct struct {
 		UserData webdata.User
 		SiteName string
@@ -23,7 +28,7 @@ func SiteSettingsPage(w http.ResponseWriter, r *http.Request) {
 	}
 	pageStruct.UserData = userData
 	pageStruct.SiteName = webdata.SiteName
-	pageStruct.PageName = "Reports Admin Page"
+	pageStruct.PageName = "Site Settings"
 
 	webutils.RenderTemplate(w, []string{"pkg/web/adminPanel/templates/site-settings.html", "pkg/web/adminPanel/templates/head.html", "pkg/web/adminPanel/templates/sidebar.html", "pkg/web/adminPanel/templates/footer.html"}, pageStruct)
 
