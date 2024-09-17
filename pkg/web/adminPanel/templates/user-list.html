@@ -4,7 +4,39 @@
 
 {{template "sidebar" .}}
 
-User List
+<div class="p-4 sm:ml-64 dark:text-white">
+	<div class="md:container md:mx-auto ">
+        <div
+			class="lg:w-10/12 mx-auto mb-10 tracking-wide bg-gray-100 rounded p-10 py-16 dark:bg-gray-800">
+            <header>
+                <h1 class="text-3xl font-bold mb-10 dark:text-white">User List</h1>
+            </header>
+
+            <table class=" w-full dark:text-white">
+                <thead class="text-center border-b-2">
+                  <tr>
+                    <th class="py-4">User ID</th>
+                    <th class="py-4">Username</th>
+                    <th class="py-4">User Admin Level</th>
+                    <th class="py-4">Profile Picture</th>
+                    <th class="py-4">Created</th>
+                    <th class="py-4">Active/Disabled</th>
+                  </tr>
+                </thead>
+                <tbody class="text-center">
+                    <tr class="hover:bg-gray-300 dark:hover:bg-slate-500  p-3 cursor-pointer">
+                        <td class="py-4">1</td>
+                        <td class="py-4">admin</td>
+                        <td class="py-4">99</td>
+                        <td class="py-4"><img src="/static/img/default-user.svg" alt="user profile image" class="w-8 h-8 mx-auto" ></td>
+                        <td class="py-4">1975</td>
+                        <td class="py-4">✅</td>
+                    </tr>
+                </tbody>
+              </table>
+        </div>
+    </div>
+</div>
 
 {{template "footer" .}}
 {{end}}
