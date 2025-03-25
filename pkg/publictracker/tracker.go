@@ -1,4 +1,4 @@
-package tracker
+package publictracker
 
 import (
 	"fmt"
@@ -7,6 +7,7 @@ import (
 
 	"github.com/oskar13/mini-tracker/pkg/data"
 	db "github.com/oskar13/mini-tracker/pkg/db"
+	"github.com/oskar13/mini-tracker/pkg/trackerlib"
 )
 
 func StartTracker() {
@@ -59,7 +60,7 @@ func HandlePublicTorrents(w http.ResponseWriter, r *http.Request) {
 
 		newPeer.Port = port
 		newPeer.Left = int64(left)
-		torrentID, err := GetTorrentIdByHash(newPeer.InfoHash)
+		torrentID, err := trackerlib.GetTorrentIdByHash(newPeer.InfoHash)
 
 		if err != nil {
 			fmt.Println(err)
@@ -68,7 +69,7 @@ func HandlePublicTorrents(w http.ResponseWriter, r *http.Request) {
 		}
 
 		newPeer.TorrentID = torrentID
-		newPeer.IP, err = GetHTTPRequestIP(r)
+		newPeer.IP, err = trackerlib.GetHTTPRequestIP(r)
 
 		if err != nil {
 			fmt.Println("Error getting ip")
@@ -80,7 +81,7 @@ func HandlePublicTorrents(w http.ResponseWriter, r *http.Request) {
 
 		if event == "stopped" {
 			//Remove peer from peerlist
-			err = RemovePeer(newPeer)
+			err = trackerlib.RemovePeer(newPeer)
 			if err != nil {
 				fmt.Println("Error removing peer from peers list")
 				fmt.Println(err)
@@ -88,14 +89,14 @@ func HandlePublicTorrents(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		peers, err := LoadPeers(newPeer.TorrentID, newPeer.PeerID)
+		peers, err := trackerlib.LoadPeers(newPeer.TorrentID, newPeer.PeerID)
 
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
 
-		err = AddPeer(newPeer)
+		err = trackerlib.AddPeer(newPeer)
 
 		if err != nil {
 			fmt.Println("Error adding peer")
@@ -104,7 +105,7 @@ func HandlePublicTorrents(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		err = EncodePeerListAndRespond(w, 20, peers)
+		err = trackerlib.EncodePeerListAndRespond(w, 20, peers)
 
 		if err != nil {
 			fmt.Println("Error encoding peer list")

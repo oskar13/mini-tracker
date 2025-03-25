@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/oskar13/mini-tracker/pkg/tracker"
+	"github.com/oskar13/mini-tracker/pkg/publictracker"
 	"github.com/oskar13/mini-tracker/pkg/web"
 )
 
@@ -10,7 +10,7 @@ func main() {
 	//torrenttools.DecodeUploadedTorrent(os.Args[1])
 
 	go func() {
-		tracker.StartTracker()
+		publictracker.StartTracker()
 	}()
 	web.StartWebsite()
 

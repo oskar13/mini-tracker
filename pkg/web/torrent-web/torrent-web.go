@@ -11,7 +11,7 @@ import (
 	"github.com/oskar13/mini-tracker/pkg/data"
 	"github.com/oskar13/mini-tracker/pkg/db"
 	torrenttools "github.com/oskar13/mini-tracker/pkg/torrent-tools"
-	"github.com/oskar13/mini-tracker/pkg/tracker"
+	"github.com/oskar13/mini-tracker/pkg/trackerlib"
 	"github.com/oskar13/mini-tracker/pkg/web/groups"
 	"github.com/oskar13/mini-tracker/pkg/web/webdata"
 )
@@ -49,7 +49,7 @@ func LoadTorrentData(torrentUuid string, userID int) (webdata.TorrentWeb, error)
 	}
 
 	//Check if user is on direct access list of torrent
-	listAccess, err := tracker.CheckTorrentAccessList(torrent.TorrentID, userID)
+	listAccess, err := trackerlib.CheckTorrentAccessList(torrent.TorrentID, userID)
 	if err != nil {
 		return webdata.TorrentWeb{}, err
 	} else if listAccess {
