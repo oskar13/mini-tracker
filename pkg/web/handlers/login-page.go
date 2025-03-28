@@ -3,13 +3,14 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/oskar13/mini-tracker/pkg/web/accounts"
 	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
 	"github.com/oskar13/mini-tracker/pkg/web/webdata"
 )
 
 // Handle login and logout URL endpoint
-func LoginPage(w http.ResponseWriter, r *http.Request) {
+func LoginPage(c *gin.Context) {
 
 	var pageStruct struct {
 		Error         bool
@@ -21,13 +22,13 @@ func LoginPage(w http.ResponseWriter, r *http.Request) {
 		UserData      webdata.User
 	}
 
-	userData := accounts.GetUserData(r)
+	userData := accounts.GetUserData(c.Request)
 
 	if userData.LoggedIn {
 
-		if r.URL.Path == "/logout" {
+		if c.Request.URL.Path == "/logout" {
 			//Log user out
-			userData = accounts.LogOutUser(w, userData)
+			userData = accounts.LogOutUser(c.Writer, userData)
 			pageStruct.LogoutMessage = true
 
 		} else {
@@ -36,36 +37,36 @@ func LoginPage(w http.ResponseWriter, r *http.Request) {
 		}
 
 	} else {
-		if r.Method == "POST" {
+		if c.Request.Method == "POST" {
 			// Check login details
 
-			if err := r.ParseForm(); err != nil {
-				http.Error(w, "Error parsing the form", http.StatusInternalServerError)
+			if err := c.Request.ParseForm(); err != nil {
+				http.Error(c.Writer, "Error parsing the form", http.StatusInternalServerError)
 				return
 			}
 
 			loginData := webdata.LoginData{
-				UserNameOrEmail: r.FormValue("username"),
-				Password:        r.FormValue("password"),
+				UserNameOrEmail: c.Request.FormValue("username"),
+				Password:        c.Request.FormValue("password"),
 			}
 
-			_, err := accounts.LoginUser(w, r, loginData.UserNameOrEmail, loginData.Password)
+			_, err := accounts.LoginUser(c.Writer, c.Request, loginData.UserNameOrEmail, loginData.Password)
 
 			if err != nil {
 
 				pageStruct.Error = true
 				pageStruct.ErrorText = "Invalid username or password"
 
-				w.WriteHeader(http.StatusUnauthorized)
-				webutils.RenderTemplate(w, []string{"pkg/web/templates/login.html"}, pageStruct)
+				c.Writer.WriteHeader(http.StatusUnauthorized)
+				webutils.RenderTemplate(c.Writer, []string{"pkg/web/templates/login.html"}, pageStruct)
 				return
 			}
 
-			http.Redirect(w, r, "/", http.StatusSeeOther)
+			http.Redirect(c.Writer, c.Request, "/", http.StatusSeeOther)
 
 			return
-		} else if r.Method == "GET" {
-			message := r.URL.Query().Get("message")
+		} else if c.Request.Method == "GET" {
+			message := c.Request.URL.Query().Get("message")
 
 			if message != "" {
 
@@ -80,8 +81,8 @@ func LoginPage(w http.ResponseWriter, r *http.Request) {
 
 					pageStruct.ErrorText = "Failed creating account"
 
-					if r.URL.Query().Get("reason") != "" {
-						pageStruct.ErrorText = pageStruct.ErrorText + ": " + r.URL.Query().Get("reason")
+					if c.Request.URL.Query().Get("reason") != "" {
+						pageStruct.ErrorText = pageStruct.ErrorText + ": " + c.Request.URL.Query().Get("reason")
 					}
 				}
 
@@ -90,6 +91,6 @@ func LoginPage(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	webutils.RenderTemplate(w, []string{"pkg/web/templates/login.html"}, pageStruct)
+	webutils.RenderTemplate(c.Writer, []string{"pkg/web/templates/login.html"}, pageStruct)
 
 }
