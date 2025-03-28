@@ -7,6 +7,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
+
 	db "github.com/oskar13/mini-tracker/pkg/db"
 	"github.com/oskar13/mini-tracker/pkg/installer"
 	adminHandler "github.com/oskar13/mini-tracker/pkg/web/adminPanel/handlers"
@@ -32,33 +34,35 @@ func StartWebsite() {
 		log.Fatal(err)
 	}
 
+	r := gin.Default()
+
 	serverMux := http.NewServeMux()
-	serverMux.HandleFunc("/", handlers.MainPage)
-	serverMux.HandleFunc("/login", handlers.LoginPage)
-	serverMux.HandleFunc("/logout", handlers.LoginPage)
-	serverMux.HandleFunc("/signup", handlers.SignupPage)
-	serverMux.HandleFunc("/profile/{id}/", handlers.ProfilePage)
-	serverMux.HandleFunc("/profile", handlers.ProfilePage)
-	serverMux.HandleFunc("/friends", handlers.FriendsPage)
-	serverMux.HandleFunc("/dms/{id}/", handlers.DirectMessages)
-	serverMux.HandleFunc("/dms", handlers.DirectMessages)
-	serverMux.HandleFunc("/new", handlers.NewTorrentPage)
-	serverMux.HandleFunc("/news/{id}/", handlers.NewsPage)
-	serverMux.HandleFunc("/news", handlers.NewsPage)
-	serverMux.HandleFunc("/groups/{id}/", handlers.GroupPage)
-	serverMux.HandleFunc("/groups", handlers.GroupListPage)
-	serverMux.HandleFunc("/groups/{groupid}/post/{postid}", handlers.GroupPostPage)
-	serverMux.HandleFunc("/t/{uuid}/", handlers.TorrentPage)
-	serverMux.HandleFunc("/t-dl/{uuid}/", handlers.TorrentDownloadPage)
-	serverMux.HandleFunc("/my-t", handlers.MyTorrentsPage)
-	serverMux.HandleFunc("/my-groups", handlers.MyGroupsPage)
-	serverMux.HandleFunc("/cat/{catid}/", handlers.TorrentSearchPage)
+	r.GET("/", handlers.MainPage)
+	r.GET("/login", handlers.LoginPage)
+	r.GET("/logout", handlers.LoginPage)
+	r.GET("/signup", handlers.SignupPage)
+	r.GET("/profile/{id}/", handlers.ProfilePage)
+	r.GET("/profile", handlers.ProfilePage)
+	r.GET("/friends", handlers.FriendsPage)
+	r.GET("/dms/{id}/", handlers.DirectMessages)
+	r.GET("/dms", handlers.DirectMessages)
+	r.GET("/new", handlers.NewTorrentPage)
+	r.GET("/news/{id}/", handlers.NewsPage)
+	r.GET("/news", handlers.NewsPage)
+	r.GET("/groups/{id}/", handlers.GroupPage)
+	r.GET("/groups", handlers.GroupListPage)
+	r.GET("/groups/{groupid}/post/{postid}", handlers.GroupPostPage)
+	r.GET("/t/{uuid}/", handlers.TorrentPage)
+	r.GET("/t-dl/{uuid}/", handlers.TorrentDownloadPage)
+	r.GET("/my-t", handlers.MyTorrentsPage)
+	r.GET("/my-groups", handlers.MyGroupsPage)
+	r.GET("/cat/{catid}/", handlers.TorrentSearchPage)
 	//Admin panel routes
-	serverMux.HandleFunc("/admin/main", adminHandler.MainPage)
-	serverMux.HandleFunc("/admin/reports", adminHandler.ReportsPage)
-	serverMux.HandleFunc("/admin/user-list", adminHandler.UserListPage)
-	serverMux.HandleFunc("/admin/site-news", adminHandler.SiteNewsPage)
-	serverMux.HandleFunc("/admin/site-settings", adminHandler.SiteSettingsPage)
+	r.GET("/admin/main", adminHandler.MainPage)
+	r.GET("/admin/reports", adminHandler.ReportsPage)
+	r.GET("/admin/user-list", adminHandler.UserListPage)
+	r.GET("/admin/site-news", adminHandler.SiteNewsPage)
+	r.GET("/admin/site-settings", adminHandler.SiteSettingsPage)
 
 	//Static content
 	serverMux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./pkg/web/static/"))))
