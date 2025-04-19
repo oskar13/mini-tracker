@@ -2,20 +2,20 @@ package handlers
 
 import (
 	"fmt"
-	"net/http"
 	"strconv"
 
+	"github.com/gin-gonic/gin"
 	"github.com/oskar13/mini-tracker/pkg/web/accounts"
 	"github.com/oskar13/mini-tracker/pkg/web/news"
 	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
 	"github.com/oskar13/mini-tracker/pkg/web/webdata"
 )
 
-func NewsPage(w http.ResponseWriter, r *http.Request) {
+func NewsPage(c *gin.Context) {
+	userData := accounts.GetUserData(c.Request)
 
-	userData := accounts.GetUserData(r)
-
-	if !accounts.CheckLogin(w, r, userData) {
+	// Check login
+	if !accounts.CheckLogin(c.Writer, c.Request, userData) {
 		return
 	}
 
@@ -33,7 +33,7 @@ func NewsPage(w http.ResponseWriter, r *http.Request) {
 	pageStruct.SiteName = webdata.SiteName
 	pageStruct.PageName = "News"
 
-	idString := r.PathValue("id")
+	idString := c.Param("id") // Gin grabs from route param like /news/:id
 
 	if idString != "" {
 		articleID, err := strconv.Atoi(idString)
@@ -42,11 +42,9 @@ func NewsPage(w http.ResponseWriter, r *http.Request) {
 			pageStruct.ErrorText = fmt.Sprint(err)
 		} else {
 			loadedNewsArticle, err2 := news.LoadNewsArticle(articleID)
-
 			if err2 != nil {
 				pageStruct.Error = true
 				pageStruct.ErrorText = fmt.Sprint(err2)
-
 			} else {
 				pageStruct.NewsArticle = loadedNewsArticle
 			}
@@ -54,19 +52,21 @@ func NewsPage(w http.ResponseWriter, r *http.Request) {
 	} else {
 		// Show list of news
 		loadedNewsList, err := news.LoadNewsList(25)
-
 		if err != nil {
 			pageStruct.Error = true
 			pageStruct.ErrorText = fmt.Sprintf("%v", err)
 		} else {
 			pageStruct.NewsList = loadedNewsList
 		}
-
 	}
 
-	webutils.RenderTemplate(w, []string{"pkg/web/templates/sidebar.html", "pkg/web/templates/news.html",
+	// Render the same template stack
+	webutils.RenderTemplate(c.Writer, []string{
+		"pkg/web/templates/sidebar.html",
+		"pkg/web/templates/news.html",
 		"pkg/web/templates/head.html",
 		"pkg/web/templates/end.html",
 		"pkg/web/templates/commandbar.html",
-		"pkg/web/templates/newslist-item.html"}, pageStruct)
+		"pkg/web/templates/newslist-item.html",
+	}, pageStruct)
 }
