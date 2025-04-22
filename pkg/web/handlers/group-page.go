@@ -2,20 +2,19 @@ package handlers
 
 import (
 	"fmt"
-	"net/http"
 	"strconv"
 
+	"github.com/gin-gonic/gin"
 	"github.com/oskar13/mini-tracker/pkg/web/accounts"
 	"github.com/oskar13/mini-tracker/pkg/web/groups"
 	webutils "github.com/oskar13/mini-tracker/pkg/web/webUtils"
 	"github.com/oskar13/mini-tracker/pkg/web/webdata"
 )
 
-func GroupPage(w http.ResponseWriter, r *http.Request) {
+func GroupPage(c *gin.Context) {
+	userData := accounts.GetUserData(c.Request)
 
-	userData := accounts.GetUserData(r)
-
-	if !accounts.CheckLogin(w, r, userData) {
+	if !accounts.CheckLogin(c.Writer, c.Request, userData) {
 		return
 	}
 
@@ -33,7 +32,7 @@ func GroupPage(w http.ResponseWriter, r *http.Request) {
 	pageStruct.SiteName = webdata.SiteName
 	pageStruct.PageName = "Group page title"
 
-	idString := r.PathValue("id")
+	idString := c.Param("id") // get from route param /group/:id
 
 	if idString != "" {
 		groupID, err := strconv.Atoi(idString)
@@ -41,31 +40,28 @@ func GroupPage(w http.ResponseWriter, r *http.Request) {
 			pageStruct.Error = true
 			pageStruct.ErrorText = fmt.Sprint(err)
 		} else {
-			// Try loading group info
 			pageStruct.UserRole = groups.LoadGroupAccess(userData.UserID, groupID)
+
 			if pageStruct.UserRole == "" {
-				//User has no right to view the page
 				pageStruct.Error = true
 				pageStruct.ErrorText = "Access denied to group"
 			} else {
-				//Continue loading data for page
-
 				pageStruct.Group = groups.LoadGroupInfo(groupID)
 				pageStruct.Posts = groups.LoadGroupPostsList(groupID)
 			}
 		}
 	} else {
-		// No ID string found
-
 		pageStruct.Error = true
 		pageStruct.ErrorText = "No group specified."
-
 	}
 
 	pageStruct.UserData = userData
 
-	webutils.RenderTemplate(w, []string{"pkg/web/templates/groups/group-hub.html",
-		"pkg/web/templates/sidebar.html", "pkg/web/templates/head.html",
+	webutils.RenderTemplate(c.Writer, []string{
+		"pkg/web/templates/groups/group-hub.html",
+		"pkg/web/templates/sidebar.html",
+		"pkg/web/templates/head.html",
 		"pkg/web/templates/end.html",
-		"pkg/web/templates/commandbar.html"}, pageStruct)
+		"pkg/web/templates/commandbar.html",
+	}, pageStruct)
 }
